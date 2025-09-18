@@ -1,7 +1,5 @@
 import FloatingWords from "../components/blocks/FloatingWords";
 import TextBlock from "../components/blocks/TextBlock";
-import EquationBlock from "../components/blocks/EquationBlock";
-import CodeBlock from "../components/blocks/CodeBlock";
 
 export default function Home() {
   return (
@@ -37,14 +35,11 @@ export default function Home() {
         content="Superfloat is designed for AI at the edge — from IoT devices and autonomous drones to wearable tech and robotics. Wherever power efficiency and fast inference matter, Superfloat offers a scalable alternative to traditional floating-point arithmetic."
       />
 
-      {/* Closing */}
-      <section className="py-16 ">
-        <h2 className="text-3xl font-bold mb-4 font-iowan text-center">Join the Revolution</h2>
-        <p className="text-lg text-gray-700 max-w-2xl mx-auto text-justify">
-          Superfloat is not just another format — it’s a rethinking of how precision and efficiency
-          balance each other. Start experimenting with it today and help shape the future of AI on the edge.
-        </p>
-      </section>
+       <TextBlock
+        title="Join the Revolution"
+        content="Superfloat is not just another format — it’s a rethinking of how precision and efficiency
+          balance each other. Start experimenting with it today and help shape the future of AI on the edge."
+      />
 
     </div>
   );
