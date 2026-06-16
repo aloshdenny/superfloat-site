@@ -9,7 +9,7 @@ import './index.css'
 export default function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-white text-gray-900">
+      <div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
         <Navbar />
         <main className="flex-grow">
           <Routes>

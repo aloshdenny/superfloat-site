@@ -51,10 +51,10 @@ export default function BlogPost() {
   }
 
   return (
-    <article className="max-w-4xl mx-auto px-6 py-20">
-      <h1 className="text-4xl font-bold mb-6 font-iowan text-center">{post.title}</h1>
+    <article className="max-w-4xl mx-auto px-6 py-20 text-gray-900 dark:text-gray-100">
+      <h1 className="text-4xl font-bold mb-6 font-iowan text-center text-gray-900 dark:text-white">{post.title}</h1>
       <div 
-        className="prose prose-lg max-w-none"
+        className="prose prose-lg dark:prose-invert max-w-none"
         dangerouslySetInnerHTML={{ __html: post.body }}
       />
     </article>

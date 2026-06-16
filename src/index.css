@@ -134,3 +134,34 @@ ul {
 li {
   margin-bottom: 0.5rem;
 }
+
+/* Dark mode rules */
+.dark body {
+  background: #09090b;
+  color: #f4f4f5;
+}
+
+.dark p, .dark ul {
+  color: #d4d4d8;
+}
+
+.dark .sub-heading, .dark h1, .dark h2, .dark h3 {
+  color: #ffffff;
+}
+
+.dark strong {
+  color: #ffffff;
+}
+
+.dark pre, .dark .python-terminal, .dark .code-terminal {
+  background-color: #18181b !important;
+  border-color: #27272a;
+}
+
+.dark pre code {
+  color: #e4e4e7;
+}
+
+.dark .eq-terminal {
+  color: #e4e4e7;
+}
