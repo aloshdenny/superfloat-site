@@ -1,7 +1,5 @@
 import FloatingWords from "../components/blocks/FloatingWords";
 import TextBlock from "../components/blocks/TextBlock";
-import EquationBlock from "../components/blocks/EquationBlock";
-import CodeBlock from "../components/blocks/CodeBlock";
 import FMAPipeline from "../components/FMAPipeline";
 
 export default function Home() {
