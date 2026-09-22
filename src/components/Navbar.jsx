@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
+    const savedTheme = localStorage.getItem("theme");
+    const shouldUseDark = savedTheme ? savedTheme === "dark" : true;
+    document.documentElement.classList.toggle("dark", shouldUseDark);
+    return shouldUseDark;
   });
 
   useEffect(() => {
@@ -14,6 +17,7 @@ export default function Navbar() {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
+    window.dispatchEvent(new CustomEvent("themechange", { detail: { isDark } }));
   }, [isDark]);
 
   return (

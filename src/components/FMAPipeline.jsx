@@ -317,10 +317,15 @@ export default function FMAPipeline() {
   const [darkTheme, setDarkTheme] = useState(() => document.documentElement.classList.contains("dark"));
 
   useEffect(() => {
-    const observer = new MutationObserver(() =>
-      setDarkTheme(document.documentElement.classList.contains("dark")));
+    const syncTheme = () => setDarkTheme(document.documentElement.classList.contains("dark"));
+    syncTheme();
+    const observer = new MutationObserver(syncTheme);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
+    window.addEventListener("themechange", syncTheme);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("themechange", syncTheme);
+    };
   }, []);
 
   const [step,            setStep]            = useState(-1);
