@@ -1,0 +1,81 @@
+.fma-demo {
+  box-sizing: border-box;
+}
+
+.fma-demo__intro h2 {
+  margin: 5px 0 7px;
+  font-family: "Iowan Old Style BT", Georgia, serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.15;
+}
+
+.fma-demo__intro p {
+  max-width: 680px;
+  margin: 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.fma-demo__eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.fma-demo__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.fma-demo__status::before {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+  content: "";
+  opacity: 0.75;
+}
+
+.fma-demo button:focus-visible,
+.fma-demo select:focus-visible,
+.fma-demo input:focus-visible {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .fma-demo {
+    width: calc(100% - 24px);
+    margin: 16px 12px !important;
+    padding: 16px !important;
+  }
+
+  .fma-demo__controls > div {
+    align-items: stretch !important;
+  }
+
+  .fma-demo__controls > div > div {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+
+  .fma-demo__controls select {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fma-demo *,
+  .fma-demo *::before,
+  .fma-demo *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

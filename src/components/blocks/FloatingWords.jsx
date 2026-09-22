@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const words = ["AI",  "Quantization", "Precision", "Efficiency"];
 
 export default function FloatingWords() {
-  const [positions, setPositions] = useState(
+  const [positions] = useState(
     words.map(() => ({
       top: Math.random() * 100,
       left: Math.random() * 100,
