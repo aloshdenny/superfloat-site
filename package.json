@@ -20,8 +20,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "vite",
+    "build": "vite build && node scripts/prepare-sites-build.mjs",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -44,8 +44,11 @@
     ]
   },
   "devDependencies": {
+    "@openai/sites-vite-plugin": "^0.2.0",
+    "@vitejs/plugin-react": "^6.1.1",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "vite": "^8.3.0"
   }
 }
