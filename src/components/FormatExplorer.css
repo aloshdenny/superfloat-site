@@ -1,0 +1,175 @@
+.format-explorer {
+  max-width: 980px;
+  margin: 16px auto 48px;
+  padding: 28px;
+  color: #172033;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+}
+
+.dark .format-explorer {
+  color: #f4f4f5;
+  background: #111113;
+  border-color: #2b2b30;
+}
+
+.format-explorer__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.format-explorer__heading h2 {
+  margin: 5px 0 8px;
+  font-family: "Iowan Old Style BT", Georgia, serif;
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  line-height: 1.08;
+}
+
+.format-explorer__heading p {
+  max-width: 620px;
+  margin: 0;
+  color: #64748b;
+  font-family: inherit;
+}
+
+.dark .format-explorer__heading p { color: #a1a1aa; }
+
+.format-explorer__eyebrow {
+  color: #2563eb;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dark .format-explorer__eyebrow { color: #93c5fd; }
+
+.format-explorer__toggle {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 4px;
+  background: #e8edf5;
+  border-radius: 10px;
+}
+
+.dark .format-explorer__toggle { background: #25252a; }
+
+.format-explorer__toggle button {
+  padding: 8px 12px;
+  color: #64748b;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.format-explorer__toggle button[aria-pressed="true"] {
+  color: #0f172a;
+  background: white;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.12);
+}
+
+.dark .format-explorer__toggle button { color: #a1a1aa; }
+.dark .format-explorer__toggle button[aria-pressed="true"] { color: white; background: #3f3f46; }
+
+.format-explorer__readout {
+  margin-top: 28px;
+  animation: formatFade 420ms ease-out both;
+}
+
+.format-explorer__bits {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(30px, 1fr));
+  gap: 5px;
+}
+
+.format-explorer__bit {
+  display: grid;
+  min-height: 58px;
+  place-items: center;
+  color: #172033;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(0.9rem, 2vw, 1.25rem);
+  font-weight: 800;
+  animation: bitReveal 380ms ease-out both;
+  animation-delay: calc(var(--bit-index) * 24ms);
+}
+
+.format-explorer__bit--sign { color: #fff; background: #2563eb; border-color: #2563eb; }
+.format-explorer__bit--exponent { color: #fff; background: #475569; border-color: #475569; }
+.format-explorer__bit--fraction { background: #dbeafe; border-color: #93c5fd; }
+.format-explorer__bit--sf-value { color: #fff; background: #334155; border-color: #334155; }
+.format-explorer__bit--inactive { color: #94a3b8; background: transparent; border-style: dashed; opacity: 0.5; }
+
+.dark .format-explorer__bit { color: #f4f4f5; background: #18181b; border-color: #3f3f46; }
+.dark .format-explorer__bit--sign { background: #2563eb; border-color: #60a5fa; }
+.dark .format-explorer__bit--exponent { background: #3f3f46; border-color: #71717a; }
+.dark .format-explorer__bit--fraction { color: #dbeafe; background: #1e3a5f; border-color: #3b82f6; }
+.dark .format-explorer__bit--sf-value { background: #3f3f46; border-color: #71717a; }
+
+.format-explorer__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-top: 14px;
+  color: #64748b;
+  font-size: 0.76rem;
+}
+
+.dark .format-explorer__legend { color: #a1a1aa; }
+.format-explorer__legend strong { margin-right: auto; color: inherit; }
+.legend-dot::before { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; content: ""; }
+.legend-dot--sign::before { background: #2563eb; }
+.legend-dot--exponent::before, .legend-dot--sf::before { background: #475569; }
+.legend-dot--fraction::before { background: #93c5fd; }
+.legend-dot--inactive::before { background: #cbd5e1; }
+
+.format-explorer__precision {
+  max-width: 520px;
+  margin-top: 24px;
+}
+
+.format-explorer__precision label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.dark .format-explorer__precision label { color: #d4d4d8; }
+.format-explorer__precision label strong { color: #2563eb; }
+.format-explorer__precision input { width: 100%; accent-color: #2563eb; cursor: pointer; }
+.format-explorer__precision > div { display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.68rem; }
+
+@keyframes bitReveal {
+  from { opacity: 0.2; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes formatFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 760px) {
+  .format-explorer { margin: 12px 12px 40px; padding: 20px 16px; }
+  .format-explorer__heading { flex-direction: column; }
+  .format-explorer__bits { grid-template-columns: repeat(8, 1fr); }
+  .format-explorer__bit { min-height: 46px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .format-explorer__readout, .format-explorer__bit { animation: none; }
+}
