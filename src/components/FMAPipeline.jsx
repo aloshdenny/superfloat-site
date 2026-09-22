@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import "./FMAPipeline.css";
 
 // ─── SF16 architectural constants (from systolic_pe.v / core.v) ──────────────
 // SYSTOLIC_PE_VISIBLE_LATENCY = 9  (stages 0-8 inclusive, per core.v localparam)
@@ -19,6 +20,13 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 const SF16_PE_LATENCY = 9;        // Verified from SYSTOLIC_PE_VISIBLE_LATENCY in core.v
 const PIPE_INTERVAL   = 2;        // From systolic_array.v PIPE_INTERVAL parameter
+
+// Hardware cycles quickly become too fast to see at realistic clock rates. Keep
+// the diagram watchable while the metrics continue to use the selected clock.
+function getVisualDurationSeconds(totalCycles, freqExponent) {
+  const workloadScale = Math.log10(Math.max(10, totalCycles)) * 0.7;
+  return Math.max(3.2, Math.min(9, 5.4 + workloadScale - freqExponent * 0.18));
+}
 
 // ─── deterministic mock matrices A & B ───────────────────────────────────────
 const getAVal = (r, k) => 0.1 * ((r + k) % 5 + 1);
@@ -322,8 +330,10 @@ export default function FMAPipeline() {
   const [compareMode,     setCompareMode]     = useState(false);
   const [latencyMode,     setLatencyMode]     = useState("mma");
   const [arraySize,       setArraySize]       = useState(16);
-  const [fixedPreset,     setFixedPreset]     = useState("16");
-  const [customLoadValue, setCustomLoadValue] = useState("64");
+  const [fmaLoadPreset,   setFmaLoadPreset]   = useState("10");
+  const [matrixInnerDim,  setMatrixInnerDim]  = useState("16");
+  const [customFmaLoad,   setCustomFmaLoad]   = useState("64");
+  const [customInnerDim,  setCustomInnerDim]  = useState("64");
   const [loadType,        setLoadType]        = useState("fixed");
   const [peakSfops,       setPeakSfops]       = useState(0);
   const [peakBfops,       setPeakBfops]       = useState(0);
@@ -332,7 +342,6 @@ export default function FMAPipeline() {
   const lastTimeRef      = useRef(null);
   const playingRef       = useRef(false);
   const elapsedCyclesRef = useRef(0);
-  const elapsedTimeRef   = useRef(0);
 
   const N = arraySize;
 
@@ -348,21 +357,22 @@ export default function FMAPipeline() {
   // BF16 runs div times slower in terms of pipeline throughput
   const div = BF16_LATENCY / SF16_PE_LATENCY;
 
-  const K = fixedPreset === "custom"
-    ? (isNaN(parseInt(customLoadValue)) ? 16 : Math.max(1, parseInt(customLoadValue)))
-    : parseInt(fixedPreset);
+  const K = matrixInnerDim === "custom"
+    ? (isNaN(parseInt(customInnerDim)) ? 16 : Math.max(1, parseInt(customInnerDim)))
+    : parseInt(matrixInnerDim);
 
   const getLimitFMA = () => {
     if (loadType === "unlimited") return Infinity;
-    if (fixedPreset === "custom") {
-      const parsed = parseInt(customLoadValue);
+    if (fmaLoadPreset === "custom") {
+      const parsed = parseInt(customFmaLoad);
       return isNaN(parsed) || parsed <= 0 ? 1 : parsed;
     }
-    return parseInt(fixedPreset);
+    return parseInt(fmaLoadPreset);
   };
   const limitFMA = getLimitFMA();
 
   const frequency = Math.pow(10, freqExponent);
+  const elapsedHardwareTime = step < 0 ? 0 : (step + progress) / frequency;
 
   // T_total: total logical steps for the systolic array to finish C = A×B
   // Includes skew + K accumulation + pipeline drain (PIPE_INTERVAL pipeline regs)
@@ -415,31 +425,32 @@ export default function FMAPipeline() {
     const deltaMs   = ts - lastTimeRef.current;
     lastTimeRef.current = ts;
 
-    const freq       = Math.pow(10, freqExponent);
-    const deltaCycles = deltaMs * (freq / 1000);
-    const nextCycles  = elapsedCyclesRef.current + deltaCycles;
-
     let curMaxCycles = 0;
     if (!compareMode) {
       const limit = loadType === "fixed"
-        ? (fixedPreset === "custom"
-            ? (isNaN(parseInt(customLoadValue)) ? 1 : Math.max(1, parseInt(customLoadValue)))
-            : parseInt(fixedPreset))
+        ? (fmaLoadPreset === "custom"
+            ? (isNaN(parseInt(customFmaLoad)) ? 1 : Math.max(1, parseInt(customFmaLoad)))
+            : parseInt(fmaLoadPreset))
         : Infinity;
       curMaxCycles = limit + SF16_PE_LATENCY - 1;
     } else {
-      const K_loc = fixedPreset === "custom"
-        ? (isNaN(parseInt(customLoadValue)) ? 16 : Math.max(1, parseInt(customLoadValue)))
-        : parseInt(fixedPreset);
+      const K_loc = matrixInnerDim === "custom"
+        ? (isNaN(parseInt(customInnerDim)) ? 16 : Math.max(1, parseInt(customInnerDim)))
+        : parseInt(matrixInnerDim);
       const bf16_lat  = latencyMode === "wgmma" ? 32 : 16;
       const div_loc   = bf16_lat / SF16_PE_LATENCY;
       const T_tot_loc = 2 * arraySize + K_loc + 2 * Math.floor((arraySize - 1) / PIPE_INTERVAL);
       curMaxCycles    = div_loc * T_tot_loc;
     }
 
+    const visualCyclesPerSecond = Number.isFinite(curMaxCycles)
+      ? curMaxCycles / getVisualDurationSeconds(curMaxCycles, freqExponent)
+      : Math.max(4, 4 * Math.pow(2, freqExponent / 2));
+    const deltaCycles = (deltaMs / 1000) * visualCyclesPerSecond;
+    const nextCycles  = elapsedCyclesRef.current + deltaCycles;
+
     if (nextCycles >= curMaxCycles) {
       elapsedCyclesRef.current = curMaxCycles;
-      elapsedTimeRef.current   = curMaxCycles / freq;
       setStep(curMaxCycles);
       setProgress(0);
       setPlaying(false);
@@ -447,14 +458,13 @@ export default function FMAPipeline() {
     }
 
     elapsedCyclesRef.current = nextCycles;
-    elapsedTimeRef.current  += deltaMs / 1000;
 
     const nextStep = Math.floor(nextCycles);
     setStep(nextStep);
     setProgress(nextCycles - nextStep);
 
     rafRef.current = requestAnimationFrame(tick);
-  }, [freqExponent, arraySize, fixedPreset, customLoadValue, compareMode, latencyMode, loadType]);
+  }, [freqExponent, arraySize, fmaLoadPreset, customFmaLoad, matrixInnerDim, customInnerDim, compareMode, latencyMode, loadType]);
 
   useEffect(() => {
     if (playing) {
@@ -466,18 +476,23 @@ export default function FMAPipeline() {
     return () => cancelAnimationFrame(rafRef.current);
   }, [playing, tick]);
 
+  // Every setting change starts a fresh, visible run. The demo stays idle while
+  // collapsed, so it cannot finish before the visitor opens it.
   useEffect(() => {
+    cancelAnimationFrame(rafRef.current);
     elapsedCyclesRef.current = 0;
-    elapsedTimeRef.current   = 0;
-    setStep(0);
-    setPlaying(true);
-  }, []);
+    lastTimeRef.current = null;
+    setStep(expanded ? 0 : -1);
+    setProgress(0);
+    setPeakSfops(0);
+    setPeakBfops(0);
+    setPlaying(expanded);
+  }, [expanded, freqExponent, arraySize, fmaLoadPreset, customFmaLoad, matrixInnerDim, customInnerDim, compareMode, latencyMode, loadType]);
 
   function togglePlay() {
     if (!playing) {
       if (step === -1 || step >= maxCycles) {
         elapsedCyclesRef.current = 0;
-        elapsedTimeRef.current   = 0;
         setStep(0);
         setProgress(0);
         setPeakSfops(0);
@@ -494,7 +509,6 @@ export default function FMAPipeline() {
     setStep(-1);
     setProgress(0);
     elapsedCyclesRef.current = 0;
-    elapsedTimeRef.current   = 0;
     lastTimeRef.current      = null;
     setPeakSfops(0);
     setPeakBfops(0);
@@ -1014,7 +1028,7 @@ export default function FMAPipeline() {
   }
 
   return (
-    <div style={{
+    <section className="fma-demo" aria-labelledby="fma-demo-title" style={{
       fontFamily: "sans-serif", maxWidth: compareMode ? 1600 : 820,
       margin: "24px auto", padding: "24px", position: "relative",
       borderRadius: "12px",
@@ -1024,10 +1038,16 @@ export default function FMAPipeline() {
       transition: "all 0.3s ease",
     }}>
       {/* Top bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-        <span style={{ fontSize: "14px", fontWeight: "600", color: darkTheme ? "#a1a1aa" : "#475569" }}>
-          Superfloat Benchmark
+      <div className="fma-demo__intro" style={{ marginBottom: "18px" }}>
+        <span className="fma-demo__eyebrow" style={{ color: darkTheme ? "#a1a1aa" : "#2563eb" }}>
+          Interactive architecture demo
         </span>
+        <h2 id="fma-demo-title" style={{ color: darkTheme ? "#f4f4f5" : "#0f172a" }}>
+          Follow a multiply-accumulate through Superfloat
+        </h2>
+        <p style={{ color: darkTheme ? "#a1a1aa" : "#64748b" }}>
+          Adjust the workload and clock to compare SF16 with BF16. Clock rate changes the calculated throughput; the diagram is slowed to remain visible.
+        </p>
       </div>
 
       {/* Dashboard metrics */}
@@ -1039,7 +1059,7 @@ export default function FMAPipeline() {
           <>
             <div style={metricStyle}>
               <span style={labelStyle}>Elapsed Time</span>
-              <span style={valueStyle}>{formatElapsedTime(elapsedTimeRef.current)}</span>
+              <span style={valueStyle}>{formatElapsedTime(elapsedHardwareTime)}</span>
             </div>
             <div style={metricStyle}>
               <span style={labelStyle}>Peak Performance</span>
@@ -1082,24 +1102,29 @@ export default function FMAPipeline() {
       </div>
 
       {/* Control bar */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
+      <div className="fma-demo__controls" style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-          <button onClick={togglePlay} style={btnStyle}>{playing ? "⏸ Pause" : "▶ Play"}</button>
-          <button onClick={doReset}    style={btnStyle}>↺ Reset</button>
+          <button onClick={togglePlay} style={{ ...btnStyle, background: darkTheme ? "#f4f4f5" : "#0f172a", color: darkTheme ? "#09090b" : "#ffffff" }}>
+            {playing ? "Pause" : (step >= maxCycles ? "Replay" : "Play")}
+          </button>
+          <button onClick={doReset} style={btnStyle}>Reset</button>
+          <span className="fma-demo__status" aria-live="polite" style={{ color: darkTheme ? "#a1a1aa" : "#64748b" }}>
+            {playing ? "Running" : step >= maxCycles ? "Complete" : step < 0 ? "Ready" : "Paused"}
+          </span>
 
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginLeft: "auto" }}>
             {compareMode ? (
               <>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a1a1aa" : "#475569" }}>
                   <span style={{ fontWeight: 500 }}>BF16 Latency Mode:</span>
-                  <select value={latencyMode} onChange={e => { setLatencyMode(e.target.value); doReset(); }} style={selectStyle}>
+                  <select aria-label="BF16 latency mode" value={latencyMode} onChange={e => setLatencyMode(e.target.value)} style={selectStyle}>
                     <option value="mma">Tensor Core MMA (16 cycles)</option>
                     <option value="wgmma">Async WGMMA (32 cycles)</option>
                   </select>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a1a1aa" : "#475569" }}>
                   <span style={{ fontWeight: 500 }}>Array Size (N):</span>
-                  <select value={arraySize} onChange={e => { setArraySize(parseInt(e.target.value)); doReset(); }} style={selectStyle}>
+                  <select aria-label="Systolic array size" value={arraySize} onChange={e => setArraySize(parseInt(e.target.value))} style={selectStyle}>
                     <option value="4">4x4</option>
                     <option value="8">8x8</option>
                     <option value="16">16x16</option>
@@ -1109,7 +1134,7 @@ export default function FMAPipeline() {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a1a1aa" : "#475569" }}>
                   <span style={{ fontWeight: 500 }}>Inner Dim (K):</span>
-                  <select value={fixedPreset} onChange={e => { setFixedPreset(e.target.value); doReset(); }} style={selectStyle}>
+                  <select aria-label="Matrix inner dimension" value={matrixInnerDim} onChange={e => setMatrixInnerDim(e.target.value)} style={selectStyle}>
                     <option value="16">16</option>
                     <option value="32">32</option>
                     <option value="64">64</option>
@@ -1117,9 +1142,9 @@ export default function FMAPipeline() {
                     <option value="256">256</option>
                     <option value="custom">Custom...</option>
                   </select>
-                  {fixedPreset === "custom" && (
-                    <input type="number" min={1} value={customLoadValue}
-                      onChange={e => { setCustomLoadValue(e.target.value); doReset(); }}
+                  {matrixInnerDim === "custom" && (
+                    <input aria-label="Custom matrix inner dimension" type="number" min={1} value={customInnerDim}
+                      onChange={e => setCustomInnerDim(e.target.value)}
                       style={{ ...inputStyle, width: 80 }} />
                   )}
                 </div>
@@ -1128,14 +1153,14 @@ export default function FMAPipeline() {
               <>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a1a1aa" : "#475569" }}>
                   <span style={{ fontWeight: 500 }}>Load Type:</span>
-                  <select value={loadType} onChange={e => { setLoadType(e.target.value); doReset(); }} style={selectStyle}>
+                  <select aria-label="Workload type" value={loadType} onChange={e => setLoadType(e.target.value)} style={selectStyle}>
                     <option value="fixed">Fixed Count</option>
                     <option value="unlimited">Unlimited (Infinite)</option>
                   </select>
                 </div>
                 {loadType === "fixed" && (
                   <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a1a1aa" : "#475569" }}>
-                    <select value={fixedPreset} onChange={e => { setFixedPreset(e.target.value); doReset(); }} style={selectStyle}>
+                    <select aria-label="Operation count" value={fmaLoadPreset} onChange={e => setFmaLoadPreset(e.target.value)} style={selectStyle}>
                       <option value="5">5 (Original)</option>
                       <option value="10">10</option>
                       <option value="1000">1,000</option>
@@ -1144,9 +1169,9 @@ export default function FMAPipeline() {
                       <option value="1000000000000">1 Trillion (1T)</option>
                       <option value="custom">Custom...</option>
                     </select>
-                    {fixedPreset === "custom" && (
-                      <input type="number" min={1} value={customLoadValue}
-                        onChange={e => { setCustomLoadValue(e.target.value); doReset(); }}
+                    {fmaLoadPreset === "custom" && (
+                      <input aria-label="Custom operation count" type="number" min={1} value={customFmaLoad}
+                        onChange={e => setCustomFmaLoad(e.target.value)}
                         style={{ ...inputStyle, width: 100 }} />
                     )}
                   </div>
@@ -1162,8 +1187,8 @@ export default function FMAPipeline() {
           borderTop: darkTheme ? "1px solid #27272a" : "1px solid #f1f5f9", paddingTop: 12
         }}>
           <span>Frequency:</span>
-          <input type="range" min={0} max={9} step={1} value={freqExponent}
-            onChange={e => { setFreqExponent(+e.target.value); lastTimeRef.current = null; }}
+          <input aria-label="Clock frequency" type="range" min={0} max={9} step={1} value={freqExponent}
+            onChange={e => setFreqExponent(+e.target.value)}
             style={{ width: 200, accentColor: darkTheme ? "#71717a" : "#2563eb", cursor: "pointer" }} />
           <span style={{ fontWeight: 600, color: darkTheme ? "#ffffff" : "#0f172a" }}>
             {formatFrequency(frequency)}
@@ -1204,6 +1229,6 @@ export default function FMAPipeline() {
           {compareMode ? "Switch back to FMA" : "Switch to Systolic Array view"}
         </button>
       </div>
-    </div>
+    </section>
   );
 }

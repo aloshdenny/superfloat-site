@@ -1,6 +1,6 @@
 // src/pages/blogs/accelerated-hardware.js
 
-export default {
+const acceleratedHardware = {
   title: "Accelerated Hardware for AI Edge",
   body: `
 <div class ="sub-heading">Introduction</div>
@@ -245,3 +245,5 @@ export default {
 <p>The combination of reduced computational complexity, optimized memory usage, and specialized hardware design positions Superfloat as a key enabling technology for the next generation of edge AI applications. As we continue to push the boundaries of what's possible with limited computational resources, innovations like Superfloat will be crucial for bringing AI capabilities to every connected device.</p>
 `
 };
+
+export default acceleratedHardware;
