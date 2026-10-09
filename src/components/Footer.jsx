@@ -1,7 +1,3 @@
 export default function Footer() {
-  return (
-    <footer className="py-6 text-center text-gray-600">
-      © {new Date().getFullYear()} Superfloat. All rights reserved.
-    </footer>
-  );
+  return <footer className="sf-footer"><a className="sf-brand" href="/">superfloat<span className="brand-period">.</span></a><span>Scalable precision. AI at the edge.</span><span>© {new Date().getFullYear()} Superfloat</span></footer>;
 }

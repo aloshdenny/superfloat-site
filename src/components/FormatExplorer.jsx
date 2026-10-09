@@ -33,7 +33,7 @@ export default function FormatExplorer() {
         </div>
       </div>
 
-      <div className="format-explorer__readout" key={`${mode}-${precision}`}>
+      <div className="format-explorer__readout">
         <div className="format-explorer__bits" aria-label={`${mode === "bf16" ? "BF16" : `SF${precision}`} 16-bit layout`}>
           {SAMPLE_BITS.map((bit, index) => (
             <span
@@ -42,7 +42,7 @@ export default function FormatExplorer() {
               key={index}
               aria-label={`Bit ${15 - index}: ${bit}, ${fields[index]}`}
             >
-              {bit}
+              <small className="bit-index" aria-hidden="true">{15 - index}</small>{bit}
             </span>
           ))}
         </div>
@@ -66,6 +66,7 @@ export default function FormatExplorer() {
 
       {mode === "sf" && (
         <div className="format-explorer__precision">
+          <div className="precision-presets" aria-label="Precision presets">{[4, 8, 12, 16].map(width => <button key={width} aria-pressed={precision === width} onClick={() => setPrecision(width)}>SF{width}</button>)}</div>
           <label htmlFor="sf-precision">Superfloat width <strong>SF{precision}</strong></label>
           <input
             id="sf-precision"
@@ -80,6 +81,11 @@ export default function FormatExplorer() {
           <div><span>SF4</span><span>SF16</span></div>
         </div>
       )}
+      <div className="storage-comparison">
+        <div><span className="storage-label">RAW STORAGE / 1,000,000 VALUES</span><div className="storage-row"><span>BF16</span><div className="storage-track"><i style={{ width: "100%" }} /></div><b>2.00 MB</b></div><div className="storage-row"><span>{mode === "bf16" ? "BF16" : `SF${precision}`}</span><div className="storage-track selected"><i style={{ width: `${(mode === "bf16" ? 16 : precision) / 16 * 100}%` }} /></div><b>{((mode === "bf16" ? 16 : precision) / 8).toFixed(2)} MB</b></div></div>
+        <div className="storage-result" aria-live="polite"><strong>{mode === "bf16" ? 0 : Math.round((1 - precision / 16) * 100)}%</strong><span>fewer storage bits vs BF16</span></div>
+        <p>Ideal bit-packed payload, using decimal MB. Excludes scales, metadata, alignment, and runtime overhead. The bit pattern above illustrates field layout, not equivalent decoded values.</p>
+      </div>
     </section>
   );
 }

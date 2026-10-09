@@ -1,50 +1,59 @@
-import FloatingWords from "../components/blocks/FloatingWords";
-import TextBlock from "../components/blocks/TextBlock";
+import { Link } from "react-router-dom";
 import FMAPipeline from "../components/FMAPipeline";
 import FormatExplorer from "../components/FormatExplorer";
+import ComputeArray from "../components/ComputeArray";
+import "./Home.css";
+
+const repository = "https://github.com/aloshdenny/superfloat-site";
 
 export default function Home() {
   return (
-    <div className="relative">
-      {/* Hero */}
-      
-      <section className="relative min-h-[26rem] px-6 flex flex-col items-center justify-center text-center bg-white dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-       <FloatingWords />
-       <span className="mt-14 mb-4 text-xs font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-300">Scalable precision for edge AI</span>
-       <h1 className="text-5xl md:text-6xl font-bold mb-6 max-w-4xl leading-tight">A smaller number format for faster edge inference.</h1>
-        <p className="text-lg max-w-2xl font-iowan text-gray-600 dark:text-zinc-300">
-          Superfloat adapts numerical precision to the workload, reducing arithmetic and memory overhead where power, latency, and silicon area matter most.
-        </p>
+    <div className="technical-home">
+      <section className="sf-hero sf-container">
+        <div className="hero-copy">
+          <div className="kicker"><span className="signal-dot" /> NUMBER FORMATS × AI HARDWARE</div>
+          <h1>Intelligence.<br />At the <em>bit level.</em></h1>
+          <p className="hero-description">A configurable number format for AI at the edge. Explore the space between numerical precision, memory footprint, and the hardware that runs inference.</p>
+          <div className="sf-actions"><a className="sf-button primary" href="#architecture">Enter the compute lab <span>↗</span></a><a className="sf-text-link" href={repository} target="_blank" rel="noreferrer">Explore source <span>↗</span></a></div>
+          <div className="hero-footnote"><span>SF4 → SF16</span> CONFIGURABLE PRECISION. VISIBLE COMPUTATION.</div>
+        </div>
+        <ComputeArray />
       </section>
-
-      {/* About */}
-      <TextBlock 
-        title="What is Superfloat?" 
-        content="Superfloat is a configurable low-precision number format for AI inference. Instead of carrying the same numerical overhead into every workload, its width can scale from SF4 to SF16. That gives hardware designers a direct way to trade precision for storage, throughput, and energy efficiency on constrained edge devices."
-      />
-
-      <FormatExplorer />
-
-      <FMAPipeline />
-
-      {/* Equation 
-      <EquationBlock equation="P = f(n, c, 3, x)" /> */}
-
-      {/* Applications */}
-      <TextBlock
-        title="Applications"
-        content="Superfloat is designed for AI at the edge — from IoT devices and autonomous drones to wearable tech and robotics. Wherever power efficiency and fast inference matter, Superfloat offers a scalable alternative to traditional floating-point arithmetic."
-      />
-
-      {/* Closing */}
-      <section className="py-16 ">
-        <h2 className="text-3xl font-bold mb-4 font-iowan text-center">Join the Revolution</h2>
-        <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto text-justify">
-          Superfloat is not just another format — it’s a rethinking of how precision and efficiency
-          balance each other. Start experimenting with it today and help shape the future of AI on the edge.
-        </p>
+      <div className="spec-strip sf-container" aria-label="Architecture at a glance">
+        <div><span className="spec-label">01 / REPRESENTATION</span><strong>4–16 <small>bits</small></strong><span>Scalable word width</span></div>
+        <div><span className="spec-label">02 / SF16 LAYOUT</span><strong>1 + 15</strong><span>Sign + value field</span></div>
+        <div><span className="spec-label">03 / COMPUTE PRIMITIVE</span><strong>a × b + c</strong><span>Multiply. Accumulate. Repeat.</span></div>
+        <div className="spec-note"><span className="signal-dot" /><p>From a single bit<br />to a matrix operation.</p></div>
+      </div>
+      <section id="technology" className="sf-section sf-container">
+        <div className="section-label">01 / THE NUMBER FORMAT</div>
+        <div className="section-heading"><h2>Precision is a<br /><em>design variable.</em></h2><p>Every stored bit has a cost. Superfloat lets you explore word widths from SF4 to SF16, making numerical representation part of the hardware design space.</p></div>
+        <FormatExplorer />
+        <div className="format-notes"><p><span>READ THE WORD</span>BF16 separates sign, exponent, and fraction. The Superfloat view highlights the sign and scalable value field.</p><p><span>CHOOSE THE TRADEOFF</span>Fewer bits reduce raw storage per value. Model accuracy and realized speed depend on the workload and implementation.</p></div>
       </section>
-
+      <section className="architecture-band" id="architecture">
+        <div className="sf-container sf-section">
+          <div className="section-label">02 / THE COMPUTE LAB</div>
+          <div className="section-heading"><h2>Follow the signal.<br /><em>Inspect the arithmetic.</em></h2><p>Step inside the multiply-accumulate datapath, then switch to a systolic array. Change the clock, workload, and array size to see how the model responds.</p></div>
+          <div className="pipeline-strip" aria-label="Compute sequence"><span><b>01</b> Operand registers</span><i>→</i><span><b>02</b> Multiply pipeline</span><i>→</i><span><b>03</b> Accumulate</span><i>→</i><span><b>04</b> Write back</span></div>
+          <FMAPipeline initiallyExpanded initialFrequency={8} autoPlay={false} />
+          <p className="model-note"><span>MODEL NOTE</span> This is an architectural visualization. Throughput is calculated from the demo’s cycle assumptions and selected clock; it is not a measured device benchmark. Animation time is slowed for inspection.</p>
+        </div>
+      </section>
+      <section id="applications" className="sf-section sf-container">
+        <div className="section-label">03 / THE DESIGN SPACE</div>
+        <div className="section-heading"><h2>Big models.<br /><em>Finite resources.</em></h2><p>Edge inference lives inside constraints. A configurable datatype gives hardware designers another variable to investigate.</p></div>
+        <div className="use-case-grid">
+          <article><div className="case-glyph" aria-hidden="true">[ W ] → [ W′ ]</div><span className="section-label">MEMORY / REPRESENTATION</span><h3>Make every bit count.</h3><p>Explore smaller representations for weights and activations. Evaluate storage savings alongside the numerical behavior of your workload.</p><span className="case-tag">WEIGHTS · ACTIVATIONS · STORAGE</span></article>
+          <article><div className="case-glyph" aria-hidden="true">Σ aᵢ · bᵢ</div><span className="section-label">COMPUTE / DATAFLOW</span><h3>Look inside the operation.</h3><p>Trace multiplication and accumulation, then inspect how repeated operations move through a processing-element array.</p><span className="case-tag">MAC · PIPELINING · SYSTOLIC ARRAYS</span></article>
+          <article><div className="case-glyph" aria-hidden="true">sensor → ƒ(x)</div><span className="section-label">EDGE / DEPLOYMENT</span><h3>Design for the constraint.</h3><p>Investigate precision choices for robotics, wearables, and embedded sensing—where memory, latency, and energy budgets matter.</p><span className="case-tag">ROBOTICS · IOT · EMBEDDED AI</span></article>
+        </div>
+      </section>
+      <section className="research-section sf-container">
+        <div><div className="section-label">04 / FIELD NOTES</div><h2>Under the hood.</h2><p>Ideas, architecture, and the details behind the datapath.</p></div>
+        <Link to="/blogs/accelerated-hardware" className="research-link"><span className="section-label">ARCHITECTURE / IMPLEMENTATION NOTES</span><h3>Inside the Superfloat compute model <span>↗</span></h3><span>Read the model, math, and limitations</span></Link>
+      </section>
+      <section className="sf-container closing-section"><span className="section-label">PRECISION IS ONLY THE BEGINNING.</span><h2>Get closer to<br /><em>the computation.</em></h2><div className="sf-actions"><a className="sf-button primary" href="#architecture">Open the compute lab <span>↑</span></a><a className="sf-text-link" href={repository} target="_blank" rel="noreferrer">View on GitHub ↗</a></div><span className="closing-code" aria-hidden="true">01010011<br />01000110</span></section>
     </div>
   );
 }
