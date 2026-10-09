@@ -1,5 +1,22 @@
 .fma-demo {
   box-sizing: border-box;
+  --lab-accent: #4b6f12;
+  --lab-secondary: #526f59;
+  --lab-active-fill: #c4f36c;
+  --lab-secondary-fill: #c3d5aa;
+}
+
+.dark .fma-demo { --lab-accent:#c4f36c; --lab-secondary:#9cba8b; }
+.fma-demo .matrix-cell[data-active="true"] text { fill:#17200e; }
+
+.fma-diagram-scroll { overflow-x:auto; }
+.fma-demo .diagram-hint { display:none; }
+.fma-diagram-scroll:focus-visible { outline:2px solid #84a94d; outline-offset:3px; }
+@media (max-width:720px) {
+  .fma-diagrams { flex-direction:column; }
+  .fma-diagram-scroll { width:100%; padding:0 !important; border-left:0 !important; }
+  .fma-diagram-scroll > svg { min-width:560px; }
+  .fma-demo .diagram-hint { display:block; font-size:11px; margin:0 0 12px; color:#737d70; }
 }
 
 .fma-demo__intro h2 {
@@ -44,7 +61,7 @@
 .fma-demo button:focus-visible,
 .fma-demo select:focus-visible,
 .fma-demo input:focus-visible {
-  outline: 2px solid #3b82f6 !important;
+  outline: 2px solid var(--lab-accent) !important;
   outline-offset: 2px;
 }
 

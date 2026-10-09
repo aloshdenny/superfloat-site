@@ -15,6 +15,6 @@ export default defineConfig({
   plugins: [jsxInJs, react(), sites()],
   optimizeDeps: {
     noDiscovery: true,
-    include: ["react", "react-dom", "react-router-dom"],
+    include: ["react", "react-dom", "react-dom/client", "react-router-dom"],
   },
 });
