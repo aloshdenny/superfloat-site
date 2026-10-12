@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ARRAY_K, ARRAY_N, UNITS, arrayCycles, arrayNs, macLatencyNs, mhz, peAt, stageAt } from "./raceModel";
+import { BAND_H, DIAGRAMS, DIAGRAM_H, DIAGRAM_W, bandTop, nodeSize, nodeY } from "./fmaDiagrams";
 import "./FormatRace.css";
 
 const LANES = [UNITS.sf16, UNITS.bf16];
@@ -51,26 +52,70 @@ function FmaIcon() {
   );
 }
 
+// One pipeline drawn as a datapath, top to bottom, a band per stage. The band, nodes and wires of the
+// stage the operation is in light up; earlier ones stay faintly lit.
 function FmaLane({ unit, t, axisNs }) {
+  const markerId = `fd-arrow-${useId().replace(/[^\w-]/g, "")}`;
   const total = macLatencyNs(unit);
   const stage = stageAt(unit, t);
-  const inCycle = (t % unit.periodNs) / unit.periodNs;
+  const diagram = DIAGRAMS[unit.name];
+  const n = diagram.bands.length;
+  const byId = Object.fromEntries(diagram.nodes.map((node) => [node.id, { ...node, y: nodeY(node.band, n), ...nodeSize(node) }]));
+  const state = (band) => (band < stage ? "is-past" : band === stage ? "is-active" : "");
+  // Feedback from the accumulator: over the top when both ends share a stage, else up the right margin.
+  const loop = diagram.loop && (() => {
+    const from = byId[diagram.loop.from];
+    const to = byId[diagram.loop.to];
+    if (from.band === to.band) {
+      const top = from.y - from.hh - 12;
+      return { d: `M${from.x} ${from.y - from.hh}V${top}H${to.x + 12}V${to.y - to.hh - 2}`, labelX: (from.x + to.x) / 2 + 6, labelY: top - 5, anchor: "middle" };
+    }
+    const xr = DIAGRAM_W - 10;
+    return { d: `M${from.x} ${from.y - from.hh}V${from.y - from.hh - 10}H${xr}V${to.y}H${to.x + to.hw + 4}`, labelX: xr - 6, labelY: (from.y + to.y) / 2, anchor: "end" };
+  })();
   return (
     <div className={`lane lane--${unit.name.toLowerCase()}`}>
-      <div className="lane__head"><span className="lane__name">{unit.name}</span><span>{unit.format} · {mhz(unit).toFixed(1)} MHz · {unit.stages.length} stages</span></div>
-      <ol className="lane__stages">
-        {unit.stages.map((s, i) => {
-          const lit = i < stage ? 4 : i === stage ? Math.ceil(inCycle * 4) : 0;
+      <div className="lane__head"><span className="lane__name">{unit.name}</span><span>{unit.format} · {mhz(unit).toFixed(1)} MHz · {n} stages</span></div>
+      <svg className="fd" viewBox={`0 0 ${DIAGRAM_W} ${DIAGRAM_H}`} role="img" aria-label={`${unit.name} multiply-accumulate datapath, ${n} pipeline stages`}>
+        <defs>
+          <marker id={markerId} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </marker>
+        </defs>
+        {diagram.bands.map((band, i) => (
+          <g key={band.name} className={`fd-band ${state(i)} ${band.exponent ? "is-exponent" : ""}`}>
+            <rect x="6" y={bandTop(i)} width={DIAGRAM_W - 12} height={BAND_H - 8} rx="14" />
+            <text x="20" y={bandTop(i) + 17}>{`${i + 1} · ${band.name.toUpperCase()}`}</text>
+            {band.exponent && <text className="fd-tag" x={DIAGRAM_W - 20} y={bandTop(i) + 17} textAnchor="end">EXPONENT</text>}
+          </g>
+        ))}
+        {diagram.edges.map(([fromId, toId]) => {
+          const a = byId[fromId];
+          const b = byId[toId];
+          const sameRow = a.band === b.band;
+          const d = sameRow
+            ? `M${a.x + a.hw} ${a.y}H${b.x - b.hw - 3}`
+            : (() => { const y1 = a.y + a.hh; const y2 = b.y - b.hh - 3; const ym = (y1 + y2) / 2; return `M${a.x} ${y1}V${ym}H${b.x}V${y2}`; })();
+          return <path key={`${fromId}-${toId}`} className={`fd-wire ${state(b.band)}`} d={d} markerEnd={`url(#${markerId})`} />;
+        })}
+        {loop && (
+          <g className={`fd-loop ${stage >= byId[diagram.loop.to].band ? "is-past" : ""}`}>
+            <path className="fd-wire" d={loop.d} markerEnd={`url(#${markerId})`} />
+            <text x={loop.labelX} y={loop.labelY} textAnchor={loop.anchor}>{diagram.loop.label}</text>
+          </g>
+        )}
+        {diagram.nodes.map((node) => {
+          const { x, y, hw, hh } = byId[node.id];
           return (
-            <li key={s.name} className={`stage ${i === stage ? "is-active" : ""} ${i < stage ? "is-past" : ""} ${s.exponent ? "is-exponent" : ""}`}>
-              <span className="stage__cells" aria-hidden="true">{[0, 1, 2, 3].map((n) => <i key={n} className={n < lit ? "on" : ""} />)}</span>
-              <span className="stage__text"><b>{s.name}</b><small>{s.detail}</small></span>
-              {s.exponent && <span className="stage__tag">EXPONENT</span>}
-            </li>
+            <g key={node.id} className={`fd-node fd-node--${node.kind} ${state(node.band)} ${node.exponent ? "is-exponent" : ""}`}>
+              {node.kind === "op" ? <circle cx={x} cy={y} r={hw} /> : <rect x={x - hw} y={y - hh} width={hw * 2} height={hh * 2} rx={node.kind === "io" ? hh : 9} />}
+              <text x={x} y={node.kind === "reg" && node.sub ? y - 4 : y}>{node.label}</text>
+              {node.sub && <text className="fd-sub" x={x} y={node.kind === "op" ? y + hh + 11 : y + 9}>{node.sub}</text>}
+            </g>
           );
         })}
-      </ol>
-      <div className="lane__clock"><span>{Math.min(t, total).toFixed(1)} ns</span><span>{t >= total ? "DONE" : `STAGE ${stage + 1} / ${unit.stages.length}`}</span></div>
+      </svg>
+      <div className="lane__clock"><span>{Math.min(t, total).toFixed(1)} ns</span><span>{t >= total ? "DONE" : `STAGE ${stage + 1} / ${n}`}</span></div>
       <div className="lane__bar"><i style={{ transform: `scaleX(${Math.min(t, total) / axisNs})` }} /></div>
     </div>
   );

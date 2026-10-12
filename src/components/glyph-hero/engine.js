@@ -1,11 +1,11 @@
 import {
-  Clock,
   DirectionalLight,
   HalfFloatType,
   HemisphereLight,
   PerspectiveCamera,
   PMREMGenerator,
   Scene,
+  Timer,
   Vector2,
   WebGLRenderer,
   WebGLRenderTarget,
@@ -19,8 +19,8 @@ import { createGlyphAtlas } from "./glyphAtlas.js";
 import { EdgeFadeShader, GlyphShader } from "./glyphShader.js";
 import { buildSubjects } from "./subjects.js";
 
-const HOLD = 7;
-const TRANSITION = 1.5;
+const HOLD = 3.5;
+const TRANSITION = 1.1;
 const INTRO = 2.2;
 const SCENE_SCALE = 0.75;
 const CAMERA_DISTANCE = 6.4;
@@ -32,6 +32,9 @@ const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 
 export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () => {} } = {}) {
   const renderer = new WebGLRenderer({ canvas, antialias: false, powerPreference: "high-performance" });
+  // Shader diagnostics only in development. In production they cost a synchronous check per program, and on
+  // Windows they print D3D compiler notes (X4122) about three's own packing constants, which are harmless.
+  renderer.debug.checkShaderErrors = import.meta.env.DEV;
 
   const scene = new Scene();
   const pmrem = new PMREMGenerator(renderer);
@@ -89,7 +92,8 @@ export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () 
   u.uBoost.value = PALETTE.boost;
   edgeFade.uniforms.uBg.value.set(PALETTE.bg);
 
-  const clock = new Clock(false);
+  const timer = new Timer();
+  timer.connect(document);
   let current = 0;
   let next = -1;
   let transitionStart = 0;
@@ -110,12 +114,22 @@ export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () 
     renderer.setRenderTarget(null);
   }
 
-  function draw(dt) {
-    if (running && next === -1 && time - shownAt > HOLD) {
-      next = (current + 1) % subjects.length;
-      transitionStart = time;
-      onSubject(next);
+  // Move on to the next subject: on the timer while running, or straight away on a click or tap.
+  function advance() {
+    if (next !== -1) return;
+    next = (current + 1) % subjects.length;
+    transitionStart = time;
+    onSubject(next);
+    if (!running) {
+      current = next;
+      next = -1;
+      shownAt = time;
+      draw(0);
     }
+  }
+
+  function draw(dt) {
+    if (running && next === -1 && time - shownAt > HOLD) advance();
     const progress = next === -1 ? 0 : Math.min((time - transitionStart) / TRANSITION, 1);
     renderSubject(current, rtA);
     if (next !== -1) renderSubject(next, rtB);
@@ -130,9 +144,10 @@ export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () 
     }
   }
 
-  function loop() {
+  function loop(timestamp) {
     frame = requestAnimationFrame(loop);
-    const dt = Math.min(clock.getDelta(), 1 / 20);
+    timer.update(timestamp);
+    const dt = Math.min(timer.getDelta(), 1 / 20);
     time += dt;
     draw(dt);
   }
@@ -144,14 +159,13 @@ export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () 
       return;
     }
     running = true;
-    clock.start();
+    timer.reset();
     frame = requestAnimationFrame(loop);
   }
 
   function stop() {
     running = false;
     cancelAnimationFrame(frame);
-    clock.stop();
   }
 
   function resize(width, height) {
@@ -178,6 +192,7 @@ export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () 
     start,
     stop,
     resize,
+    next: advance,
     setReducedMotion(value) {
       reduced = value;
       if (value) {
@@ -189,6 +204,7 @@ export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () 
     },
     dispose() {
       stop();
+      timer.dispose();
       subjects.forEach((s) => s.dispose());
       rtA.dispose();
       rtB.dispose();
