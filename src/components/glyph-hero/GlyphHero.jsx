@@ -10,6 +10,7 @@ const SUBJECTS = [
 export default function GlyphHero() {
   const stage = useRef(null);
   const canvas = useRef(null);
+  const engine = useRef(null);
   const [active, setActive] = useState(0);
   const [status, setStatus] = useState("loading");
 
@@ -25,6 +26,7 @@ export default function GlyphHero() {
           reducedMotion: motion.matches,
           onSubject: setActive,
         });
+        engine.current = hero;
         setStatus("ready");
 
         let inView = false;
@@ -57,12 +59,25 @@ export default function GlyphHero() {
     return () => {
       disposed = true;
       cleanups.forEach((fn) => fn());
+      engine.current = null;
     };
   }, []);
 
   return (
     <div className="glyph-hero">
-      <div ref={stage} className="glyph-stage" role="img" aria-label={`Animated glyph rendering of ${SUBJECTS[active].description}`}>
+      <div
+        ref={stage}
+        className="glyph-stage"
+        role="button"
+        tabIndex={0}
+        aria-label={`Animated glyph rendering of ${SUBJECTS[active].description}. Show the next one.`}
+        onClick={() => engine.current?.next()}
+        onKeyDown={(event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          engine.current?.next();
+        }}
+      >
         <canvas ref={canvas} className={`glyph-canvas ${status === "ready" ? "is-ready" : ""}`} aria-hidden="true" />
         {status === "failed" && <p className="glyph-fallback">sƒ · 0101 · 16 × 16</p>}
       </div>

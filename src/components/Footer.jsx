@@ -1,3 +1,12 @@
+import { Link, useLocation } from "react-router-dom";
+import { scrollToTop } from "../smoothScroll";
+
 export default function Footer() {
-  return <footer className="sf-footer"><a className="sf-brand" href="/">superfloat<span className="brand-period">.</span></a><span>Scalable precision. AI at the edge.</span><span>© {new Date().getFullYear()} Superfloat</span></footer>;
+  const { pathname } = useLocation();
+  const toTop = (event) => {
+    if (pathname !== "/") return;
+    event.preventDefault();
+    scrollToTop();
+  };
+  return <footer className="sf-footer"><Link className="sf-brand" to="/" onClick={toTop}>superfloat<span className="brand-period">.</span></Link><span>Scalable precision. AI at the edge.</span><span>© {new Date().getFullYear()} Superfloat</span></footer>;
 }

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -5,9 +6,12 @@ import Home from "./pages/Home";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
 import RoutePosition from "./components/RoutePosition";
+import RevealOnScroll from "./components/RevealOnScroll";
+import { startSmoothScroll } from "./smoothScroll";
 import './index.css'
 
 export default function App() {
+  useEffect(() => startSmoothScroll(), []);
   return (
     <Router>
       <RoutePosition />
@@ -23,6 +27,7 @@ export default function App() {
         </main>
         <Footer />
       </div>
+      <RevealOnScroll />
     </Router>
   );
 }
