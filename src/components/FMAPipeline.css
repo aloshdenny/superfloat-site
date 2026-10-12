@@ -1,22 +1,22 @@
 .fma-demo {
   box-sizing: border-box;
-  --lab-accent: #4b6f12;
-  --lab-secondary: #526f59;
-  --lab-active-fill: #c4f36c;
-  --lab-secondary-fill: #c3d5aa;
+  --lab-accent: #2557d6;
+  --lab-secondary: #4d5f80;
+  --lab-active-fill: #7aa7ff;
+  --lab-secondary-fill: #bccff3;
 }
 
-.dark .fma-demo { --lab-accent:#c4f36c; --lab-secondary:#9cba8b; }
-.fma-demo .matrix-cell[data-active="true"] text { fill:#17200e; }
+.dark .fma-demo { --lab-accent:#7aa7ff; --lab-secondary:#8fa8d8; }
+.fma-demo .matrix-cell[data-active="true"] text { fill:#0a1430; }
 
 .fma-diagram-scroll { overflow-x:auto; }
 .fma-demo .diagram-hint { display:none; }
-.fma-diagram-scroll:focus-visible { outline:2px solid #84a94d; outline-offset:3px; }
+.fma-diagram-scroll:focus-visible { outline:2px solid #5b86e6; outline-offset:3px; }
 @media (max-width:720px) {
   .fma-diagrams { flex-direction:column; }
   .fma-diagram-scroll { width:100%; padding:0 !important; border-left:0 !important; }
   .fma-diagram-scroll > svg { min-width:560px; }
-  .fma-demo .diagram-hint { display:block; font-size:11px; margin:0 0 12px; color:#737d70; }
+  .fma-demo .diagram-hint { display:block; font-size:11px; margin:0 0 12px; color:#6f7889; }
 }
 
 .fma-demo__intro h2 {

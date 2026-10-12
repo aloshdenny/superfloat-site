@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import FMAPipeline from "../components/FMAPipeline";
 import FormatExplorer from "../components/FormatExplorer";
 import ComputeArray from "../components/ComputeArray";
+import GlyphHero from "../components/glyph-hero/GlyphHero";
 import "./Home.css";
 
 const repository = "https://github.com/aloshdenny/superfloat-site";
@@ -15,9 +16,8 @@ export default function Home() {
           <h1>Intelligence.<br />At the <em>bit level.</em></h1>
           <p className="hero-description">A configurable number format for AI at the edge. Explore the space between numerical precision, memory footprint, and the hardware that runs inference.</p>
           <div className="sf-actions"><a className="sf-button primary" href="#architecture">Enter the compute lab <span>↗</span></a><a className="sf-text-link" href={repository} target="_blank" rel="noreferrer">Explore source <span>↗</span></a></div>
-          <div className="hero-footnote"><span>SF4 → SF16</span> CONFIGURABLE PRECISION. VISIBLE COMPUTATION.</div>
         </div>
-        <ComputeArray />
+        <GlyphHero />
       </section>
       <div className="spec-strip sf-container" aria-label="Architecture at a glance">
         <div><span className="spec-label">01 / REPRESENTATION</span><strong>4–16 <small>bits</small></strong><span>Scalable word width</span></div>
@@ -35,6 +35,7 @@ export default function Home() {
         <div className="sf-container sf-section">
           <div className="section-label">02 / THE COMPUTE LAB</div>
           <div className="section-heading"><h2>Follow the signal.<br /><em>Inspect the arithmetic.</em></h2><p>Step inside the multiply-accumulate datapath, then switch to a systolic array. Change the clock, workload, and array size to see how the model responds.</p></div>
+          <div className="lab-array"><ComputeArray /></div>
           <div className="pipeline-strip" aria-label="Compute sequence"><span><b>01</b> Operand registers</span><i>→</i><span><b>02</b> Multiply pipeline</span><i>→</i><span><b>03</b> Accumulate</span><i>→</i><span><b>04</b> Write back</span></div>
           <FMAPipeline initiallyExpanded initialFrequency={8} autoPlay={false} />
           <p className="model-note"><span>MODEL NOTE</span> This is an architectural visualization. Throughput is calculated from the demo’s cycle assumptions and selected clock; it is not a measured device benchmark. Animation time is slowed for inspection.</p>

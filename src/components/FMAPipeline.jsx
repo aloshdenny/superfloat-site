@@ -538,15 +538,15 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
   // ─── style helpers ──────────────────────────────────────────────────────────
   const btnStyle = {
     fontSize: 13, fontWeight: 600, padding: "6px 16px", cursor: "pointer",
-    border: darkTheme ? "1px solid #2b3329" : "1px solid #d3d9cc", borderRadius: 6,
-    background: darkTheme ? "#111612" : "white",
-    color: darkTheme ? "#edf0e8" : "#304725",
+    border: darkTheme ? "1px solid #262d3d" : "1px solid #d5dbe7", borderRadius: 6,
+    background: darkTheme ? "#10141e" : "white",
+    color: darkTheme ? "#e9edf6" : "#283c70",
     transition: "all 0.2s", boxShadow: "0 1px 2px 0 rgba(0,0,0,0.05)",
   };
   const panelStyle = {
     display: "grid", gap: "16px",
-    backgroundColor: darkTheme ? "#111612" : "#f4f5ef",
-    border: darkTheme ? "1px solid #2b3329" : "1px solid #dfe6d7",
+    backgroundColor: darkTheme ? "#10141e" : "#f4f6fa",
+    border: darkTheme ? "1px solid #262d3d" : "1px solid #dfe5ef",
     borderRadius: "8px", padding: "16px", marginBottom: "16px",
     boxShadow: "inset 0 1px 2px 0 rgba(0,0,0,0.02)", transition: "all 0.5s ease-in-out",
   };
@@ -556,23 +556,23 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
   };
   const labelStyle = {
     fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.05em",
-    color: darkTheme ? "#a0aa9e" : "#586459", fontWeight: 600, transition: "all 0.3s ease",
+    color: darkTheme ? "#9aa4b8" : "#566075", fontWeight: 600, transition: "all 0.3s ease",
   };
   const valueStyle = {
     fontSize: "17px", fontWeight: 700,
-    color: darkTheme ? "#edf0e8" : "#172019", fontFamily: "monospace",
+    color: darkTheme ? "#e9edf6" : "#121826", fontFamily: "monospace",
   };
   const selectStyle = {
     fontSize: 13, padding: "5px 12px",
-    border: darkTheme ? "1px solid #2b3329" : "1px solid #d3d9cc", borderRadius: 6,
-    backgroundColor: darkTheme ? "#111612" : "white",
-    color: darkTheme ? "#edf0e8" : "#304725", cursor: "pointer", outline: "none",
+    border: darkTheme ? "1px solid #262d3d" : "1px solid #d5dbe7", borderRadius: 6,
+    backgroundColor: darkTheme ? "#10141e" : "white",
+    color: darkTheme ? "#e9edf6" : "#283c70", cursor: "pointer", outline: "none",
   };
   const inputStyle = {
     fontSize: 13, padding: "5px 10px",
-    border: darkTheme ? "1px solid #2b3329" : "1px solid #d3d9cc", borderRadius: 6,
-    backgroundColor: darkTheme ? "#111612" : "white",
-    color: darkTheme ? "#edf0e8" : "#304725", outline: "none",
+    border: darkTheme ? "1px solid #262d3d" : "1px solid #d5dbe7", borderRadius: 6,
+    backgroundColor: darkTheme ? "#10141e" : "white",
+    color: darkTheme ? "#e9edf6" : "#283c70", outline: "none",
   };
 
   // ─── FMA flight badges (9-stage pipeline) ───────────────────────────────────
@@ -594,40 +594,40 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
 
         if (si === 0) {
           flights.push({ path: [[24, R1cy], [R1cx, R1cy], [R1cx, R1.y + R1.h + 14]],
-            label: aLabel, color: darkTheme ? "#38502b" : "#405d2e" });
+            label: aLabel, color: darkTheme ? "#2e4580" : "#34508f" });
           flights.push({ path: [[24, R2cy], [R2cx, R2cy], [R2cx, R2.y - 14]],
-            label: wLabel, color: darkTheme ? "#637d4d" : "#586459" });
+            label: wLabel, color: darkTheme ? "#4f6aa6" : "#566075" });
         } else if (si === 2) {
           flights.push({
             path: [[R1cx, R1.y + R1.h + 14], [R1cx, MUL.cy + MUL.r + 14]],
-            label: aLabel, color: darkTheme ? "#38502b" : "#405d2e" });
+            label: aLabel, color: darkTheme ? "#2e4580" : "#34508f" });
           flights.push({
             path: [[R2cx, R2.y - 14], [R2cx, MUL.cy + MUL.r + 14]],
-            label: wLabel, color: darkTheme ? "#637d4d" : "#586459" });
+            label: wLabel, color: darkTheme ? "#4f6aa6" : "#566075" });
           flights.push({
             path: [[R1.x + R1.w, R1.y + 20], [XOR.cx, R1.y + 20], [XOR.cx, XOR.cy - XOR.r - 14]],
-            label: "±", color: darkTheme ? "#4d653a" : "#718467" });
+            label: "±", color: darkTheme ? "#3f5690" : "#6b7894" });
         } else if (si === 6) {
           flights.push({
             path: [[MUL.cx, MUL.cy + MUL.r + 14], [MUL.cx + MUL.r + 20, MUL.cy],
               [R3.x, R3cy], [R3cx, R3.y + R3.h + 14]],
-            label: mulLabel, color: darkTheme ? "#2b3329" : "#304725" });
+            label: mulLabel, color: darkTheme ? "#262d3d" : "#283c70" });
           flights.push({
             path: [[XOR.cx, XOR.cy - XOR.r - 14], [XOR.cx + XOR.r, XOR.cy],
               [R3cx, XOR.cy], [R3cx, R3.y], [R3cx, R3.y + R3.h + 14]],
-            label: "±", color: darkTheme ? "#4d653a" : "#718467" });
+            label: "±", color: darkTheme ? "#3f5690" : "#6b7894" });
         } else if (si === 8) {
           flights.push({
             path: [[R3cx, R3.y + R3.h + 14], [R3.x + R3.w, R3cy], [ADD.cx, R3cy],
               [ADD.cx, ADD.cy - ADD.r], [ADD.cx - ADD.r - 44, ADD.cy],
               [ADD.cx, ADD.cy + ADD.r], [ADD.cx, R4cy - 10],
               [R4.x + R4.w, R4cy - 10], [R4cx, R4.y - 14]],
-            label: addLabel, color: darkTheme ? "#38502b" : "#405d2e" });
+            label: addLabel, color: darkTheme ? "#2e4580" : "#34508f" });
           if (di >= 1) {
             flights.push({
               path: [[R4cx, R4.y - 14], [R4.x + R4.w, R4cy + 10], [775, R4cy + 10],
                 [775, ADD.cy], [ADD.cx + ADD.r, ADD.cy], [ADD.cx - ADD.r - 44, ADD.cy]],
-              label: getAccLabelFMA(di - 1), color: darkTheme ? "#111612" : "#23351f" });
+              label: getAccLabelFMA(di - 1), color: darkTheme ? "#10141e" : "#1c2a4f" });
           }
         }
       }
@@ -637,13 +637,13 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
 
   const getWireColor = (tag) => {
     switch (tag) {
-      case "r1_in": case "r1_mul": return darkTheme ? "#38502b" : "#405d2e";
-      case "r2_in": case "r2_mul": return darkTheme ? "#637d4d" : "#586459";
-      case "r1_xor": case "r2_xor": case "xor_r3": return darkTheme ? "#4d653a" : "#718467";
-      case "mul_r3": case "add_r4": return darkTheme ? "#2b3329" : "#304725";
-      case "r3_add": return darkTheme ? "#38502b" : "#405d2e";
-      case "r4_add": case "r4_out": return darkTheme ? "#111612" : "#23351f";
-      default: return "#d3d9cc";
+      case "r1_in": case "r1_mul": return darkTheme ? "#2e4580" : "#34508f";
+      case "r2_in": case "r2_mul": return darkTheme ? "#4f6aa6" : "#566075";
+      case "r1_xor": case "r2_xor": case "xor_r3": return darkTheme ? "#3f5690" : "#6b7894";
+      case "mul_r3": case "add_r4": return darkTheme ? "#262d3d" : "#283c70";
+      case "r3_add": return darkTheme ? "#2e4580" : "#34508f";
+      case "r4_add": case "r4_out": return darkTheme ? "#10141e" : "#1c2a4f";
+      default: return "#d5dbe7";
     }
   };
 
@@ -692,7 +692,7 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
             path: [[130, cy], [720, cy]],
             t: Math.min(1, Math.max(0, t)),
             label: `A:${getAVal(p_r, k).toFixed(2)}`,
-            color: darkTheme ? "#38502b" : "#405d2e",
+            color: darkTheme ? "#2e4580" : "#34508f",
           });
         }
       }
@@ -714,7 +714,7 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
             path: [[cx, 60], [cx, 550]],
             t: Math.min(1, Math.max(0, t)),
             label: `B:${getBVal(k, p_c).toFixed(2)}`,
-            color: darkTheme ? "#637d4d" : "#718467",
+            color: darkTheme ? "#4f6aa6" : "#6b7894",
           });
         }
       }
@@ -731,35 +731,35 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
       <svg viewBox="0 0 800 600" width="100%" role="img"
         aria-label={`${isBF16 ? "BF16" : "SF16"} Systolic Array Diagram`}
         style={{ display: "block", borderRadius: 10,
-          border: darkTheme ? "1px solid #2b3329" : "1px solid #dfe6d7",
-          backgroundColor: darkTheme ? "#0b0e0c" : "#ffffff" }}>
+          border: darkTheme ? "1px solid #262d3d" : "1px solid #dfe5ef",
+          backgroundColor: darkTheme ? "#0a0d14" : "#ffffff" }}>
         <ArrowDef />
         <rect x={4} y={4} width={792} height={592} rx={10} fill="none"
-          stroke={darkTheme ? "#2b3329" : "#d3d9cc"} strokeWidth={1} />
-        <text x={14} y={24} fontSize={12} fontWeight={700} fill={darkTheme ? "#a0aa9e" : "#405d2e"}>
+          stroke={darkTheme ? "#262d3d" : "#d5dbe7"} strokeWidth={1} />
+        <text x={14} y={24} fontSize={12} fontWeight={700} fill={darkTheme ? "#9aa4b8" : "#34508f"}>
           {arrayTitle}
         </text>
 
         {colCenters.map((cx, idx) => (
           <text key={`nh-${idx}`} x={cx} y={45} textAnchor="middle" fontSize={labelFontSize}
-            fontWeight={600} fill={darkTheme ? "#637d4d" : "#586459"}>
+            fontWeight={600} fill={darkTheme ? "#4f6aa6" : "#566075"}>
             B_in[{Math.floor(idx * N / M)}]
           </text>
         ))}
         {rowCenters.map((cy, idx) => (
           <text key={`wh-${idx}`} x={120} y={cy} textAnchor="end" dominantBaseline="central"
-            fontSize={labelFontSize} fontWeight={600} fill={darkTheme ? "#637d4d" : "#586459"}>
+            fontSize={labelFontSize} fontWeight={600} fill={darkTheme ? "#4f6aa6" : "#566075"}>
             A_in[{Math.floor(idx * N / M)}]
           </text>
         ))}
 
         {colCenters.map((cx, idx) => (
           <line key={`vwire-${idx}`} x1={cx} y1={60} x2={cx} y2={550}
-            stroke={darkTheme ? "#2b3329" : "#d3d9cc"} strokeWidth={M >= 32 ? 0.5 : 1.5} />
+            stroke={darkTheme ? "#262d3d" : "#d5dbe7"} strokeWidth={M >= 32 ? 0.5 : 1.5} />
         ))}
         {rowCenters.map((cy, idx) => (
           <line key={`hwire-${idx}`} x1={130} y1={cy} x2={720} y2={cy}
-            stroke={darkTheme ? "#2b3329" : "#d3d9cc"} strokeWidth={M >= 32 ? 0.5 : 1.5} />
+            stroke={darkTheme ? "#262d3d" : "#d5dbe7"} strokeWidth={M >= 32 ? 0.5 : 1.5} />
         ))}
 
         {freqExponent >= 4 && playing && (
@@ -804,9 +804,9 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
                   rx={N >= 32 ? 1 : Math.max(2, 8 * (W_pe / 84))}
                   fill={isPEActive
                     ? (isBF16 ? "var(--lab-secondary-fill)" : "var(--lab-active-fill)")
-                    : has_weight ? (darkTheme ? "#111612" : "#f4f5ef")
-                    : (darkTheme ? "#0b0e0c" : "#ffffff")}
-                  stroke={isPEActive ? hColor : has_weight ? (darkTheme ? "#38502b" : "#586459") : (darkTheme ? "#2b3329" : "#d3d9cc")}
+                    : has_weight ? (darkTheme ? "#10141e" : "#f4f6fa")
+                    : (darkTheme ? "#0a0d14" : "#ffffff")}
+                  stroke={isPEActive ? hColor : has_weight ? (darkTheme ? "#2e4580" : "#566075") : (darkTheme ? "#262d3d" : "#d5dbe7")}
                   strokeWidth={isPEActive ? (N >= 32 ? 1 : 2) : 1}
                   strokeDasharray={has_weight ? "none" : (N >= 32 ? "none" : "3,3")}
                   style={{ transition: "all 0.3s ease" }}
@@ -815,21 +815,21 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
                   <>
                     <text x={cx - W_pe / 2 + 6} y={cy - H_pe / 2 + 8}
                       fontSize={Math.max(5, 8 * (W_pe / 84))} fontWeight={700}
-                      fill={darkTheme ? "#637d4d" : "#718467"} fontFamily="monospace">
+                      fill={darkTheme ? "#4f6aa6" : "#6b7894"} fontFamily="monospace">
                       {p_r},{p_c}
                     </text>
                     <text x={cx} y={cy} fontSize={Math.max(6, 10 * (W_pe / 84))} fontWeight={700}
                       textAnchor="middle"
-                      fill={has_weight ? (darkTheme ? "#ffffff" : "#23351f") : (darkTheme ? "#637d4d" : "#718467")}>
+                      fill={has_weight ? (darkTheme ? "#ffffff" : "#1c2a4f") : (darkTheme ? "#4f6aa6" : "#6b7894")}>
                       {W_pe >= 50 && "W:"}{weLabel}
                     </text>
                     <text x={cx - W_pe / 2 + 6} y={cy + H_pe / 2 - 8}
-                      fontSize={Math.max(5, 8 * (W_pe / 84))} fill={darkTheme ? "#a0aa9e" : "#586459"}>
+                      fontSize={Math.max(5, 8 * (W_pe / 84))} fill={darkTheme ? "#9aa4b8" : "#566075"}>
                       A:{isPEActive ? act_val.toFixed(1) : "—"}
                     </text>
                     <text x={cx + W_pe / 2 - 6} y={cy + H_pe / 2 - 8}
                       fontSize={Math.max(5, 8 * (W_pe / 84))} textAnchor="end"
-                      fill={darkTheme ? "#d4e4ca" : "#405d2e"} fontWeight={600}>
+                      fill={darkTheme ? "#d3e0f7" : "#34508f"} fontWeight={600}>
                       {acc_val > 0 ? acc_val.toFixed(2) : "0.0"}
                     </text>
                   </>
@@ -837,7 +837,7 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
                 {showMicroText && (
                   <text x={cx} y={cy} fontSize={6} fontWeight={700} textAnchor="middle"
                     dominantBaseline="central"
-                    fill={isPEActive ? (darkTheme ? "#ffffff" : "#23351f") : (darkTheme ? "#a0aa9e" : "#405d2e")}>
+                    fill={isPEActive ? (darkTheme ? "#ffffff" : "#1c2a4f") : (darkTheme ? "#9aa4b8" : "#34508f")}>
                     {isPEActive ? b_val.toFixed(1) : (acc_val > 0 ? acc_val.toFixed(1) : "")}
                   </text>
                 )}
@@ -867,13 +867,13 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
     return (
       <svg viewBox="0 0 800 560" width="100%" role="img" aria-label="FMA pipeline diagram"
         style={{ display: "block", borderRadius: 10,
-          border: darkTheme ? "1px solid #2b3329" : "1px solid #dfe6d7",
-          backgroundColor: darkTheme ? "#0b0e0c" : "#ffffff" }}>
+          border: darkTheme ? "1px solid #262d3d" : "1px solid #dfe5ef",
+          backgroundColor: darkTheme ? "#0a0d14" : "#ffffff" }}>
         <ArrowDef />
         <rect x={4} y={4} width={792} height={552} rx={10} fill="none"
-          stroke={darkTheme ? "#2b3329" : "#d3d9cc"} strokeWidth={1} />
+          stroke={darkTheme ? "#262d3d" : "#d5dbe7"} strokeWidth={1} />
         {/* Title with actual latency from Verilog */}
-        <text x={14} y={22} fontSize={11} fill={darkTheme ? "#4d653a" : "#aaa"}>
+        <text x={14} y={22} fontSize={11} fill={darkTheme ? "#3f5690" : "#aaa"}>
           Fused Multiply-Accumulate (FMA) Unit — SF16 · {SF16_PE_LATENCY}-stage pipeline
         </text>
 
@@ -885,105 +885,105 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
           { x: 730, label: "S7-8: Sign + Acc" },
         ].map((s, i) => (
           <text key={i} x={s.x} y={548} textAnchor="middle" fontSize={8}
-            fill={darkTheme ? "#38502b" : "#d3d9cc"} fontFamily="monospace">
+            fill={darkTheme ? "#2e4580" : "#d5dbe7"} fontFamily="monospace">
             {s.label}
           </text>
         ))}
 
         {/* Inputs */}
-        <rect x={16} y={R1cy - 18} width={30} height={36} rx={6} fill={darkTheme ? "#38502b" : "#405d2e"} />
+        <rect x={16} y={R1cy - 18} width={30} height={36} rx={6} fill={darkTheme ? "#2e4580" : "#34508f"} />
         <text x={31} y={R1cy} textAnchor="middle" dominantBaseline="central"
           fontSize={14} fontWeight={700} fill="white">i</text>
         <line x1={46} y1={R1cy} x2={R1.x} y2={R1cy}
-          stroke={darkTheme ? "#38502b" : "#405d2e"} strokeWidth={1.3} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#2e4580" : "#34508f"} strokeWidth={1.3} markerEnd="url(#ah)" />
 
-        <rect x={16} y={R2cy - 18} width={30} height={36} rx={6} fill={darkTheme ? "#637d4d" : "#586459"} />
+        <rect x={16} y={R2cy - 18} width={30} height={36} rx={6} fill={darkTheme ? "#4f6aa6" : "#566075"} />
         <text x={31} y={R2cy} textAnchor="middle" dominantBaseline="central"
           fontSize={14} fontWeight={700} fill="white">j</text>
         <line x1={46} y1={R2cy} x2={R2.x} y2={R2cy}
-          stroke={darkTheme ? "#637d4d" : "#586459"} strokeWidth={1.3} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#4f6aa6" : "#566075"} strokeWidth={1.3} markerEnd="url(#ah)" />
 
         {/* R1 */}
-        <rect x={R1.x} y={R1.y} width={R1.w} height={R1.h} rx={8} fill={darkTheme ? "#38502b" : "#405d2e"} />
+        <rect x={R1.x} y={R1.y} width={R1.w} height={R1.h} rx={8} fill={darkTheme ? "#2e4580" : "#34508f"} />
         <text x={R1cx} y={R1.y + 22} textAnchor="middle" dominantBaseline="central"
           fontSize={14} fontWeight={500} fill="white">R1 (16 bit)</text>
         <text x={R1cx} y={R1.y + 42} textAnchor="middle" dominantBaseline="central"
-          fontSize={11} fill={darkTheme ? "#d3d9cc" : "#d4e4ca"}>Input / Activation (i)</text>
+          fontSize={11} fill={darkTheme ? "#d5dbe7" : "#d3e0f7"}>Input / Activation (i)</text>
 
         {/* R2 */}
-        <rect x={R2.x} y={R2.y} width={R2.w} height={R2.h} rx={8} fill={darkTheme ? "#637d4d" : "#586459"} />
+        <rect x={R2.x} y={R2.y} width={R2.w} height={R2.h} rx={8} fill={darkTheme ? "#4f6aa6" : "#566075"} />
         <text x={R2cx} y={R2.y + 22} textAnchor="middle" dominantBaseline="central"
           fontSize={14} fontWeight={500} fill="white">R2 (16 bit)</text>
         <text x={R2cx} y={R2.y + 42} textAnchor="middle" dominantBaseline="central"
-          fontSize={11} fill={darkTheme ? "#dfe6d7" : "#e1edce"}>Weight (j)</text>
+          fontSize={11} fill={darkTheme ? "#dfe5ef" : "#dce6f8"}>Weight (j)</text>
 
         <line x1={R1cx} y1={R1.y + R1.h} x2={R1cx} y2={MUL.cy - MUL.r}
-          stroke={darkTheme ? "#2b3329" : "#888"} strokeWidth={0.9} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#262d3d" : "#888"} strokeWidth={0.9} markerEnd="url(#ah)" />
         <line x1={R2cx} y1={R2.y} x2={R2cx} y2={MUL.cy + MUL.r}
-          stroke={darkTheme ? "#2b3329" : "#888"} strokeWidth={0.9} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#262d3d" : "#888"} strokeWidth={0.9} markerEnd="url(#ah)" />
 
         {/* MUL — nine parallel 5×5 sub-multiplies (stage 2) */}
-        <circle cx={MUL.cx} cy={MUL.cy} r={MUL.r} fill={darkTheme ? "#2b3329" : "#304725"} />
+        <circle cx={MUL.cx} cy={MUL.cy} r={MUL.r} fill={darkTheme ? "#262d3d" : "#283c70"} />
         <text x={MUL.cx} y={MUL.cy} textAnchor="middle" dominantBaseline="central"
           fontSize={22} fontWeight={500} fill="white">×</text>
 
         <line x1={R1.x + R1.w} y1={R1.y + 20} x2={XOR.cx} y2={R1.y + 20}
-          stroke={darkTheme ? "#2b3329" : "#888"} strokeWidth={0.8} />
+          stroke={darkTheme ? "#262d3d" : "#888"} strokeWidth={0.8} />
         <line x1={XOR.cx} y1={R1.y + 20} x2={XOR.cx} y2={XOR.cy - XOR.r}
-          stroke={darkTheme ? "#2b3329" : "#888"} strokeWidth={0.8} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#262d3d" : "#888"} strokeWidth={0.8} markerEnd="url(#ah)" />
         <line x1={R2.x + R2.w} y1={R2.y + 20} x2={390} y2={R2.y + 20}
-          stroke={darkTheme ? "#2b3329" : "#888"} strokeWidth={0.8} />
+          stroke={darkTheme ? "#262d3d" : "#888"} strokeWidth={0.8} />
         <line x1={390} y1={R2.y + 20} x2={390} y2={XOR.cy + XOR.r}
-          stroke={darkTheme ? "#2b3329" : "#888"} strokeWidth={0.8} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#262d3d" : "#888"} strokeWidth={0.8} markerEnd="url(#ah)" />
 
         {/* XOR — sign bit (stage 1) */}
-        <circle cx={XOR.cx} cy={XOR.cy} r={XOR.r} fill={darkTheme ? "#4d653a" : "#718467"} />
+        <circle cx={XOR.cx} cy={XOR.cy} r={XOR.r} fill={darkTheme ? "#3f5690" : "#6b7894"} />
         <text x={XOR.cx} y={XOR.cy} textAnchor="middle" dominantBaseline="central"
           fontSize={12} fontWeight={500} fill="white">XOR</text>
 
         <line x1={XOR.cx + XOR.r} y1={XOR.cy} x2={R3cx} y2={XOR.cy}
-          stroke={darkTheme ? "#2b3329" : "#888"} strokeWidth={0.8} />
+          stroke={darkTheme ? "#262d3d" : "#888"} strokeWidth={0.8} />
         <line x1={R3cx} y1={XOR.cy} x2={R3cx} y2={R3.y}
-          stroke={darkTheme ? "#2b3329" : "#888"} strokeWidth={0.8} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#262d3d" : "#888"} strokeWidth={0.8} markerEnd="url(#ah)" />
         <line x1={MUL.cx + MUL.r} y1={MUL.cy} x2={R3.x} y2={R3cy}
-          stroke={darkTheme ? "#2b3329" : "#304725"} strokeWidth={0.9} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#262d3d" : "#283c70"} strokeWidth={0.9} markerEnd="url(#ah)" />
 
         {/* R3 — partial product result (stages 3-6) */}
-        <rect x={R3.x} y={R3.y} width={R3.w} height={R3.h} rx={8} fill={darkTheme ? "#38502b" : "#405d2e"} />
+        <rect x={R3.x} y={R3.y} width={R3.w} height={R3.h} rx={8} fill={darkTheme ? "#2e4580" : "#34508f"} />
         <text x={R3cx} y={R3.y + 22} textAnchor="middle" dominantBaseline="central"
           fontSize={14} fontWeight={500} fill="white">R3 (16 bit)</text>
         <text x={R3cx} y={R3.y + 42} textAnchor="middle" dominantBaseline="central"
-          fontSize={11} fill={darkTheme ? "#d3d9cc" : "#d4e4ca"}>Mul + XOR result</text>
+          fontSize={11} fill={darkTheme ? "#d5dbe7" : "#d3e0f7"}>Mul + XOR result</text>
 
         {/* R4 — accumulator (stage 8) */}
-        <rect x={R4.x} y={R4.y} width={R4.w} height={R4.h} rx={8} fill={darkTheme ? "#111612" : "#23351f"} />
+        <rect x={R4.x} y={R4.y} width={R4.w} height={R4.h} rx={8} fill={darkTheme ? "#10141e" : "#1c2a4f"} />
         <text x={R4cx} y={R4.y + 22} textAnchor="middle" dominantBaseline="central"
           fontSize={14} fontWeight={500} fill="white">R4 (16 bit)</text>
         <text x={R4cx} y={R4.y + 42} textAnchor="middle" dominantBaseline="central"
-          fontSize={11} fill={darkTheme ? "#637d4d" : "#718467"}>Accumulated sum</text>
+          fontSize={11} fill={darkTheme ? "#4f6aa6" : "#6b7894"}>Accumulated sum</text>
 
         <line x1={R3.x + R3.w} y1={R3cy} x2={ADD.cx} y2={R3cy}
-          stroke={darkTheme ? "#38502b" : "#405d2e"} strokeWidth={0.9} />
+          stroke={darkTheme ? "#2e4580" : "#34508f"} strokeWidth={0.9} />
         <line x1={ADD.cx} y1={R3cy} x2={ADD.cx} y2={ADD.cy - ADD.r}
-          stroke={darkTheme ? "#38502b" : "#405d2e"} strokeWidth={0.9} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#2e4580" : "#34508f"} strokeWidth={0.9} markerEnd="url(#ah)" />
         <line x1={R4.x + R4.w} y1={R4cy + 10} x2={775} y2={R4cy + 10}
-          stroke={darkTheme ? "#111612" : "#23351f"} strokeWidth={0.9} />
+          stroke={darkTheme ? "#10141e" : "#1c2a4f"} strokeWidth={0.9} />
         <line x1={775} y1={R4cy + 10} x2={775} y2={ADD.cy}
-          stroke={darkTheme ? "#111612" : "#23351f"} strokeWidth={0.9} />
+          stroke={darkTheme ? "#10141e" : "#1c2a4f"} strokeWidth={0.9} />
         <line x1={775} y1={ADD.cy} x2={ADD.cx + ADD.r} y2={ADD.cy}
-          stroke={darkTheme ? "#111612" : "#23351f"} strokeWidth={0.9} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#10141e" : "#1c2a4f"} strokeWidth={0.9} markerEnd="url(#ah)" />
 
         {/* ADD — saturation accumulate (stage 8) */}
-        <circle cx={ADD.cx} cy={ADD.cy} r={ADD.r} fill={darkTheme ? "#2b3329" : "#304725"} />
+        <circle cx={ADD.cx} cy={ADD.cy} r={ADD.r} fill={darkTheme ? "#262d3d" : "#283c70"} />
         <text x={ADD.cx} y={ADD.cy} textAnchor="middle" dominantBaseline="central"
           fontSize={20} fontWeight={500} fill="white">+</text>
 
         <line x1={ADD.cx} y1={ADD.cy + ADD.r} x2={ADD.cx} y2={R4cy - 10}
-          stroke={darkTheme ? "#2b3329" : "#304725"} strokeWidth={0.9} />
+          stroke={darkTheme ? "#262d3d" : "#283c70"} strokeWidth={0.9} />
         <line x1={ADD.cx} y1={R4cy - 10} x2={R4.x + R4.w} y2={R4cy - 10}
-          stroke={darkTheme ? "#2b3329" : "#304725"} strokeWidth={0.9} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#262d3d" : "#283c70"} strokeWidth={0.9} markerEnd="url(#ah)" />
         <line x1={R4cx} y1={R4.y + R4.h} x2={R4cx} y2={540}
-          stroke={darkTheme ? "#111612" : "#23351f"} strokeWidth={1.3} markerEnd="url(#ah)" />
+          stroke={darkTheme ? "#10141e" : "#1c2a4f"} strokeWidth={1.3} markerEnd="url(#ah)" />
 
         {/* Highlights */}
         <Highlight x={R1.x-3} y={R1.y-3} w={R1.w+6} h={R1.h+6} active={stFMA.hlR1}  color="var(--lab-accent)" pulse={playing && freqExponent >= 4} />
@@ -996,13 +996,13 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
 
         {/* Value Badges */}
         {freqExponent < 4 && (<>
-          <ValBadge cx={R1cx} cy={R1.y + R1.h + 14}    value={stFMA.r1}  bgColor={darkTheme ? "#38502b" : "#405d2e"} />
-          <ValBadge cx={R2cx} cy={R2.y - 14}            value={stFMA.r2}  bgColor={darkTheme ? "#637d4d" : "#586459"} />
-          <ValBadge cx={MUL.cx} cy={MUL.cy + MUL.r + 14} value={stFMA.mul} bgColor={darkTheme ? "#2b3329" : "#304725"} />
-          <ValBadge cx={XOR.cx} cy={XOR.cy - XOR.r - 14} value={stFMA.xor} bgColor={darkTheme ? "#4d653a" : "#718467"} />
-          <ValBadge cx={R3cx} cy={R3.y + R3.h + 14}    value={stFMA.r3}  bgColor={darkTheme ? "#38502b" : "#405d2e"} />
-          <ValBadge cx={ADD.cx - ADD.r - 44} cy={ADD.cy} value={stFMA.add} bgColor={darkTheme ? "#2b3329" : "#304725"} />
-          <ValBadge cx={R4cx} cy={R4.y - 14}            value={stFMA.r4}  bgColor={darkTheme ? "#111612" : "#23351f"} />
+          <ValBadge cx={R1cx} cy={R1.y + R1.h + 14}    value={stFMA.r1}  bgColor={darkTheme ? "#2e4580" : "#34508f"} />
+          <ValBadge cx={R2cx} cy={R2.y - 14}            value={stFMA.r2}  bgColor={darkTheme ? "#4f6aa6" : "#566075"} />
+          <ValBadge cx={MUL.cx} cy={MUL.cy + MUL.r + 14} value={stFMA.mul} bgColor={darkTheme ? "#262d3d" : "#283c70"} />
+          <ValBadge cx={XOR.cx} cy={XOR.cy - XOR.r - 14} value={stFMA.xor} bgColor={darkTheme ? "#3f5690" : "#6b7894"} />
+          <ValBadge cx={R3cx} cy={R3.y + R3.h + 14}    value={stFMA.r3}  bgColor={darkTheme ? "#2e4580" : "#34508f"} />
+          <ValBadge cx={ADD.cx - ADD.r - 44} cy={ADD.cy} value={stFMA.add} bgColor={darkTheme ? "#262d3d" : "#283c70"} />
+          <ValBadge cx={R4cx} cy={R4.y - 14}            value={stFMA.r4}  bgColor={darkTheme ? "#10141e" : "#1c2a4f"} />
         </>)}
 
         {freqExponent < 4
@@ -1024,16 +1024,16 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
         <button onClick={() => setExpanded(true)}
           style={{
             fontSize: "15px", fontWeight: "600", padding: "12px 36px", cursor: "pointer",
-            border: darkTheme ? "1px solid #2b3329" : "1px solid #d3d9cc",
+            border: darkTheme ? "1px solid #262d3d" : "1px solid #d5dbe7",
             borderRadius: "9999px",
-            backgroundColor: darkTheme ? "#111612" : "#ffffff",
-            color: darkTheme ? "#edf0e8" : "#304725",
+            backgroundColor: darkTheme ? "#10141e" : "#ffffff",
+            color: darkTheme ? "#e9edf6" : "#283c70",
             transition: "all 0.2s",
             boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
             display: "flex", alignItems: "center", gap: "8px",
           }}
-          onMouseEnter={e => { e.currentTarget.style.backgroundColor = darkTheme ? "#2b3329" : "#f4f5ef"; e.currentTarget.style.transform = "scale(1.03)"; }}
-          onMouseLeave={e => { e.currentTarget.style.backgroundColor = darkTheme ? "#111612" : "#ffffff"; e.currentTarget.style.transform = "none"; }}
+          onMouseEnter={e => { e.currentTarget.style.backgroundColor = darkTheme ? "#262d3d" : "#f4f6fa"; e.currentTarget.style.transform = "scale(1.03)"; }}
+          onMouseLeave={e => { e.currentTarget.style.backgroundColor = darkTheme ? "#10141e" : "#ffffff"; e.currentTarget.style.transform = "none"; }}
         >
           <span>See demo</span><span>→</span>
         </button>
@@ -1046,20 +1046,20 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
       fontFamily: "sans-serif", maxWidth: compareMode ? 1600 : 820,
       margin: "24px auto", padding: "24px", position: "relative",
       borderRadius: "12px",
-      border: darkTheme ? "1px solid #2b3329" : "1px solid #dfe6d7",
-      backgroundColor: darkTheme ? "#0b0e0c" : "#ffffff",
+      border: darkTheme ? "1px solid #262d3d" : "1px solid #dfe5ef",
+      backgroundColor: darkTheme ? "#0a0d14" : "#ffffff",
       boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.05)",
       transition: "all 0.3s ease",
     }}>
       {/* Top bar */}
       <div className="fma-demo__intro" style={{ marginBottom: "18px" }}>
-        <span className="fma-demo__eyebrow" style={{ color: darkTheme ? "#a0aa9e" : "#4b6f12" }}>
+        <span className="fma-demo__eyebrow" style={{ color: darkTheme ? "#9aa4b8" : "#2557d6" }}>
           Interactive architecture demo
         </span>
-        <h2 id="fma-demo-title" style={{ color: darkTheme ? "#edf0e8" : "#172019" }}>
+        <h2 id="fma-demo-title" style={{ color: darkTheme ? "#e9edf6" : "#121826" }}>
           Follow a multiply-accumulate through Superfloat
         </h2>
-        <p style={{ color: darkTheme ? "#a0aa9e" : "#586459" }}>
+        <p style={{ color: darkTheme ? "#9aa4b8" : "#566075" }}>
           Adjust the workload and clock to compare SF16 with BF16. Clock rate changes the calculated throughput; the diagram is slowed to remain visible.
         </p>
       </div>
@@ -1077,39 +1077,39 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
             </div>
             <div style={metricStyle}>
               <span style={labelStyle}>Modeled Peak Throughput</span>
-              <span style={{ ...valueStyle, color: darkTheme ? "#a0aa9e" : "#4b6f12" }}>{formatFlops(peakSfops, "sf16")}</span>
+              <span style={{ ...valueStyle, color: darkTheme ? "#9aa4b8" : "#2557d6" }}>{formatFlops(peakSfops, "sf16")}</span>
             </div>
           </>
         ) : (
           <>
             <div style={metricStyle}>
               {/* Illustrative latency ratio: BF16_LATENCY / SF16_PE_LATENCY */}
-              <span style={{ ...labelStyle, color: darkTheme ? "#a0aa9e" : "#4b6f12" }}>
+              <span style={{ ...labelStyle, color: darkTheme ? "#9aa4b8" : "#2557d6" }}>
                 Modeled SF16 MAC Latency Ratio
               </span>
-              <span style={{ ...valueStyle, color: darkTheme ? "#ffffff" : "#4b6f12" }}>
+              <span style={{ ...valueStyle, color: darkTheme ? "#ffffff" : "#2557d6" }}>
                 {speedup.toFixed(2)}x
               </span>
             </div>
             <div style={metricStyle}>
-              <span style={{ ...labelStyle, color: darkTheme ? "#a0aa9e" : "#4b6f12" }}>SF16 Time</span>
-              <span style={{ ...valueStyle, color: darkTheme ? "#d4e4ca" : "#4b6f12", fontSize: "15px" }}>
+              <span style={{ ...labelStyle, color: darkTheme ? "#9aa4b8" : "#2557d6" }}>SF16 Time</span>
+              <span style={{ ...valueStyle, color: darkTheme ? "#d3e0f7" : "#2557d6", fontSize: "15px" }}>
                 {formatElapsedTime(sf16Time)}
               </span>
             </div>
             <div style={metricStyle}>
-              <span style={{ ...labelStyle, color: darkTheme ? "#a0aa9e" : "#4b6f12" }}>Modeled SF16 Peak</span>
-              <span style={{ ...valueStyle, color: darkTheme ? "#d4e4ca" : "#4b6f12" }}>{formatFlops(peakSfops, "sf16")}</span>
+              <span style={{ ...labelStyle, color: darkTheme ? "#9aa4b8" : "#2557d6" }}>Modeled SF16 Peak</span>
+              <span style={{ ...valueStyle, color: darkTheme ? "#d3e0f7" : "#2557d6" }}>{formatFlops(peakSfops, "sf16")}</span>
             </div>
-            <div style={{ ...metricStyle, borderLeft: darkTheme ? "1px solid #2b3329" : "1px solid #dfe6d7", paddingLeft: 16 }}>
-              <span style={{ ...labelStyle, color: darkTheme ? "#a0aa9e" : "#526f59" }}>BF16 Time</span>
-              <span style={{ ...valueStyle, color: darkTheme ? "#d4e4ca" : "#526f59", fontSize: "15px" }}>
+            <div style={{ ...metricStyle, borderLeft: darkTheme ? "1px solid #262d3d" : "1px solid #dfe5ef", paddingLeft: 16 }}>
+              <span style={{ ...labelStyle, color: darkTheme ? "#9aa4b8" : "#4d5f80" }}>BF16 Time</span>
+              <span style={{ ...valueStyle, color: darkTheme ? "#d3e0f7" : "#4d5f80", fontSize: "15px" }}>
                 {formatElapsedTime(bf16Time)}
               </span>
             </div>
             <div style={metricStyle}>
-              <span style={{ ...labelStyle, color: darkTheme ? "#a0aa9e" : "#526f59" }}>Modeled BF16 Peak</span>
-              <span style={{ ...valueStyle, color: darkTheme ? "#d4e4ca" : "#526f59" }}>{formatFlops(peakBfops, "bf16")}</span>
+              <span style={{ ...labelStyle, color: darkTheme ? "#9aa4b8" : "#4d5f80" }}>Modeled BF16 Peak</span>
+              <span style={{ ...valueStyle, color: darkTheme ? "#d3e0f7" : "#4d5f80" }}>{formatFlops(peakBfops, "bf16")}</span>
             </div>
           </>
         )}
@@ -1118,26 +1118,26 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
       {/* Control bar */}
       <div className="fma-demo__controls" style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-          <button onClick={togglePlay} style={{ ...btnStyle, background: "#c4f36c", color: "#17200e" }}>
+          <button onClick={togglePlay} style={{ ...btnStyle, background: "#7aa7ff", color: "#0a1430" }}>
             {playing ? "Pause" : (step >= maxCycles ? "Replay" : "Play")}
           </button>
           <button onClick={doReset} style={btnStyle}>Reset</button>
           <button onClick={stepForward} style={btnStyle}>Step +1</button>
-          <span className="fma-demo__status" aria-live="polite" style={{ color: darkTheme ? "#a0aa9e" : "#586459" }}>
+          <span className="fma-demo__status" aria-live="polite" style={{ color: darkTheme ? "#9aa4b8" : "#566075" }}>
             {playing ? "Running" : step >= maxCycles ? "Complete" : step < 0 ? "Ready" : "Paused"}
           </span>
 
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginLeft: "auto" }}>
             {compareMode ? (
               <>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a0aa9e" : "#405d2e" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#9aa4b8" : "#34508f" }}>
                   <span style={{ fontWeight: 500 }}>BF16 Latency Mode:</span>
                   <select aria-label="BF16 latency mode" value={latencyMode} onChange={e => setLatencyMode(e.target.value)} style={selectStyle}>
                     <option value="mma">Tensor Core MMA (16 cycles)</option>
                     <option value="wgmma">Async WGMMA (32 cycles)</option>
                   </select>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a0aa9e" : "#405d2e" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#9aa4b8" : "#34508f" }}>
                   <span style={{ fontWeight: 500 }}>Array Size (N):</span>
                   <select aria-label="Systolic array size" value={arraySize} onChange={e => setArraySize(parseInt(e.target.value))} style={selectStyle}>
                     <option value="4">4x4</option>
@@ -1147,7 +1147,7 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
                     <option value="64">64x64</option>
                   </select>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a0aa9e" : "#405d2e" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#9aa4b8" : "#34508f" }}>
                   <span style={{ fontWeight: 500 }}>Inner Dim (K):</span>
                   <select aria-label="Matrix inner dimension" value={matrixInnerDim} onChange={e => setMatrixInnerDim(e.target.value)} style={selectStyle}>
                     <option value="16">16</option>
@@ -1167,7 +1167,7 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
               </>
             ) : (
               <>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a0aa9e" : "#405d2e" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#9aa4b8" : "#34508f" }}>
                   <span style={{ fontWeight: 500 }}>Load Type:</span>
                   <select aria-label="Workload type" value={loadType} onChange={e => setLoadType(e.target.value)} style={selectStyle}>
                     <option value="fixed">Fixed Count</option>
@@ -1175,7 +1175,7 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
                   </select>
                 </div>
                 {loadType === "fixed" && (
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#a0aa9e" : "#405d2e" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: darkTheme ? "#9aa4b8" : "#34508f" }}>
                     <select aria-label="Operation count" value={fmaLoadPreset} onChange={e => setFmaLoadPreset(e.target.value)} style={selectStyle}>
                       <option value="5">5 (Original)</option>
                       <option value="10">10</option>
@@ -1200,14 +1200,14 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
 
         <div style={{
           display: "flex", alignItems: "center", gap: 8, fontSize: 13,
-          color: darkTheme ? "#a0aa9e" : "#405d2e", fontWeight: 500,
-          borderTop: darkTheme ? "1px solid #2b3329" : "1px solid #eef2e7", paddingTop: 12
+          color: darkTheme ? "#9aa4b8" : "#34508f", fontWeight: 500,
+          borderTop: darkTheme ? "1px solid #262d3d" : "1px solid #edf1f8", paddingTop: 12
         }}>
           <span>Frequency:</span>
           <input aria-label="Clock frequency" type="range" min={0} max={9} step={1} value={freqExponent}
             onChange={e => setFreqExponent(+e.target.value)}
             style={{ width: 200, accentColor: "var(--lab-accent)", cursor: "pointer" }} />
-          <span style={{ fontWeight: 600, color: darkTheme ? "#ffffff" : "#172019" }}>
+          <span style={{ fontWeight: 600, color: darkTheme ? "#ffffff" : "#121826" }}>
             {formatFrequency(frequency)}
           </span>
         </div>
@@ -1221,7 +1221,7 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
         <div className="fma-diagram-scroll" tabIndex={0} role="region" aria-label="Scrollable Superfloat diagram" style={{ flex: compareMode ? "1 1 50%" : "1 1 100%", minWidth: 0 }}>
           {compareMode ? (
             <>
-              <div style={{ fontSize: 13, fontWeight: 600, color: darkTheme ? "#a0aa9e" : "#586459", marginBottom: 6 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: darkTheme ? "#9aa4b8" : "#566075", marginBottom: 6 }}>
                 Superfloat (SF16)
               </div>
               {renderArraySVG(false)}
@@ -1232,10 +1232,10 @@ export default function FMAPipeline({ initiallyExpanded = false, initialFrequenc
         {compareMode && (
           <div className="fma-diagram-scroll" tabIndex={0} role="region" aria-label="Scrollable BF16 diagram" style={{
             flex: "1 1 50%", minWidth: 0,
-            borderLeft: darkTheme ? "1px solid #2b3329" : "1px solid #dfe6d7",
+            borderLeft: darkTheme ? "1px solid #262d3d" : "1px solid #dfe5ef",
             paddingLeft: 24,
           }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: darkTheme ? "#a0aa9e" : "#586459", marginBottom: 6 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: darkTheme ? "#9aa4b8" : "#566075", marginBottom: 6 }}>
               Bfloat16 (BF16) — modeled latency ratio {speedup.toFixed(2)}x
             </div>
             {renderArraySVG(true)}
