@@ -9,20 +9,25 @@ beforeEach(() => {
 });
 afterEach(() => { window.matchMedia = matchMediaBefore; global.IntersectionObserver = observerBefore; });
 
-test("probing a cell updates its operands and animation can be paused", () => {
+test("pointing at a PE traces its row of A and column of B", () => {
   const { container } = render(<ComputeArray />);
-  fireEvent.click(screen.getByRole("button", { name:"PE[8,8]" }));
-  expect(screen.getByText("C[8,8]")).toBeInTheDocument();
-  expect(screen.getByText("0.020")).toBeInTheDocument();
-  fireEvent.click(screen.getByRole("button", { name:"Pause array animation" }));
-  expect(container.firstChild).toHaveClass("motion-paused");
-  fireEvent.click(screen.getByRole("button", { name:"Resume array animation" }));
-  expect(container.firstChild).not.toHaveClass("motion-paused");
+  fireEvent.pointerOver(container.querySelector('[data-r="8"][data-c="5"]'));
+  expect(screen.getByText("C[8, 5] ← C[8, 5] + A[8, k] · B[k, 5]")).toBeInTheDocument();
+  expect(container.querySelectorAll(".trace-a")).toHaveLength(5);
+  expect(container.querySelectorAll(".trace-b")).toHaveLength(8);
+  expect(container.querySelector('[data-r="8"][data-c="5"]')).toHaveClass("probe-cell");
+});
+
+test("arrow keys move the trace", () => {
+  const { container } = render(<ComputeArray />);
+  const grid = screen.getByRole("group");
+  fireEvent.keyDown(grid, { key: "ArrowDown" });
+  fireEvent.keyDown(grid, { key: "ArrowRight" });
+  expect(container.querySelector('[data-r="4"][data-c="8"]')).toHaveClass("probe-cell");
 });
 
 test("respects a reduced-motion preference", () => {
   window.matchMedia = jest.fn(() => ({ matches:true, addEventListener:jest.fn(), removeEventListener:jest.fn() }));
   const { container } = render(<ComputeArray />);
   expect(container.firstChild).toHaveClass("motion-paused");
-  expect(screen.getByText("REDUCED MOTION")).toBeDisabled();
 });

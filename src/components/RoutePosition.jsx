@@ -5,7 +5,7 @@ export default function RoutePosition() {
   const { pathname } = useLocation();
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-    document.title = pathname === "/" ? "Superfloat — Intelligence at the Bit Level" : "Research — Superfloat";
+    document.title = pathname === "/" ? "Superfloat — Super Intelligence, Done Better" : "Research — Superfloat";
   }, [pathname]);
   return null;
 }
