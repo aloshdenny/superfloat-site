@@ -26,14 +26,11 @@ const SCENE_SCALE = 0.75;
 const CAMERA_DISTANCE = 6.4;
 
 // Blue body, grey low tiers, cyan signal, violet for switches and echoes. bg matches --sf-bg.
-const PALETTES = {
-  dark: { bg: "#0a0d14", greyDim: "#232a3a", grey: "#485369", mid: "#3d74f2", hot: "#e3ecff", signal: "#4fe1ff", violet: "#a78bfa", boost: 1.35 },
-  light: { bg: "#f4f6fa", greyDim: "#d3d9e4", grey: "#a6afc0", mid: "#2557d6", hot: "#0a1430", signal: "#0e8fa8", violet: "#6d4ed8", boost: 1 },
-};
+const PALETTE = { bg: "#0a0d14", greyDim: "#232a3a", grey: "#485369", mid: "#3d74f2", hot: "#e3ecff", signal: "#4fe1ff", violet: "#a78bfa", boost: 1.35 };
 
 const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 
-export function createGlyphHero(canvas, { dark = true, reducedMotion = false, onSubject = () => {} } = {}) {
+export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () => {} } = {}) {
   const renderer = new WebGLRenderer({ canvas, antialias: false, powerPreference: "high-performance" });
 
   const scene = new Scene();
@@ -82,6 +79,16 @@ export function createGlyphHero(canvas, { dark = true, reducedMotion = false, on
   composer.addPass(edgeFade);
   composer.addPass(new OutputPass());
 
+  u.uBg.value.set(PALETTE.bg);
+  u.uGreyDim.value.set(PALETTE.greyDim);
+  u.uGrey.value.set(PALETTE.grey);
+  u.uMid.value.set(PALETTE.mid);
+  u.uHot.value.set(PALETTE.hot);
+  u.uSignal.value.set(PALETTE.signal);
+  u.uViolet.value.set(PALETTE.violet);
+  u.uBoost.value = PALETTE.boost;
+  edgeFade.uniforms.uBg.value.set(PALETTE.bg);
+
   const clock = new Clock(false);
   let current = 0;
   let next = -1;
@@ -92,19 +99,6 @@ export function createGlyphHero(canvas, { dark = true, reducedMotion = false, on
   let frame = 0;
   let reduced = reducedMotion;
 
-  function applyTheme(isDark) {
-    const p = isDark ? PALETTES.dark : PALETTES.light;
-    u.uBg.value.set(p.bg);
-    u.uGreyDim.value.set(p.greyDim);
-    u.uGrey.value.set(p.grey);
-    u.uMid.value.set(p.mid);
-    u.uHot.value.set(p.hot);
-    u.uSignal.value.set(p.signal);
-    u.uViolet.value.set(p.violet);
-    u.uBoost.value = p.boost;
-    edgeFade.uniforms.uBg.value.set(p.bg);
-    bloom.enabled = isDark;
-  }
 
   function renderSubject(index, target) {
     subjects.forEach((s, i) => { s.group.visible = i === index; });
@@ -180,16 +174,10 @@ export function createGlyphHero(canvas, { dark = true, reducedMotion = false, on
     if (!running) draw(0);
   }
 
-  applyTheme(dark);
-
   return {
     start,
     stop,
     resize,
-    setTheme(isDark) {
-      applyTheme(isDark);
-      if (!running) draw(0);
-    },
     setReducedMotion(value) {
       reduced = value;
       if (value) {

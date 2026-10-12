@@ -1,30 +1,20 @@
 import { Link } from "react-router-dom";
-import FMAPipeline from "../components/FMAPipeline";
+import FormatRace from "../components/format-race/FormatRace";
 import FormatExplorer from "../components/FormatExplorer";
 import ComputeArray from "../components/ComputeArray";
 import GlyphHero from "../components/glyph-hero/GlyphHero";
 import "./Home.css";
-
-const repository = "https://github.com/aloshdenny/superfloat-site";
 
 export default function Home() {
   return (
     <div className="technical-home">
       <section className="sf-hero sf-container">
         <div className="hero-copy">
-          <div className="kicker"><span className="signal-dot" /> NUMBER FORMATS × AI HARDWARE</div>
-          <h1>Intelligence.<br />At the <em>bit level.</em></h1>
-          <p className="hero-description">A configurable number format for AI at the edge. Explore the space between numerical precision, memory footprint, and the hardware that runs inference.</p>
-          <div className="sf-actions"><a className="sf-button primary" href="#architecture">Enter the compute lab <span>↗</span></a><a className="sf-text-link" href={repository} target="_blank" rel="noreferrer">Explore source <span>↗</span></a></div>
+          <h1>Super <em>Intelligence.</em><span className="hero-sub">Done <em>Better</em></span></h1>
+          <p className="hero-description">The infrastructure datatype for ultrafast intelligence at scale</p>
         </div>
         <GlyphHero />
       </section>
-      <div className="spec-strip sf-container" aria-label="Architecture at a glance">
-        <div><span className="spec-label">01 / REPRESENTATION</span><strong>4–16 <small>bits</small></strong><span>Scalable word width</span></div>
-        <div><span className="spec-label">02 / SF16 LAYOUT</span><strong>1 + 15</strong><span>Sign + value field</span></div>
-        <div><span className="spec-label">03 / COMPUTE PRIMITIVE</span><strong>a × b + c</strong><span>Multiply. Accumulate. Repeat.</span></div>
-        <div className="spec-note"><span className="signal-dot" /><p>From a single bit<br />to a matrix operation.</p></div>
-      </div>
       <section id="technology" className="sf-section sf-container">
         <div className="section-label">01 / THE NUMBER FORMAT</div>
         <div className="section-heading"><h2>Precision is a<br /><em>design variable.</em></h2><p>Every stored bit has a cost. Superfloat lets you explore word widths from SF4 to SF16, making numerical representation part of the hardware design space.</p></div>
@@ -34,11 +24,9 @@ export default function Home() {
       <section className="architecture-band" id="architecture">
         <div className="sf-container sf-section">
           <div className="section-label">02 / THE COMPUTE LAB</div>
-          <div className="section-heading"><h2>Follow the signal.<br /><em>Inspect the arithmetic.</em></h2><p>Step inside the multiply-accumulate datapath, then switch to a systolic array. Change the clock, workload, and array size to see how the model responds.</p></div>
+          <div className="section-heading"><h2>2× faster<br /><em>at ½ the price.</em></h2><p>The same multiply-accumulate, without the exponent hardware. Watch an SF16 unit and a BF16 unit run side by side, then flip to the systolic arrays they build.</p></div>
           <div className="lab-array"><ComputeArray /></div>
-          <div className="pipeline-strip" aria-label="Compute sequence"><span><b>01</b> Operand registers</span><i>→</i><span><b>02</b> Multiply pipeline</span><i>→</i><span><b>03</b> Accumulate</span><i>→</i><span><b>04</b> Write back</span></div>
-          <FMAPipeline initiallyExpanded initialFrequency={8} autoPlay={false} />
-          <p className="model-note"><span>MODEL NOTE</span> This is an architectural visualization. Throughput is calculated from the demo’s cycle assumptions and selected clock; it is not a measured device benchmark. Animation time is slowed for inspection.</p>
+          <FormatRace />
         </div>
       </section>
       <section id="applications" className="sf-section sf-container">
@@ -54,7 +42,7 @@ export default function Home() {
         <div><div className="section-label">04 / FIELD NOTES</div><h2>Under the hood.</h2><p>Ideas, architecture, and the details behind the datapath.</p></div>
         <Link to="/blogs/accelerated-hardware" className="research-link"><span className="section-label">ARCHITECTURE / IMPLEMENTATION NOTES</span><h3>Inside the Superfloat compute model <span>↗</span></h3><span>Read the model, math, and limitations</span></Link>
       </section>
-      <section className="sf-container closing-section"><span className="section-label">PRECISION IS ONLY THE BEGINNING.</span><h2>Get closer to<br /><em>the computation.</em></h2><div className="sf-actions"><a className="sf-button primary" href="#architecture">Open the compute lab <span>↑</span></a><a className="sf-text-link" href={repository} target="_blank" rel="noreferrer">View on GitHub ↗</a></div><span className="closing-code" aria-hidden="true">01010011<br />01000110</span></section>
+      <section className="sf-container closing-section"><span className="section-label">PRECISION IS ONLY THE BEGINNING.</span><h2>Get closer to<br /><em>the computation.</em></h2><div className="sf-actions"><a className="sf-button primary" href="#architecture">Open the compute lab <span>↑</span></a></div><span className="closing-code" aria-hidden="true">01010011<br />01000110</span></section>
     </div>
   );
 }

@@ -17,13 +17,11 @@ export default function GlyphHero() {
     let disposed = false;
     const cleanups = [];
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const isDark = () => document.documentElement.classList.contains("dark");
 
     import("./engine.js")
       .then(({ createGlyphHero }) => {
         if (disposed) return;
         const hero = createGlyphHero(canvas.current, {
-          dark: isDark(),
           reducedMotion: motion.matches,
           onSubject: setActive,
         });
@@ -42,16 +40,13 @@ export default function GlyphHero() {
           hero.setReducedMotion(motion.matches);
           sync();
         };
-        const onTheme = () => hero.setTheme(isDark());
         motion.addEventListener("change", onMotion);
         document.addEventListener("visibilitychange", sync);
-        window.addEventListener("themechange", onTheme);
         cleanups.push(() => {
           resize.disconnect();
           view.disconnect();
           motion.removeEventListener("change", onMotion);
           document.removeEventListener("visibilitychange", sync);
-          window.removeEventListener("themechange", onTheme);
           hero.dispose();
         });
       })
