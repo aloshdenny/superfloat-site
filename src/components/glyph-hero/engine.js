@@ -117,7 +117,11 @@ export function createGlyphHero(canvas, { dark = true, reducedMotion = false, on
   }
 
   function draw(dt) {
-    if (running && next === -1 && time - shownAt > HOLD) show((current + 1) % subjects.length);
+    if (running && next === -1 && time - shownAt > HOLD) {
+      next = (current + 1) % subjects.length;
+      transitionStart = time;
+      onSubject(next);
+    }
     const progress = next === -1 ? 0 : Math.min((time - transitionStart) / TRANSITION, 1);
     renderSubject(current, rtA);
     if (next !== -1) renderSubject(next, rtB);
@@ -129,24 +133,6 @@ export function createGlyphHero(canvas, { dark = true, reducedMotion = false, on
       current = next;
       next = -1;
       shownAt = time;
-    }
-  }
-
-  function show(index) {
-    if (index === next) return;
-    if (next !== -1) {
-      current = next;
-      next = -1;
-    }
-    shownAt = time;
-    onSubject(index);
-    if (index === current) return;
-    if (reduced || !running) {
-      current = index;
-      draw(0);
-    } else {
-      next = index;
-      transitionStart = time;
     }
   }
 
@@ -200,7 +186,6 @@ export function createGlyphHero(canvas, { dark = true, reducedMotion = false, on
     start,
     stop,
     resize,
-    setSubject: show,
     setTheme(isDark) {
       applyTheme(isDark);
       if (!running) draw(0);
