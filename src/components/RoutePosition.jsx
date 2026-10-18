@@ -8,7 +8,7 @@ export default function RoutePosition() {
   const { pathname, state } = useLocation();
   useLayoutEffect(() => {
     jumpToTop();
-    document.title = pathname === "/" ? "Superfloat — Super Intelligence, Done Better" : "Research — Superfloat";
+    document.title = pathname === "/" ? "Superfloat · Super Intelligence, Done Better" : "Research · Superfloat";
   }, [pathname]);
   useEffect(() => {
     if (!state?.section) return undefined;
