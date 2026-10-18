@@ -206,7 +206,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .raise-stage.is-now .raise-stage__amount { font-size:40px; color:var(--sf-accent); }
 .technical-home .raise-stage p { margin-top:16px; font-size:13px; line-height:1.6; }
 .raise-stage.is-now p { margin-bottom:24px; }
-.raise-stage__cta { align-self:flex-start; margin-top:auto; }
+.raise-stage__cta { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-top:auto; }
+.raise-stage__cta > span { font:9px var(--sf-mono); letter-spacing:1.5px; color:var(--sf-muted); }
 
 .raise-gate { display:flex; flex-direction:column; align-items:center; gap:12px; margin:44px 0 28px; position:relative; }
 .raise-gate::before { content:""; position:absolute; top:32px; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--sf-line) 20%,var(--sf-line) 80%,transparent); }
