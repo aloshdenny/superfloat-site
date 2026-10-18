@@ -7,9 +7,11 @@ import { scrollToSection } from "../smoothScroll";
 import "./Home.css";
 
 // Raise by stage, from the Atreides 2 nm readiness and budget plan (October 2026).
-const RAISE_STAGES = [
-  { when: "DEC 2026", title: "Pre-seed", label: "RAISING", amount: "$30K", now: true, detail: "The initial 130 nm prototype on ChipFoundry's CI2612 shuttle. Tape-out 7 December 2026, parts back May 2027." },
-  { when: "IN PARALLEL", title: "Seed", label: "RAISING", amount: "$500K", now: true, detail: "Batched SF prototypes, run alongside the initial prototype." },
+const RAISE_NOW = [
+  { when: "DEC 2026", title: "Pre-seed", amount: "$30K", href: "https://pages.razorpay.com/pl_T8IamVwSHWOIHB/view", detail: "The initial 130 nm prototype on ChipFoundry's CI2612 shuttle. Tape-out 7 December 2026, parts back May 2027." },
+  { when: "IN PARALLEL", title: "Seed", amount: "$500K", href: "https://pages.razorpay.com/pl_TpMV9qTtS8x3pR/view", detail: "Batched SF prototypes, run alongside the initial prototype." },
+];
+const RAISE_LATER = [
   { when: "2027", title: "2 nm test chip", label: "ESTIMATE", amount: "$1.2M to $4.4M", detail: "A 10 mm² TSMC N2 shuttle chip with one 128 × 128 matrix unit in each format. Tape-out March 2027, bring-up by mid-year." },
   { when: "Q4 2027", title: "Production tape-out", label: "ESTIMATE", amount: "$23M to $59M", detail: "The 800 mm² die on its own N2 mask set, with HBM3E and I/O IP, design-service, test program and probe cards." },
   { when: "2028", title: "Year-1 production", label: "PLAN", amount: "$106M to $176M", detail: "1,000 N2 wafers, about 40,000 chips at $3,550 each, first parts mid-year. $142M at plan." },
@@ -55,22 +57,37 @@ export default function Home() {
       <section id="raise" className="sf-section sf-container raise-section">
         <div className="section-label" data-reveal="">05 / THE RAISE</div>
         <div className="section-heading" data-reveal="1"><h2>From 130 nm to 2 nm,<br /><em>one stage at a time.</em></h2><p>Each stage puts the format in silicon that the next stage builds on. We raise for the stage in front of us.</p></div>
-        <ol className="raise-stages">
-          {RAISE_STAGES.map((stage, i) => (
-            <li key={stage.title} className={`raise-stage ${stage.now ? "is-now" : "is-later"}`} data-reveal={String(stage.now ? i + 1 : i - 1)}>
-              <div className="raise-stage__top"><span className="raise-stage__when">{stage.when}</span>{stage.now && <span className="raise-stage__badge">RAISING NOW</span>}</div>
+        <ol className="raise-now">
+          {RAISE_NOW.map((stage, i) => (
+            <li key={stage.title} className="raise-stage is-now" data-reveal={String(i + 1)}>
+              <div className="raise-stage__top"><span className="raise-stage__when">{stage.when}</span><span className="raise-stage__badge">RAISING NOW</span></div>
               <h3>{stage.title}</h3>
-              <span className="raise-stage__label">{stage.label}</span>
+              <span className="raise-stage__label">RAISING</span>
               <strong className="raise-stage__amount">{stage.amount}</strong>
               <p>{stage.detail}</p>
+              <div className="raise-stage__cta"><a className="sf-button primary" href={stage.href} target="_blank" rel="noopener noreferrer">Back the {stage.title.toLowerCase()} round <span>↗</span></a><span>CHECKOUT BY RAZORPAY</span></div>
             </li>
           ))}
         </ol>
-        <div className="raise-summary" data-reveal="1">
-          <p><b>$29M to $70M</b> to production tape-out, including the pre-seed and seed rounds, EDA tools and six hires ($4.6M to $6.1M). About 70% of it is the N2 mask set and IP licences.</p>
-          <a className="sf-button primary" href="mailto:alosh@superfloat.si">alosh@superfloat.si <span>↗</span></a>
+        <div className="raise-gate" data-reveal="1">
+          <Link to="/investors" className="raise-gate__icon" aria-label="Investors: the rounds after seed">
+            <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="3" y="14" width="5" height="9" rx="1.5" /><rect x="10.5" y="9" width="5" height="14" rx="1.5" /><rect x="18" y="3" width="5" height="20" rx="1.5" /></svg>
+          </Link>
+          <Link to="/investors" className="raise-gate__label">INVESTORS · THE ROUNDS AHEAD <span>↗</span></Link>
         </div>
-        <p className="raise-note" data-reveal="1">2 nm figures are estimates from public reports; TSMC publishes no prices. Year-1 production is a plan target, not an order.</p>
+        <div className="raise-carousel" data-reveal="2">
+          <ul className="raise-track">
+            {[...RAISE_LATER, ...RAISE_LATER].map((stage, i) => (
+              <li key={i} className="raise-stage is-later" aria-hidden={i >= RAISE_LATER.length || undefined}>
+                <div className="raise-stage__top"><span className="raise-stage__when">{stage.when}</span></div>
+                <h3>{stage.title}</h3>
+                <span className="raise-stage__label">{stage.label}</span>
+                <strong className="raise-stage__amount">{stage.amount}</strong>
+                <p>{stage.detail}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
       <section className="sf-container closing-section" data-reveal="1"><span className="section-label">PRECISION IS ONLY THE BEGINNING.</span><h2>Get closer to<br /><em>the computation.</em></h2><div className="sf-actions"><a className="sf-button primary" href="#architecture" onClick={(event) => { event.preventDefault(); scrollToSection("architecture"); }}>Open the compute lab <span>↑</span></a></div><span className="closing-code" aria-hidden="true">01010011<br />01000110</span></section>
     </div>

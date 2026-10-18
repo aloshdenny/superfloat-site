@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import BlogList from "./pages/BlogList";
 import BlogPost from "./pages/BlogPost";
+import Investors from "./pages/Investors";
 import RoutePosition from "./components/RoutePosition";
 import RevealOnScroll from "./components/RevealOnScroll";
 import { startSmoothScroll } from "./smoothScroll";
@@ -22,6 +23,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/blogs" element={<BlogList />} />
             <Route path="/blogs/:slug" element={<BlogPost/>} />
+            <Route path="/investors" element={<Investors />} />
             <Route path="*" element={<section className="max-w-3xl mx-auto px-6 py-20"><h1>Page not found.</h1><p>This address does not match a Superfloat page.</p><Link className="sf-button primary" to="/">Return to Superfloat →</Link></section>} />
           </Routes>
         </main>
