@@ -8,7 +8,8 @@ import "./Home.css";
 
 // Raise by stage, from the Atreides 2 nm readiness and budget plan (October 2026).
 const RAISE_STAGES = [
-  { when: "DEC 2026", title: "130 nm prototype", label: "RAISING", amount: "$30K", now: true, detail: "The signed-off SF16, FP16 and BF16 chips on ChipFoundry's CI2612 shuttle. Tape-out 7 December 2026, parts back May 2027." },
+  { when: "DEC 2026", title: "Pre-seed", label: "RAISING", amount: "$30K", now: true, detail: "The initial 130 nm prototype on ChipFoundry's CI2612 shuttle. Tape-out 7 December 2026, parts back May 2027." },
+  { when: "IN PARALLEL", title: "Seed", label: "RAISING", amount: "$500K", now: true, detail: "Batched SF prototypes, run alongside the initial prototype." },
   { when: "2027", title: "2 nm test chip", label: "ESTIMATE", amount: "$1.2M to $4.4M", detail: "A 10 mm² TSMC N2 shuttle chip with one 128 × 128 matrix unit in each format. Tape-out March 2027, bring-up by mid-year." },
   { when: "Q4 2027", title: "Production tape-out", label: "ESTIMATE", amount: "$23M to $59M", detail: "The 800 mm² die on its own N2 mask set, with HBM3E and I/O IP, design-service, test program and probe cards." },
   { when: "2028", title: "Year-1 production", label: "PLAN", amount: "$106M to $176M", detail: "1,000 N2 wafers, about 40,000 chips at $3,550 each, first parts mid-year. $142M at plan." },
@@ -56,8 +57,8 @@ export default function Home() {
         <div className="section-heading" data-reveal="1"><h2>From 130 nm to 2 nm,<br /><em>one stage at a time.</em></h2><p>Each stage puts the format in silicon that the next stage builds on. We raise for the stage in front of us.</p></div>
         <ol className="raise-stages">
           {RAISE_STAGES.map((stage, i) => (
-            <li key={stage.title} className={`raise-stage ${stage.now ? "is-now" : ""}`} data-reveal={String(Math.min(i + 1, 3))}>
-              <div className="raise-stage__top"><span className="raise-stage__when">STAGE {i + 1} · {stage.when}</span>{stage.now && <span className="raise-stage__badge">RAISING NOW</span>}</div>
+            <li key={stage.title} className={`raise-stage ${stage.now ? "is-now" : "is-later"}`} data-reveal={String(stage.now ? i + 1 : i - 1)}>
+              <div className="raise-stage__top"><span className="raise-stage__when">{stage.when}</span>{stage.now && <span className="raise-stage__badge">RAISING NOW</span>}</div>
               <h3>{stage.title}</h3>
               <span className="raise-stage__label">{stage.label}</span>
               <strong className="raise-stage__amount">{stage.amount}</strong>
@@ -66,7 +67,7 @@ export default function Home() {
           ))}
         </ol>
         <div className="raise-summary" data-reveal="1">
-          <p><b>$29M to $70M</b> to production tape-out, including EDA tools and six hires ($4.6M to $6.1M). About 70% of it is the N2 mask set and IP licences.</p>
+          <p><b>$29M to $70M</b> to production tape-out, including the pre-seed and seed rounds, EDA tools and six hires ($4.6M to $6.1M). About 70% of it is the N2 mask set and IP licences.</p>
           <a className="sf-button primary" href="mailto:alosh@superfloat.si">alosh@superfloat.si <span>↗</span></a>
         </div>
         <p className="raise-note" data-reveal="1">2 nm figures are estimates from public reports; TSMC publishes no prices. Year-1 production is a plan target, not an order.</p>
