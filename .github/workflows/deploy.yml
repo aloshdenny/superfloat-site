@@ -29,6 +29,8 @@ jobs:
           CI: false
       # BrowserRouter: serve the app for deep links like /blogs/<slug>
       - run: cp dist/client/index.html dist/client/404.html
+      # Pages shared as links get a real 200 instead of the 404 fallback
+      - run: mkdir -p dist/client/investors && cp dist/client/index.html dist/client/investors/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/client
