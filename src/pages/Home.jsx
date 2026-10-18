@@ -6,6 +6,15 @@ import GlyphHero from "../components/glyph-hero/GlyphHero";
 import { scrollToSection } from "../smoothScroll";
 import "./Home.css";
 
+// Raise by stage, from the Atreides 2 nm readiness and budget plan (October 2026).
+const RAISE_STAGES = [
+  { when: "DEC 2026", title: "Pre-seed", label: "RAISING", amount: "$30K", now: true, detail: "The initial 130 nm prototype on ChipFoundry's CI2612 shuttle. Tape-out 7 December 2026, parts back May 2027." },
+  { when: "IN PARALLEL", title: "Seed", label: "RAISING", amount: "$500K", now: true, detail: "Batched SF prototypes, run alongside the initial prototype." },
+  { when: "2027", title: "2 nm test chip", label: "ESTIMATE", amount: "$1.2M to $4.4M", detail: "A 10 mm² TSMC N2 shuttle chip with one 128 × 128 matrix unit in each format. Tape-out March 2027, bring-up by mid-year." },
+  { when: "Q4 2027", title: "Production tape-out", label: "ESTIMATE", amount: "$23M to $59M", detail: "The 800 mm² die on its own N2 mask set, with HBM3E and I/O IP, design-service, test program and probe cards." },
+  { when: "2028", title: "Year-1 production", label: "PLAN", amount: "$106M to $176M", detail: "1,000 N2 wafers, about 40,000 chips at $3,550 each, first parts mid-year. $142M at plan." },
+];
+
 export default function Home() {
   return (
     <div className="technical-home">
@@ -36,12 +45,32 @@ export default function Home() {
         <div className="use-case-grid">
           <article data-reveal="1"><div className="case-glyph" aria-hidden="true">[ W ] → [ W′ ]</div><span className="section-label">MEMORY / REPRESENTATION</span><h3>Make every bit count.</h3><p>Explore smaller representations for weights and activations. Evaluate storage savings alongside the numerical behavior of your workload.</p><span className="case-tag">WEIGHTS · ACTIVATIONS · STORAGE</span></article>
           <article data-reveal="2"><div className="case-glyph" aria-hidden="true">Σ aᵢ · bᵢ</div><span className="section-label">COMPUTE / DATAFLOW</span><h3>Look inside the operation.</h3><p>Trace multiplication and accumulation, then inspect how repeated operations move through a processing-element array.</p><span className="case-tag">MAC · PIPELINING · SYSTOLIC ARRAYS</span></article>
-          <article data-reveal="3"><div className="case-glyph" aria-hidden="true">sensor → ƒ(x)</div><span className="section-label">EDGE / DEPLOYMENT</span><h3>Design for the constraint.</h3><p>Investigate precision choices for robotics, wearables, and embedded sensing—where memory, latency, and energy budgets matter.</p><span className="case-tag">ROBOTICS · IOT · EMBEDDED AI</span></article>
+          <article data-reveal="3"><div className="case-glyph" aria-hidden="true">sensor → ƒ(x)</div><span className="section-label">EDGE / DEPLOYMENT</span><h3>Design for the constraint.</h3><p>Investigate precision choices for robotics, wearables, and embedded sensing, where memory, latency, and energy budgets matter.</p><span className="case-tag">ROBOTICS · IOT · EMBEDDED AI</span></article>
         </div>
       </section>
       <section className="research-section sf-container">
         <div data-reveal="1"><div className="section-label">04 / FIELD NOTES</div><h2>Under the hood.</h2><p>Ideas, architecture, and the details behind the datapath.</p></div>
         <Link to="/blogs/accelerated-hardware" className="research-link" data-reveal="2"><span className="section-label">ARCHITECTURE / IMPLEMENTATION NOTES</span><h3>Inside the Superfloat compute model <span>↗</span></h3><span>Read the model, math, and limitations</span></Link>
+      </section>
+      <section id="raise" className="sf-section sf-container raise-section">
+        <div className="section-label" data-reveal="">05 / THE RAISE</div>
+        <div className="section-heading" data-reveal="1"><h2>From 130 nm to 2 nm,<br /><em>one stage at a time.</em></h2><p>Each stage puts the format in silicon that the next stage builds on. We raise for the stage in front of us.</p></div>
+        <ol className="raise-stages">
+          {RAISE_STAGES.map((stage, i) => (
+            <li key={stage.title} className={`raise-stage ${stage.now ? "is-now" : "is-later"}`} data-reveal={String(stage.now ? i + 1 : i - 1)}>
+              <div className="raise-stage__top"><span className="raise-stage__when">{stage.when}</span>{stage.now && <span className="raise-stage__badge">RAISING NOW</span>}</div>
+              <h3>{stage.title}</h3>
+              <span className="raise-stage__label">{stage.label}</span>
+              <strong className="raise-stage__amount">{stage.amount}</strong>
+              <p>{stage.detail}</p>
+            </li>
+          ))}
+        </ol>
+        <div className="raise-summary" data-reveal="1">
+          <p><b>$29M to $70M</b> to production tape-out, including the pre-seed and seed rounds, EDA tools and six hires ($4.6M to $6.1M). About 70% of it is the N2 mask set and IP licences.</p>
+          <a className="sf-button primary" href="mailto:alosh@superfloat.si">alosh@superfloat.si <span>↗</span></a>
+        </div>
+        <p className="raise-note" data-reveal="1">2 nm figures are estimates from public reports; TSMC publishes no prices. Year-1 production is a plan target, not an order.</p>
       </section>
       <section className="sf-container closing-section" data-reveal="1"><span className="section-label">PRECISION IS ONLY THE BEGINNING.</span><h2>Get closer to<br /><em>the computation.</em></h2><div className="sf-actions"><a className="sf-button primary" href="#architecture" onClick={(event) => { event.preventDefault(); scrollToSection("architecture"); }}>Open the compute lab <span>↑</span></a></div><span className="closing-code" aria-hidden="true">01010011<br />01000110</span></section>
     </div>
