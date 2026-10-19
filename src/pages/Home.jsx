@@ -8,7 +8,15 @@ import "./Home.css";
 
 // Raise by stage, from the Atreides 2 nm readiness and budget plan (October 2026).
 const RAISE_NOW = [
-  { when: "DEC 2026", title: "Pre-seed", amount: "$30K", href: "https://pages.razorpay.com/pl_T8IamVwSHWOIHB/view", detail: "The initial 130 nm prototype on ChipFoundry's CI2612 shuttle. Tape-out 7 December 2026, parts back May 2027." },
+  {
+    when: "DEC 2026", title: "Pre-seed", amount: "$30K", href: "https://pages.razorpay.com/pl_T8IamVwSHWOIHB/view",
+    detail: "The first SF16 chip, on ChipFoundry's CI2612 shuttle. Tape-out 7 December 2026, parts back May 2027.",
+    breakdown: [
+      { amount: "$14,950", what: "ChipFoundry tape-out: fabrication, 100 packaged chips, 10 on M.2 cards, an evaluation board" },
+      { amount: "≈ $15K", what: "Test boards and bring-up, import duties and taxes, shipping" },
+    ],
+    structure: "Raised as one amount. Paid to ChipFoundry in three steps: $500 to reserve, half the balance 60 days before the 7 December deadline, the rest 14 days before.",
+  },
   { when: "IN PARALLEL", title: "Seed", amount: "$500K", href: "https://pages.razorpay.com/pl_TpMV9qTtS8x3pR/view", detail: "Batched SF prototypes, run alongside the initial prototype." },
 ];
 const RAISE_LATER = [
@@ -65,6 +73,12 @@ export default function Home() {
               <span className="raise-stage__label">RAISING</span>
               <strong className="raise-stage__amount">{stage.amount}</strong>
               <p>{stage.detail}</p>
+              {stage.breakdown && (
+                <dl className="raise-breakdown">
+                  {stage.breakdown.map((item) => <div key={item.amount}><dt>{item.amount}</dt><dd>{item.what}</dd></div>)}
+                </dl>
+              )}
+              {stage.structure && <p className="raise-structure">{stage.structure}</p>}
               <div className="raise-stage__cta"><a className="sf-button primary" href={stage.href} target="_blank" rel="noopener noreferrer">Back the {stage.title.toLowerCase()} round <span>↗</span></a><span>CHECKOUT BY RAZORPAY</span></div>
             </li>
           ))}
