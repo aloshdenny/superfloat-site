@@ -33,21 +33,6 @@ jobs:
       - run: cp dist/client/index.html dist/client/404.html
       # Pages shared as links get a real 200 instead of the 404 fallback
       - run: mkdir -p dist/client/investors && cp dist/client/index.html dist/client/investors/index.html
-      # The partner deck lives in a private repo and is published only at an unlisted path, so neither
-      # the deck nor its address is in this public repo. Skipped when the secrets are not set.
-      - name: Add the unlisted pitch deck
-        env:
-          PITCH_DEPLOY_KEY: ${{ secrets.PITCH_DEPLOY_KEY }}
-          PITCH_PATH: ${{ secrets.PITCH_PATH }}
-        run: |
-          if [ -z "$PITCH_DEPLOY_KEY" ] || [ -z "$PITCH_PATH" ]; then echo "no pitch secrets, skipping"; exit 0; fi
-          mkdir -p ~/.ssh && install -m 600 /dev/null ~/.ssh/pitch_key
-          printf '%s\n' "$PITCH_DEPLOY_KEY" > ~/.ssh/pitch_key
-          GIT_SSH_COMMAND="ssh -i ~/.ssh/pitch_key -o StrictHostKeyChecking=accept-new" \
-            git clone -q --depth 1 git@github.com:aloshdenny/superfloat-pitch.git "$RUNNER_TEMP/pitch"
-          rm ~/.ssh/pitch_key
-          mkdir -p "dist/client/investors/$PITCH_PATH"
-          cp -R "$RUNNER_TEMP/pitch/pitch/." "dist/client/investors/$PITCH_PATH/"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/client
