@@ -3,6 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    # docs/ is built by Mintlify, not by this site, so syncs from superfloat.python don't redeploy it
+    paths-ignore: ["docs/**"]
   workflow_dispatch:
 
 permissions:
