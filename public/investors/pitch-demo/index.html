@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="theme-color" content="#0a0d14" />
+    <title>Pitch demo · Superfloat</title>
+    <link rel="icon" type="image/svg+xml" href="/superfloat-mark.svg" />
+    <style>
+      :root { --bg:#0a0d14; --panel:#10141e; --ink:#e9edf6; --muted:#9aa4b8; --line:#262d3d; --accent:#7aa7ff; --mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace; }
+      * { box-sizing:border-box; }
+      body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 Arial,Helvetica,sans-serif; }
+      a { color:inherit; }
+      header,main,footer { width:min(1120px,calc(100% - 40px)); margin-inline:auto; }
+      header { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:28px 0; }
+      .brand { display:inline-flex; align-items:center; gap:10px; font:600 22px Arial,Helvetica,sans-serif; letter-spacing:-1px; text-decoration:none; }
+      .brand i { display:grid; place-items:center; width:32px; height:32px; border:1px solid var(--accent); border-radius:10px; color:var(--accent); font:italic 22px Georgia,serif; }
+      .brand b { color:var(--accent); font-weight:600; }
+      .button { display:inline-flex; align-items:center; gap:14px; padding:12px 20px; border-radius:48px; background:var(--accent); color:#0a1430; font:600 13px Arial,Helvetica,sans-serif; text-decoration:none; white-space:nowrap; }
+      .intro { padding:40px 0 32px; }
+      .label { font:10px/1.6 var(--mono); letter-spacing:1.5px; color:var(--muted); text-transform:uppercase; }
+      h1 { margin:14px 0 10px; font-size:clamp(34px,5vw,56px); font-weight:500; letter-spacing:-2px; line-height:1.05; }
+      h1 em { font-style:normal; color:var(--accent); }
+      .intro p { max-width:620px; margin:0; color:var(--muted); }
+      video { display:block; width:100%; height:auto; aspect-ratio:16 / 9; margin-bottom:40px; border:1px solid var(--line); border-radius:16px; background:var(--panel); }
+      footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:28px 0 48px; border-top:1px solid var(--line); color:var(--muted); font:11px/1.6 var(--mono); }
+      @media (max-width:640px) { header { flex-wrap:wrap; } .button { padding:10px 16px; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="https://superfloat.si"><i aria-hidden="true">sƒ</i>superfloat<b>.</b></a>
+      <a class="button" href="superfloat-pitch-demo.mp4" download>Download MP4 <span aria-hidden="true">↓</span></a>
+    </header>
+    <main>
+      <section class="intro">
+        <div class="label">Pitch demo · October 2026</div>
+        <h1>Superfloat <em>in 30 seconds.</em></h1>
+        <p>The SF16 format, the Atreides chip, and the first tape-out on 7 December 2026. Shared privately; please don't forward this link.</p>
+      </section>
+      <video src="superfloat-pitch-demo.mp4" poster="poster.jpg" controls playsinline preload="metadata"></video>
+    </main>
+    <footer>
+      <span>Alosh Denny · <a href="mailto:alosh@superfloat.si">alosh@superfloat.si</a></span>
+      <span>Music: Max Cooper, "Waves"</span>
+    </footer>
+  </body>
+</html>
