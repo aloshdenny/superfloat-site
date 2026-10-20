@@ -50,21 +50,6 @@ export default function About() {
         </div>
       </section>
 
-      <section className="sf-section sf-container about-who">
-        <div className="about-who__copy">
-          <h2 data-reveal="">Who we are</h2>
-          <p data-reveal="1">Superfloat is a company founded by Alosh Denny, Poojith Devan and Karthik Prakash, building the numerics and the silicon for faster, cheaper AI. Our software is developed in the open on GitHub. The Superfloat team maintains it, and the community that uses it helps shape it.</p>
-          <ul className="about-who__repos" data-reveal="2" aria-label="Superfloat on GitHub">
-            {REPOS.map((repo) => <li key={repo.name}><a href={`https://github.com/aloshdenny/${repo.name}`} target="_blank" rel="noopener noreferrer"><strong>{repo.name}</strong><span>{repo.what}</span></a></li>)}
-          </ul>
-        </div>
-        <a className="about-who__partner" href="https://tinkerhub.org" target="_blank" rel="noopener noreferrer" data-reveal="2">
-          <span className="about-who__tag">MAJOR CONTRIBUTOR</span>
-          <span className="about-who__org"><img src={tinkerhubMark} width="288" height="289" alt="" /><strong>TinkerHub Foundation <span aria-hidden="true">↗</span></strong></span>
-          <span className="about-who__about">A non-profit community of tinkerers, makers and students, and a major contributor to Superfloat&apos;s open work.</span>
-        </a>
-      </section>
-
       <section className="sf-section sf-container about-story">
         <div className="about-story__copy">
           <h2 data-reveal="">Our story</h2>
@@ -90,6 +75,22 @@ export default function About() {
         </div>
       </section>
 
+      <section className="sf-section sf-container about-team">
+        <h2 data-reveal="">Our team</h2>
+        <ul className="about-team__grid">
+          {TEAM.map((person, i) => (
+            <li key={person.name} data-reveal={String(i + 1)}>
+              <a className="about-person" href={person.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${person.name}, ${person.role}, on LinkedIn`}>
+                <div className="about-person__photo"><img src={person.photo} width="720" height="900" loading="lazy" alt="" /></div>
+                <h3>{person.name} <span aria-hidden="true">↗</span></h3>
+                <span className="about-person__role">{person.role}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p className="about-team__join" data-reveal="1">Building with us, or backing us? <a href="mailto:alosh@superfloat.si">alosh@superfloat.si</a> · <Link to="/investors">Investors ↗</Link></p>
+      </section>
+
       <section className="sf-section sf-container about-money">
         <div className="about-money__copy">
           <h2 data-reveal="">Financial model</h2>
@@ -108,20 +109,19 @@ export default function About() {
         </ol>
       </section>
 
-      <section className="sf-section sf-container about-team">
-        <h2 data-reveal="">Our team</h2>
-        <ul className="about-team__grid">
-          {TEAM.map((person, i) => (
-            <li key={person.name} data-reveal={String(i + 1)}>
-              <a className="about-person" href={person.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${person.name}, ${person.role}, on LinkedIn`}>
-                <div className="about-person__photo"><img src={person.photo} width="720" height="900" loading="lazy" alt="" /></div>
-                <h3>{person.name} <span aria-hidden="true">↗</span></h3>
-                <span className="about-person__role">{person.role}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p className="about-team__join" data-reveal="1">Building with us, or backing us? <a href="mailto:alosh@superfloat.si">alosh@superfloat.si</a> · <Link to="/investors">Investors ↗</Link></p>
+      <section className="sf-section sf-container about-who">
+        <div className="about-who__copy">
+          <h2 data-reveal="">The OpenSilicon Project</h2>
+          <p data-reveal="1">The OpenSilicon Project is Superfloat&apos;s work in the open: the number formats, the compiler, the kernels and the tooling, developed on GitHub where anyone can follow along and contribute. It was kickstarted by Alosh Denny, and it grows with the community that uses it.</p>
+          <ul className="about-who__repos" data-reveal="2" aria-label="The OpenSilicon Project on GitHub">
+            {REPOS.map((repo) => <li key={repo.name}><a href={`https://github.com/aloshdenny/${repo.name}`} target="_blank" rel="noopener noreferrer"><strong>{repo.name}</strong><span>{repo.what}</span></a></li>)}
+          </ul>
+        </div>
+        <a className="about-who__partner" href="https://tinkerhub.org" target="_blank" rel="noopener noreferrer" data-reveal="2">
+          <span className="about-who__tag">KICKSTARTER</span>
+          <span className="about-who__org"><img src={tinkerhubMark} width="288" height="289" alt="" /><strong>TinkerHub Foundation <span aria-hidden="true">↗</span></strong></span>
+          <span className="about-who__about">A non-profit community of tinkerers, makers and students. TinkerHub has been a very valuable kickstarter of the OpenSilicon Project.</span>
+        </a>
       </section>
     </div>
   );
