@@ -34,7 +34,7 @@ export default function Navbar() {
       <nav className="sf-nav" aria-label="Main navigation">
         <Link to="/" className="sf-brand" aria-label="Superfloat home" onClick={toTop}><span className="brand-symbol" aria-hidden="true">sƒ</span>superfloat<span className="brand-period">.</span></Link>
         <div className={`sf-nav-links ${menuOpen ? "is-open" : ""}`} id="main-navigation" onClick={() => setMenuOpen(false)}>
-          {SECTIONS.map(([id, label]) => <a key={id} href={`/#${id}`} onClick={toSection(id)}>{label}</a>)}<Link to="/blogs" aria-current={location.pathname.startsWith("/blogs") ? "page" : undefined}>Research</Link><a href="https://docs.superfloat.si">Docs</a>
+          {SECTIONS.map(([id, label]) => <a key={id} href={`/#${id}`} onClick={toSection(id)}>{label}</a>)}<Link to="/blogs" aria-current={location.pathname.startsWith("/blogs") ? "page" : undefined}>Research</Link><Link to="/about" aria-current={location.pathname.startsWith("/about") ? "page" : undefined}>About</Link><a href="https://docs.superfloat.si">Docs</a>
         </div>
         <div className="nav-tools">
           <button ref={menuButton} className="menu-button" aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen} aria-controls="main-navigation" onClick={() => setMenuOpen(!menuOpen)}>
