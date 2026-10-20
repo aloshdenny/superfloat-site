@@ -284,6 +284,22 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .about-lead__by { display:flex; flex-direction:column; gap:4px; margin-top:30px; padding-left:16px; border-left:2px solid var(--sf-accent); }
 .about-lead__by strong { font:600 16px Arial,Helvetica,sans-serif; color:var(--sf-ink); }
 .about-lead__by span { font:11px/1.6 var(--sf-mono); letter-spacing:1px; color:var(--sf-muted); text-transform:uppercase; }
+.about-who { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr); align-items:center; gap:72px; }
+.technical-home .about-who h2 { margin:0 0 6px; }
+.technical-home .about-who__copy p { margin-top:20px; font-size:16px; line-height:1.8; }
+.about-who__repos { list-style:none; margin:28px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:10px; }
+.about-who__repos a { display:flex; flex-direction:column; gap:3px; padding:12px 18px; border:1px solid var(--sf-line); border-radius:16px; color:inherit; text-decoration:none; transition:border-color .3s,transform .3s; }
+.about-who__repos a:hover,.about-who__repos a:focus-visible { border-color:color-mix(in srgb,var(--sf-accent) 60%,var(--sf-line)); transform:translateY(-2px); }
+.about-who__repos strong { font:500 13px var(--sf-mono); color:var(--sf-ink); }
+.about-who__repos span { font-size:12px; color:var(--sf-muted); }
+.about-who__partner { display:flex; flex-direction:column; gap:18px; padding:32px; border:1px solid var(--sf-line); border-radius:24px; background:radial-gradient(ellipse 80% 70% at 20% 0%,color-mix(in srgb,var(--sf-accent) 9%,transparent),transparent 70%),var(--sf-panel); color:inherit; text-decoration:none; transition:border-color .4s,transform .4s cubic-bezier(.2,.7,.2,1); }
+.about-who__partner:hover,.about-who__partner:focus-visible { border-color:color-mix(in srgb,var(--sf-accent) 55%,var(--sf-line)); transform:translateY(-4px); }
+.about-who__tag { font:10px/1.6 var(--sf-mono); letter-spacing:1.5px; color:var(--sf-accent); }
+.about-who__org { display:flex; align-items:center; gap:16px; }
+.about-who__org img { width:52px; height:52px; }
+.about-who__org strong { font:500 24px/1.2 Arial,Helvetica,sans-serif; letter-spacing:-.5px; color:var(--sf-ink); }
+.about-who__org strong span { color:var(--sf-muted); font-size:16px; }
+.about-who__about { font-size:14px; line-height:1.7; color:var(--sf-muted); }
 .about-story { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); align-items:center; gap:72px; }
 .technical-home .about-story h2 { margin:0 0 6px; }
 .technical-home .about-story p { margin-top:20px; font-size:16px; line-height:1.8; }
@@ -294,6 +310,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .technical-home .about-aims h2 { font-size:clamp(26px,2.6vw,34px); letter-spacing:-1px; }
 .technical-home .about-aims .about-aims__lead { margin:18px 0 14px; font-size:20px; line-height:1.45; color:var(--sf-ink); }
 .technical-home .about-aims p { font-size:14px; line-height:1.75; }
+.about-money { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); align-items:start; gap:72px; }
+.technical-home .about-money h2 { margin:0 0 6px; }
+.technical-home .about-money__copy p { margin-top:20px; font-size:16px; line-height:1.8; }
+.technical-home .about-money__copy .about-money__fine { margin:16px 0 28px; font-size:11px; line-height:1.6; }
+.about-money__rounds { list-style:none; margin:0; padding:0; border-top:1px solid var(--sf-line); }
+.about-money__rounds li { display:grid; grid-template-columns:110px minmax(0,1fr) auto; align-items:baseline; gap:24px; padding:20px 0; border-bottom:1px solid var(--sf-line); }
+.about-money__when { font:10px/1.6 var(--sf-mono); letter-spacing:1.5px; color:var(--sf-muted); }
+.about-money__rounds strong { font:500 17px Arial,Helvetica,sans-serif; color:var(--sf-ink); }
+.technical-home .about-money__rounds p { margin-top:4px; font-size:13px; line-height:1.6; }
+.about-money__amount { font:500 18px var(--sf-mono); color:var(--sf-ink); white-space:nowrap; }
+.about-money__rounds li.is-now .about-money__amount { color:var(--sf-accent); }
 .technical-home .about-team h2 { margin-bottom:32px; }
 .about-team__grid { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
 .about-person { display:block; color:inherit; text-decoration:none; transition:transform .45s cubic-bezier(.2,.7,.2,1); }
@@ -309,6 +336,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .about-person__role { font:11px/1.6 var(--sf-mono); letter-spacing:1px; color:var(--sf-muted); text-transform:uppercase; }
 .technical-home .about-team__join { margin:44px 0 40px; font-size:14px; }
 .about-team__join a { color:var(--sf-accent); text-decoration:none; }
-@media(max-width:1050px) { .about-lead,.about-story { gap:44px; }.about-story { grid-template-columns:1fr; }.about-story__figure { max-width:620px; } }
-@media(max-width:760px) { .about-hero { padding-block:64px 8px; }.about-lead { grid-template-columns:1fr; gap:36px; }.about-lead__portrait { max-width:420px; }.about-lead__mark { margin-top:28px; }.about-aims,.about-team__grid { grid-template-columns:1fr; }.about-aims { gap:44px; }.about-team__grid li { max-width:420px; } }
-@media(prefers-reduced-motion:reduce) { .about-person,.about-person__photo { transition:none; }.about-person:hover,.about-person:focus-visible { transform:none; } }
+@media(max-width:1050px) { .about-lead,.about-story,.about-who,.about-money { gap:44px; }.about-story,.about-who,.about-money { grid-template-columns:1fr; }.about-who__partner { max-width:520px; }.about-story__figure { max-width:620px; } }
+@media(max-width:760px) { .about-hero { padding-block:64px 8px; }.about-lead { grid-template-columns:1fr; gap:36px; }.about-lead__portrait { max-width:420px; }.about-lead__mark { margin-top:28px; }.about-aims,.about-team__grid { grid-template-columns:1fr; }.about-aims { gap:44px; }.about-money__rounds li { grid-template-columns:minmax(0,1fr) auto; gap:6px 16px; }.about-money__when { grid-column:1 / -1; }.about-who__partner { padding:24px; }.about-team__grid li { max-width:420px; } }
+@media(prefers-reduced-motion:reduce) { .about-person,.about-person__photo,.about-who__repos a,.about-who__partner { transition:none; }.about-who__repos a:hover,.about-who__partner:hover { transform:none; }.about-person:hover,.about-person:focus-visible { transform:none; } }

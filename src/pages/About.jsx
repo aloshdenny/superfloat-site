@@ -4,7 +4,25 @@ import alosh from "../assets/about/alosh-denny.webp";
 import poojith from "../assets/about/poojith-devan.webp";
 import karthik from "../assets/about/karthik-prakash.webp";
 import projectReport from "../assets/about/project-report.webp";
+import tinkerhubMark from "../assets/about/tinkerhub-mark.webp";
 import "./Home.css";
+
+const REPOS = [
+  { name: "superfloat", what: "The formats and the accelerator" },
+  { name: "superfloat.python", what: "Python DSL and kernels" },
+  { name: "superfloat.llvm", what: "Compiler" },
+  { name: "superfloat.cuda", what: "CUDA and C kernels" },
+  { name: "superfloat.arduino", what: "Integer-only inference on the Arduino UNO Q" },
+];
+
+// The same rounds as the home page's raise section and the investors page.
+const ROUNDS = [
+  { when: "DEC 2026", title: "Pre-seed", amount: "$30K", now: true, detail: "The first SF16 chip on ChipFoundry's CI2612 shuttle: the $14,950 tape-out, then boards, bring-up, duties and shipping." },
+  { when: "IN PARALLEL", title: "Seed", amount: "$500K", now: true, detail: "Batched SF prototypes, run alongside the first chip." },
+  { when: "2027", title: "2 nm test chip", amount: "$1.2M to $4.4M", detail: "A 10 mm² N2 shuttle chip, one 128 × 128 matrix unit in each format." },
+  { when: "Q4 2027", title: "Production tape-out", amount: "$23M to $59M", detail: "The 800 mm² die on its own N2 mask set, with IP, design service and test." },
+  { when: "2028", title: "Year-1 production", amount: "$106M to $176M", detail: "1,000 N2 wafers, about 40,000 chips at a planned cost of about $3,550 each." },
+];
 
 const TEAM = [
   { name: "Alosh Denny", role: "Founder and CEO", photo: alosh, linkedin: "https://www.linkedin.com/in/aloshdenny/" },
@@ -32,6 +50,21 @@ export default function About() {
         </div>
       </section>
 
+      <section className="sf-section sf-container about-who">
+        <div className="about-who__copy">
+          <h2 data-reveal="">Who we are</h2>
+          <p data-reveal="1">Superfloat is a company founded by Alosh Denny, Poojith Devan and Karthik Prakash, building the numerics and the silicon for faster, cheaper AI. Our software is developed in the open on GitHub. The Superfloat team maintains it, and the community that uses it helps shape it.</p>
+          <ul className="about-who__repos" data-reveal="2" aria-label="Superfloat on GitHub">
+            {REPOS.map((repo) => <li key={repo.name}><a href={`https://github.com/aloshdenny/${repo.name}`} target="_blank" rel="noopener noreferrer"><strong>{repo.name}</strong><span>{repo.what}</span></a></li>)}
+          </ul>
+        </div>
+        <a className="about-who__partner" href="https://tinkerhub.org" target="_blank" rel="noopener noreferrer" data-reveal="2">
+          <span className="about-who__tag">MAJOR CONTRIBUTOR</span>
+          <span className="about-who__org"><img src={tinkerhubMark} width="288" height="289" alt="" /><strong>TinkerHub Foundation <span aria-hidden="true">↗</span></strong></span>
+          <span className="about-who__about">A non-profit community of tinkerers, makers and students, and a major contributor to Superfloat&apos;s open work.</span>
+        </a>
+      </section>
+
       <section className="sf-section sf-container about-story">
         <div className="about-story__copy">
           <h2 data-reveal="">Our story</h2>
@@ -55,6 +88,24 @@ export default function About() {
           <p className="about-aims__lead">Make every bit count, from the number format to the chip.</p>
           <p>We design the numerics, the silicon and the software as one system: a family of number formats, from 4 to 16 bits, that holds a model&apos;s accuracy while making the arithmetic beneath it simpler; accelerators designed around those formats from the processing element up, proven at 130 nm and planned for 2 nm; and compilers, kernels and Python tooling that take a trained model onto Superfloat hardware without rebuilding it.</p>
         </div>
+      </section>
+
+      <section className="sf-section sf-container about-money">
+        <div className="about-money__copy">
+          <h2 data-reveal="">Financial model</h2>
+          <p data-reveal="1">The software is free to use. The company raises in stages, and each round pays for the silicon the next one builds on: a 130 nm prototype first, then a 2 nm test chip, then the production die.</p>
+          <p className="about-money__fine" data-reveal="2">2 nm figures are estimates from public reports; TSMC publishes no prices. Year-1 production is a plan target, not an order.</p>
+          <Link className="sf-button primary" to="/investors" data-reveal="2">For investors <span>↗</span></Link>
+        </div>
+        <ol className="about-money__rounds" data-reveal="1">
+          {ROUNDS.map((round) => (
+            <li key={round.title} className={round.now ? "is-now" : ""}>
+              <span className="about-money__when">{round.when}</span>
+              <div><strong>{round.title}</strong><p>{round.detail}</p></div>
+              <span className="about-money__amount">{round.amount}</span>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section className="sf-section sf-container about-team">
