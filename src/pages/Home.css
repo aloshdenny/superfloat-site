@@ -273,10 +273,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .about-hero h1 { max-width:980px; margin:22px 0 24px; font-size:clamp(44px,5.4vw,76px); font-weight:500; letter-spacing:-3px; line-height:1.05; }
 .technical-home .about-lede { max-width:640px; font-size:17px; }
 .about-lead { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); align-items:center; gap:72px; padding-block:40px 24px; }
-.about-lead__portrait { position:relative; isolation:isolate; width:100%; max-width:460px; justify-self:center; }
+.about-lead__portrait { position:relative; isolation:isolate; width:100%; max-width:560px; justify-self:center; }
 .about-lead__portrait::before,.about-lead__portrait::after { content:""; position:absolute; z-index:-1; left:50%; top:44%; aspect-ratio:1; border-radius:50%; transform:translate(-50%,-50%); }
-.about-lead__portrait::before { width:108%; border:1px solid var(--sf-line); background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--sf-accent) 24%,transparent),transparent 62%); }
-.about-lead__portrait::after { width:84%; border:1px solid color-mix(in srgb,var(--sf-accent) 30%,transparent); }
+.about-lead__portrait::before { width:94%; border:1px solid var(--sf-line); background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--sf-accent) 24%,transparent),transparent 62%); }
+.about-lead__portrait::after { width:72%; border:1px solid color-mix(in srgb,var(--sf-accent) 30%,transparent); }
 .about-lead__portrait img { display:block; width:100%; height:auto; }
 .technical-home .about-lead h2 { max-width:560px; font-size:clamp(30px,3.2vw,44px); }
 .about-lead__mark { display:block; margin:40px 0 20px; fill:var(--sf-accent); }
@@ -305,4 +305,4 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .technical-home .about-team__join { margin:44px 0 40px; font-size:14px; }
 .about-team__join a { color:var(--sf-accent); text-decoration:none; }
 @media(max-width:1050px) { .about-lead,.about-story { gap:44px; }.about-story { grid-template-columns:1fr; }.about-story__figure { position:static; max-width:620px; } }
-@media(max-width:760px) { .about-hero { padding-block:64px 8px; }.about-lead { grid-template-columns:1fr; gap:36px; }.about-lead__portrait { max-width:340px; }.about-lead__mark { margin-top:28px; }.about-pillars,.about-team__grid { grid-template-columns:1fr; }.about-person { max-width:420px; } }
+@media(max-width:760px) { .about-hero { padding-block:64px 8px; }.about-lead { grid-template-columns:1fr; gap:36px; }.about-lead__portrait { max-width:420px; }.about-lead__mark { margin-top:28px; }.about-pillars,.about-team__grid { grid-template-columns:1fr; }.about-person { max-width:420px; } }
