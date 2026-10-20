@@ -61,14 +61,14 @@ export default function Investors() {
       </section>
 
       <section className="sf-section sf-container">
-        <div className="section-label" data-reveal="">01 / WHAT WE SHARE AFTER AN INTRO</div>
+        <div className="section-label" data-reveal="">WHAT WE SHARE AFTER AN INTRO</div>
         <div className="investors-grid" data-reveal="1">
           {SHARED.map((item) => <article key={item.title} className="investors-card"><h3>{item.title}</h3><p>{item.detail}</p></article>)}
         </div>
       </section>
 
       <section className="sf-section sf-container">
-        <div className="section-label" data-reveal="">02 / THE ROUNDS AHEAD</div>
+        <div className="section-label" data-reveal="">THE ROUNDS AHEAD</div>
         <div className="investors-rounds" data-reveal="1">
           {ROUNDS.map((round) => (
             <article key={round.title} className="raise-stage is-later">
@@ -84,14 +84,14 @@ export default function Investors() {
       </section>
 
       <section className="sf-section sf-container">
-        <div className="section-label" data-reveal="">03 / HOW IT WORKS</div>
+        <div className="section-label" data-reveal="">HOW IT WORKS</div>
         <ol className="investors-steps" data-reveal="1">
-          {STEPS.map((step, i) => <li key={step.title}><span>{String(i + 1).padStart(2, "0")}</span><h3>{step.title}</h3><p>{step.detail}</p></li>)}
+          {STEPS.map((step) => <li key={step.title}><h3>{step.title}</h3><p>{step.detail}</p></li>)}
         </ol>
       </section>
 
       <section id="interest" className="sf-section sf-container">
-        <div className="section-label" data-reveal="">04 / REGISTER YOUR INTEREST</div>
+        <div className="section-label" data-reveal="">REGISTER YOUR INTEREST</div>
         <form className="investors-form" onSubmit={submit} data-reveal="1">
           <label>Name<input name="name" required autoComplete="name" /></label>
           <label>Email<input name="email" type="email" required autoComplete="email" /></label>
