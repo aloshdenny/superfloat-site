@@ -7,7 +7,7 @@ import projectReport from "../assets/about/project-report.webp";
 import "./Home.css";
 
 const STORY = [
-  "Superfloat began as a college major project. We set out to make large language models run faster on the hardware people already had, by quantizing them: holding each weight in fewer bits without losing what the model had learned. The report was called Weight-Aware Selective Quantization to Improve Performance of Deep Learning Models.",
+  "Superfloat began in 2024 as a college major project. We set out to make large language models run faster on the hardware people already had, by quantizing them: holding each weight in fewer bits without losing what the model had learned. The report was called Weight-Aware Selective Quantization to Improve Performance of Deep Learning Models.",
   "The deeper we went, the clearer one pattern became. Trained networks keep almost every weight in a narrow band of values, while the standard formats spend a large share of each number on range those weights never reach. Quantization could squeeze that waste out of memory. The arithmetic underneath still ran in floating point and still paid for it.",
   "So we went after the numbers themselves. Out of that work came a family of numerics, from 4 bits to 16, that keeps models accurate while making every multiply-add simpler and faster. Because the arithmetic itself gets simpler, the speed-up reaches the circuit, which quantization alone could not do.",
   "A better number only pays off on hardware built for it, so we built the hardware. Our Atreides accelerator is designed around Superfloat arithmetic from the processing element up. Three chips have been signed off on SkyWater's 130 nm process, and the first Superfloat silicon tapes out in December 2026.",
@@ -36,7 +36,7 @@ export default function About() {
 
       <section className="sf-container about-lead" aria-labelledby="about-lead-quote">
         <div className="about-lead__portrait" data-reveal="">
-          <img src={leadPortrait} width="760" height="1000" alt="Alosh Denny, Founder and CEO of Superfloat" />
+          <img src={leadPortrait} width="1120" height="1000" alt="Alosh Denny, Founder and CEO of Superfloat" />
         </div>
         <div className="about-lead__copy" data-reveal="1">
           <h2>The infrastructure datatype for <em>ultrafast intelligence.</em></h2>
