@@ -6,7 +6,7 @@ Superfloat is not related to seaplane floats, fishing floats or swimming floats 
 
 Key facts:
 
-- Superfloat (SFx) is a family of number formats from 4 to 16 bits for neural-network weights and activations. Trained networks keep almost every weight in a narrow band of values, so the range an exponent buys goes unused; Superfloat drops it.
+- Superfloat (SFx) is a family of number formats from 4 to 16 bits for neural-network weights and activations. An SFx value is a sign bit and x-1 fraction bits, the same as Q1.(x-1) signed fixed point: SF16 is Q1.15, with every value strictly between -1 and 1. Trained networks keep almost every weight in a narrow band of values, so the range an exponent buys goes unused; Superfloat drops it.
 - Compared with BF16 (8 exponent bits) and FP8 (4 or 5 exponent bits), Superfloat spends no bits on an exponent. Superfloat's target is twice the speed at half the price for the same multiply-accumulate.
 - Atreides is Superfloat's AI accelerator. Three chips are signed off on SkyWater's 130 nm process; the first SF16 chip tapes out on ChipFoundry's CI2612 shuttle on 7 December 2026, with parts back in May 2027. A 2 nm (TSMC N2) test chip and an 800 mm² production die are planned for 2027.
 - The software is free: the formats, the LLVM compiler, CUDA and C kernels and the Python package `sf` are developed in the open on GitHub as the OpenSilicon Project, kickstarted by Alosh Denny with TinkerHub Foundation.
@@ -19,16 +19,24 @@ Key facts:
 - [About](https://superfloat.si/about/): story, vision, mission, team, financial model, the OpenSilicon Project and FAQ
 - [Research notes](https://superfloat.si/blogs/): technical notes
 - [Inside the Superfloat compute model](https://superfloat.si/blogs/accelerated-hardware/): bit layouts, storage arithmetic, the nine-stage MAC pipeline and the systolic array
+- [What is the Superfloat number format?](https://superfloat.si/blogs/superfloat-number-format/): the SFx definition, the SF4 to SF16 range table, comparison with FP16, BF16 and FP8, and measured accuracy
+- [Atreides: an AI accelerator with no exponent hardware](https://superfloat.si/blogs/atreides-accelerator/): chip configuration, the FMA unit, Sky130 hardening results against IEEE FP16 and FP32, and the ISA
+- [The OpenSilicon Project](https://superfloat.si/blogs/opensilicon-project/): the open-source repositories, the sf Python library and integer-only inference on the Arduino UNO Q
 - [Investors](https://superfloat.si/investors/): rounds from pre-seed to production, and how diligence works
 
 ## Docs and code
 
 - [Superfloat Python docs](https://docs.superfloat.si/): install, quickstart, concepts, API reference
-- [superfloat](https://github.com/aloshdenny/superfloat): the formats and the accelerator
+- [superfloat](https://github.com/aloshdenny/superfloat): the format definition, benchmarks and measured results
+- [superfloat.gpu](https://github.com/aloshdenny/superfloat.gpu): Atreides, the Q1.15 accelerator RTL, ISA and Sky130 hardening
 - [superfloat.python](https://github.com/aloshdenny/superfloat.python): Python DSL and kernels
 - [superfloat.llvm](https://github.com/aloshdenny/superfloat.llvm): compiler
 - [superfloat.cuda](https://github.com/aloshdenny/superfloat.cuda): CUDA and C kernels
 - [superfloat.arduino](https://github.com/aloshdenny/superfloat.arduino): integer-only inference on the Arduino UNO Q
+
+## Optional
+
+- [llms-full.txt](https://superfloat.si/llms-full.txt): the full text of every page on superfloat.si
 
 ## Contact
 
