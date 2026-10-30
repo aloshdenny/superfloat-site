@@ -1,10 +1,17 @@
+import { Suspense } from "react";
 import { Link } from "react-router-dom";
-import FormatRace from "../components/format-race/FormatRace";
-import FormatExplorer from "../components/FormatExplorer";
-import ComputeArray from "../components/ComputeArray";
 import GlyphHero from "../components/glyph-hero/GlyphHero";
+import lazyWhenNear from "../components/lazyWhenNear";
+// The explainers' styles stay in the main stylesheet so their prerendered HTML is styled before their code loads.
+import "../components/FormatExplorer.css";
+import "../components/format-race/FormatRace.css";
 import { scrollToSection } from "../smoothScroll";
 import "./Home.css";
+
+// Below the fold: prerendered, then loaded and hydrated as they scroll near (see lazyWhenNear).
+const FormatExplorer = lazyWhenNear("#technology", () => import("../components/FormatExplorer"));
+const ComputeArray = lazyWhenNear("#architecture", () => import("../components/ComputeArray"));
+const FormatRace = lazyWhenNear("#architecture", () => import("../components/format-race/FormatRace"));
 
 // Raise by stage, from the Atreides 2 nm readiness and budget plan (October 2026).
 const RAISE_NOW = [
@@ -38,15 +45,15 @@ export default function Home() {
       <section id="technology" className="sf-section sf-container">
         <div className="section-label" data-reveal="">THE NUMBER FORMAT</div>
         <div className="section-heading" data-reveal="1"><h2>Precision is a<br /><em>design variable.</em></h2><p>Every stored bit has a cost. Superfloat lets you explore word widths from SF4 to SF16, making numerical representation part of the hardware design space.</p></div>
-        <div data-reveal="2"><FormatExplorer /></div>
+        <div data-reveal="2"><Suspense fallback={null}><FormatExplorer /></Suspense></div>
         <div className="format-notes" data-reveal="1"><p><span>READ THE WORD</span>BF16 separates sign, exponent, and fraction. The Superfloat view highlights the sign and scalable value field.</p><p><span>CHOOSE THE TRADEOFF</span>Fewer bits reduce raw storage per value. Model accuracy and realized speed depend on the workload and implementation.</p></div>
       </section>
       <section className="architecture-band" id="architecture">
         <div className="sf-container sf-section">
           <div className="section-label" data-reveal="">THE COMPUTE LAB</div>
           <div className="section-heading" data-reveal="1"><h2>2× faster<br /><em>at ½ the price.</em></h2><p>The same multiply-accumulate, without the exponent hardware. Watch an SF16 unit and a BF16 unit run side by side, then flip to the systolic arrays they build.</p></div>
-          <div className="lab-array" data-reveal="2"><ComputeArray /></div>
-          <div data-reveal="2"><FormatRace /></div>
+          <div className="lab-array" data-reveal="2"><Suspense fallback={null}><ComputeArray /></Suspense></div>
+          <div data-reveal="2"><Suspense fallback={null}><FormatRace /></Suspense></div>
         </div>
       </section>
       <section id="applications" className="sf-section sf-container">
