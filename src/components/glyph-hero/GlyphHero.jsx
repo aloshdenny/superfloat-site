@@ -29,13 +29,13 @@ export default function GlyphHero() {
 
     idle()
       .then(() => (disposed ? null : import("./engine.js")))
-      .then((module) => {
+      .then(async (module) => {
         if (disposed || !module) return;
-        const { createGlyphHero } = module;
-        const hero = createGlyphHero(canvas.current, {
+        const hero = await module.createGlyphHero(canvas.current, {
           reducedMotion: motion.matches,
           onSubject: setActive,
         });
+        if (disposed) { hero.dispose(); return; }
         engine.current = hero;
         setStatus("ready");
 
