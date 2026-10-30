@@ -31,7 +31,7 @@ export default function Home() {
       <section className="sf-hero sf-container">
         <div className="hero-copy">
           <h1 data-reveal="1">Super <em>Intelligence.</em><span className="hero-sub">Done <em>Better</em></span></h1>
-          <p className="hero-description" data-reveal="2">Superfloat is the infrastructure datatype for ultrafast intelligence at scale.</p>
+          <p className="hero-description" data-reveal="2">The infrastructure datatype for ultrafast intelligence at scale</p>
         </div>
         <div className="hero-stage" data-reveal="3"><GlyphHero /></div>
       </section>
