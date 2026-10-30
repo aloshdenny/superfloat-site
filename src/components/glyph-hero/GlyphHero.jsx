@@ -19,9 +19,19 @@ export default function GlyphHero() {
     const cleanups = [];
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    import("./engine.js")
-      .then(({ createGlyphHero }) => {
-        if (disposed) return;
+    // three.js and its shader compile wait for the first idle moment after load, so they don't add to the
+    // page's blocking time while it becomes interactive; the canvas fades in when ready, as before.
+    const idle = () => new Promise((resolve) => {
+      const start = () => (window.requestIdleCallback ? window.requestIdleCallback(resolve, { timeout: 2000 }) : setTimeout(resolve, 300));
+      if (document.readyState === "complete") start();
+      else window.addEventListener("load", start, { once: true });
+    });
+
+    idle()
+      .then(() => (disposed ? null : import("./engine.js")))
+      .then((module) => {
+        if (disposed || !module) return;
+        const { createGlyphHero } = module;
         const hero = createGlyphHero(canvas.current, {
           reducedMotion: motion.matches,
           onSubject: setActive,

@@ -38,7 +38,7 @@ function lastModified(route) {
   }
 }
 
-function pageHtml(url) {
+async function pageHtml(url) {
   const meta = pageMeta(url);
   const href = canonical(meta.path);
   const modified = meta.noindex ? null : lastModified(url);
@@ -66,16 +66,17 @@ function pageHtml(url) {
   let html = replaceOnce(template, /<title>[^<]*<\/title>/, `<title>${attr(meta.title)}</title>`);
   html = replaceOnce(html, /<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${attr(meta.description)}" />`);
   html = replaceOnce(html, /<\/head>/, `    ${head}\n  </head>`);
-  return replaceOnce(html, /<div id="root"><\/div>/, `<div id="root">${render(url)}</div>`);
+  const body = await render(url);
+  return replaceOnce(html, /<div id="root"><\/div>/, () => `<div id="root">${body}</div>`);
 }
 
 for (const route of ROUTES) {
   const dir = new URL(route === "/" ? "./" : `.${route}/`, dist);
   await mkdir(dir, { recursive: true });
-  await writeFile(new URL("index.html", dir), pageHtml(route));
+  await writeFile(new URL("index.html", dir), await pageHtml(route));
 }
 // GitHub Pages serves 404.html for unknown paths; it renders the app's not-found page.
-await writeFile(new URL("404.html", dist), pageHtml("/404"));
+await writeFile(new URL("404.html", dist), await pageHtml("/404"));
 
 const urls = ROUTES.map((route) => `  <url><loc>${canonical(route)}</loc><lastmod>${lastModified(route)}</lastmod></url>`);
 await writeFile(
@@ -96,7 +97,7 @@ function toText(html) {
     .replace(/[ \t]+/g, " ").replace(/ *\n */g, "\n").replace(/\n{3,}/g, "\n\n").replace(/\n\n(?=\| )/g, "\n").trim();
 }
 const summary = await readFile(new URL("llms.txt", dist), "utf8");
-const sections = ROUTES.map((route) => `\n\n---\n\nSource: ${canonical(route)}\n\n${toText(render(route))}`);
+const sections = await Promise.all(ROUTES.map(async (route) => `\n\n---\n\nSource: ${canonical(route)}\n\n${toText(await render(route))}`));
 await writeFile(new URL("llms-full.txt", dist), `${summary.trim()}${sections.join("")}\n`);
 
 await rm(ssr, { recursive: true, force: true });
