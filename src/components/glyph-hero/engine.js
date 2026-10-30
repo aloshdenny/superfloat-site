@@ -30,12 +30,18 @@ const PALETTE = { bg: "#0a0d14", greyDim: "#232a3a", grey: "#485369", mid: "#3d7
 
 const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 
-export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () => {} } = {}) {
+// Lets the browser run other work between setup steps, so building the hero is several short tasks
+// rather than one long one.
+const yieldToMain = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+// Async only so the setup can be spread out: the scene, its look and its animation are the same.
+export async function createGlyphHero(canvas, { reducedMotion = false, onSubject = () => {} } = {}) {
   const renderer = new WebGLRenderer({ canvas, antialias: false, powerPreference: "high-performance" });
   // Shader diagnostics only in development. In production they cost a synchronous check per program, and on
   // Windows they print D3D compiler notes (X4122) about three's own packing constants, which are harmless.
   renderer.debug.checkShaderErrors = import.meta.env.DEV;
 
+  await yieldToMain();
   const scene = new Scene();
   const pmrem = new PMREMGenerator(renderer);
   const room = new RoomEnvironment();
@@ -53,6 +59,7 @@ export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () 
   fill.position.set(3, -2, 4);
   scene.add(key, rim, fill);
 
+  await yieldToMain();
   const camera = new PerspectiveCamera(30, 1, 0.1, 50);
   camera.position.z = CAMERA_DISTANCE;
 
@@ -91,6 +98,17 @@ export function createGlyphHero(canvas, { reducedMotion = false, onSubject = () 
   u.uViolet.value.set(PALETTE.violet);
   u.uBoost.value = PALETTE.boost;
   edgeFade.uniforms.uBg.value.set(PALETTE.bg);
+
+  // Compile every subject's shaders before the first frame, with KHR_parallel_shader_compile where the
+  // browser has it, so the first render doesn't block on the GPU driver. compile() only sees visible
+  // objects, and the programs depend on the target, so the subjects are shown and rtA (where they are
+  // drawn) is bound while compiling.
+  await yieldToMain();
+  subjects.forEach((s) => { s.group.visible = true; });
+  renderer.setRenderTarget(rtA);
+  await renderer.compileAsync(scene, camera);
+  renderer.setRenderTarget(null);
+  subjects.forEach((s) => { s.group.visible = false; });
 
   const timer = new Timer();
   timer.connect(document);
