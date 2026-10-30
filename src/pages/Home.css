@@ -85,6 +85,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .article-note { padding:20px; margin:25px 0; border-left:2px solid var(--sf-accent); background:var(--sf-panel); color:var(--sf-muted); font-size:14px; line-height:1.7; }
 .research-article a { color:var(--sf-accent); text-decoration:underline; text-underline-offset:4px; }
 .research-article ul { list-style:disc; }
+.research-article table { width:100%; margin:22px 0 8px; border-collapse:collapse; font-size:14px; line-height:1.6; display:block; overflow-x:auto; }
+.research-article th,.research-article td { padding:10px 14px 10px 0; border-bottom:1px solid var(--sf-line); text-align:left; vertical-align:top; color:var(--sf-muted); }
+.research-article th { font:500 11px/1.6 var(--sf-mono); letter-spacing:1px; text-transform:uppercase; color:var(--sf-ink); }
 @media(max-width:760px) { .signal-array .chip-scene { padding:44px 45px 55px; }.signal-array .chip-output { font-size:8px; }.storage-comparison { grid-template-columns:1fr; gap:16px; }.storage-result { border-left:0; border-top:1px solid var(--sf-line); padding:16px 0 0; flex-direction:row; align-items:center; gap:15px; }.storage-result strong { font-size:30px; }.storage-result span { margin:0; }.technical-home .format-explorer__bit { min-height:55px; }.sf-hero { padding-top:40px; }.use-case-grid .section-label,.case-tag { font-size:10px; } }
 @media(prefers-reduced-motion:reduce) { .chip-grid .signal-cell,.chip-grid .signal-cell.trace-a,.chip-grid .signal-cell.trace-b,.chip-grid .signal-cell.probe-cell { animation:none; }.chip-grid .signal-cell.trace-a { background:color-mix(in srgb,var(--sf-accent) 40%,var(--sf-panel)); }.chip-grid .signal-cell.trace-b { background:color-mix(in srgb,var(--sf-violet) 40%,var(--sf-panel)); }.storage-track i,.technical-home .format-explorer__bit { transition:none; } }
 
@@ -311,6 +314,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible { 
 .about-faq__list > div { padding:26px 0; border-top:1px solid var(--sf-line); }
 .technical-home .about-faq h3 { margin:0 0 10px; font-size:19px; }
 .about-faq dd { margin:0; font-size:15px; line-height:1.75; color:var(--sf-muted); }
+.about-faq__more { color:var(--sf-accent); white-space:nowrap; }
 @media(max-width:760px) { .about-faq__list { grid-template-columns:1fr; } }
 .about-aims { display:grid; grid-template-columns:1fr 1fr; gap:72px; }
 .technical-home .about-aims h2 { font-size:clamp(26px,2.6vw,34px); letter-spacing:-1px; }

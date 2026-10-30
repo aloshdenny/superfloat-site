@@ -41,7 +41,7 @@ export function pageMeta(pathname) {
   const path = normalize(pathname);
   if (PAGES[path]) return { path, ...PAGES[path] };
   const post = POSTS[path.match(/^\/blogs\/([^/]+)$/)?.[1]];
-  if (post) return { path, title: `${post.title} · Superfloat`, description: post.description, post };
+  if (post) return { path, title: post.seoTitle ?? `${post.title} · Superfloat`, description: post.description, post };
   return { path, ...NOT_FOUND };
 }
 
@@ -88,10 +88,11 @@ const breadcrumbs = (items) => ({
   itemListElement: items.map(([name, path], i) => ({ "@type": "ListItem", position: i + 1, name, item: canonical(path) })),
 });
 
-export function structuredData(pathname) {
+// dateModified comes from the build (the page source's last commit), since a page can't know it.
+export function structuredData(pathname, { dateModified } = {}) {
   const meta = pageMeta(pathname);
   const url = canonical(meta.path);
-  const page = { "@id": `${url}#webpage`, url, name: meta.title, description: meta.description, isPartOf: { "@id": `${SITE}/#website` }, about: { "@id": ORG }, inLanguage: "en" };
+  const page = { "@id": `${url}#webpage`, url, name: meta.title, description: meta.description, isPartOf: { "@id": `${SITE}/#website` }, about: { "@id": ORG }, publisher: { "@id": ORG }, inLanguage: "en", ...(dateModified && { dateModified }) };
   const graph = [organization, founder, website];
 
   if (meta.path === "/") graph.push({ "@type": "WebPage", ...page, primaryImageOfPage: OG_IMAGE });
@@ -103,7 +104,17 @@ export function structuredData(pathname) {
       breadcrumbs([["Superfloat", "/"], ["About", "/about"]]),
     );
   } else if (meta.path === "/blogs") {
-    graph.push({ "@type": "CollectionPage", ...page }, breadcrumbs([["Superfloat", "/"], ["Research notes", "/blogs"]]));
+    graph.push(
+      {
+        "@type": "CollectionPage",
+        ...page,
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: Object.entries(POSTS).map(([slug, post], i) => ({ "@type": "ListItem", position: i + 1, url: canonical(`/blogs/${slug}`), name: post.title })),
+        },
+      },
+      breadcrumbs([["Superfloat", "/"], ["Research notes", "/blogs"]]),
+    );
   } else if (meta.post) {
     graph.push(
       {
@@ -115,7 +126,7 @@ export function structuredData(pathname) {
         mainEntityOfPage: url,
         image: OG_IMAGE,
         datePublished: meta.post.datePublished,
-        dateModified: meta.post.dateModified ?? meta.post.datePublished,
+        dateModified: meta.post.dateModified ?? dateModified ?? meta.post.datePublished,
         author: { "@id": ORG },
         publisher: { "@id": ORG },
         inLanguage: "en",

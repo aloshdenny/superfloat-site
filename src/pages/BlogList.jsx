@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
+import { POSTS } from "./blogs";
+
+// Every note in src/pages/blogs, numbered in the order they were written.
+const blogs = Object.entries(POSTS)
+  .map(([slug, post]) => ({ slug, title: post.title, date: post.note, author: post.byline }))
+  .sort((a, b) => a.date.localeCompare(b.date, undefined, { numeric: true }));
 
 export default function BlogList() {
-  const blogs = [
-    { 
-      slug: "accelerated-hardware", 
-      title: "Inside the Superfloat compute model",
-      date: "Note 01",
-      author: "Implementation notes · Interactive lab"
-    },
-  ];
-
   return (
     <section className="max-w-3xl mx-auto px-6 py-20">
       <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Research notes</h1>

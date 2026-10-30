@@ -1,5 +1,6 @@
 // Questions people (and search engines and assistants) ask about Superfloat. Shown on the about page
 // and written into its FAQPage structured data, so keep each answer self-contained and factual.
+// `more` links an answer to the research note that covers it in depth.
 const FAQ = [
   {
     q: "What is Superfloat?",
@@ -7,18 +8,22 @@ const FAQ = [
   },
   {
     q: "What is the Superfloat number format?",
+    more: "/blogs/superfloat-number-format",
     a: "Superfloat (SFx) is a family of number formats from 4 to 16 bits for neural-network weights and activations. Each value is a sign bit and a scalable value field, with no exponent field. Trained networks keep almost every weight in a narrow band of values, so the range an exponent buys goes unused, and dropping it makes every multiply-add simpler.",
   },
   {
     q: "How is Superfloat different from BF16 or FP8?",
+    more: "/blogs/superfloat-number-format",
     a: "BF16 spends 8 of its 16 bits on an exponent and FP8 spends 4 or 5 of its 8. Superfloat spends none: the same multiply-accumulate runs without exponent alignment and normalization hardware, which is where Superfloat's target of twice the speed at half the price comes from.",
   },
   {
     q: "What is the Atreides accelerator?",
+    more: "/blogs/atreides-accelerator",
     a: "Atreides is Superfloat's AI accelerator, designed around the Superfloat formats from the processing element up. Three chips are signed off on SkyWater's 130 nm process, and the first SF16 chip tapes out on ChipFoundry's CI2612 shuttle on 7 December 2026. A 2 nm (TSMC N2) test chip and production die are planned for 2027.",
   },
   {
     q: "Is Superfloat open source?",
+    more: "/blogs/opensilicon-project",
     a: "The software is free to use. The formats, the LLVM compiler, the CUDA and C kernels and the Python package (sf) are developed in the open on GitHub as the OpenSilicon Project, with documentation at docs.superfloat.si.",
   },
   {

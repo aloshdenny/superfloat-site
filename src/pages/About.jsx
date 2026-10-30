@@ -128,10 +128,10 @@ export default function About() {
       <section className="sf-section sf-container about-faq" aria-labelledby="about-faq-title">
         <h2 id="about-faq-title" data-reveal="">Questions</h2>
         <dl className="about-faq__list">
-          {FAQ.map(({ q, a }, i) => (
+          {FAQ.map(({ q, a, more }, i) => (
             <div key={q} data-reveal={String((i % 3) + 1)}>
               <dt><h3>{q}</h3></dt>
-              <dd>{a}</dd>
+              <dd>{a}{more && <> <Link className="about-faq__more" to={more}>Read the note →</Link></>}</dd>
             </div>
           ))}
         </dl>

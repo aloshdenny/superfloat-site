@@ -21,6 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history: the build dates each page (sitemap lastmod, dateModified) by its last commit
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -44,3 +47,16 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Tell IndexNow engines (Bing, which also feeds ChatGPT and Copilot search, Yandex and others) the pages
+  # are fresh. The key is public by design; it is served from public/<key>.txt.
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - run: |
+          KEY=b85a3b9823d59bfc45f2cbb33f19f9cd
+          URLS=$(curl -fsS https://superfloat.si/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' | jq -R . | jq -sc .)
+          curl -fsS -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' \
+            -d "{\"host\":\"superfloat.si\",\"key\":\"$KEY\",\"keyLocation\":\"https://superfloat.si/$KEY.txt\",\"urlList\":$URLS}" -w 'IndexNow: HTTP %{http_code}\n'
