@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -13,10 +13,12 @@ import RevealOnScroll from "./components/RevealOnScroll";
 import { startSmoothScroll } from "./smoothScroll";
 import './index.css'
 
+// The router comes from outside: BrowserRouter in the browser (main.jsx), StaticRouter when the
+// build prerenders each page (entry-server.jsx).
 export default function App() {
   useEffect(() => startSmoothScroll(), []);
   return (
-    <Router>
+    <>
       <RoutePosition />
       <div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
         <Navbar />
@@ -34,6 +36,6 @@ export default function App() {
         <Footer />
       </div>
       <RevealOnScroll />
-    </Router>
+    </>
   );
 }

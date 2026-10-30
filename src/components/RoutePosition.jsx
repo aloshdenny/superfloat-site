@@ -1,13 +1,7 @@
 import { useEffect, useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { jumpToTop, scrollToSection } from "../smoothScroll";
-
-// Direct visits to /investors and /about land on /investors/ and /about/, so titles match without the slash.
-const TITLES = {
-  "/": "Superfloat · Super Intelligence, Done Better",
-  "/investors": "Investors · Superfloat",
-  "/about": "About · Superfloat",
-};
+import { pageMeta } from "../seo";
 
 // New pages start at the top. A nav link followed from another page passes the section it wants in
 // location state, and the home page scrolls to it once rendered.
@@ -15,7 +9,9 @@ export default function RoutePosition() {
   const { pathname, state } = useLocation();
   useLayoutEffect(() => {
     jumpToTop();
-    document.title = TITLES[pathname.replace(/(.)\/$/, "$1")] ?? "Research · Superfloat";
+    const { title, description } = pageMeta(pathname);
+    document.title = title;
+    document.querySelector('meta[name="description"]')?.setAttribute("content", description);
   }, [pathname]);
   useEffect(() => {
     if (!state?.section) return undefined;

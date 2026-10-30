@@ -1,5 +1,8 @@
 const acceleratedHardware = {
   title: "Inside the Superfloat compute model",
+  description: "How Superfloat's compute lab works: SF4 to SF16 bit layouts, storage math, a nine-stage multiply-accumulate pipeline, a systolic array and the model's limits.",
+  datePublished: "2025-09-17",
+  dateModified: "2026-10-20",
   body: `
 <p class="article-lead">A guide to the interactive lab: what it visualizes, how its numbers are calculated, and where the model stops.</p>
 <aside class="article-note">Implementation notes, not benchmark results. This page describes the website’s educational model. It does not establish measured latency, energy use, silicon area, or neural-network accuracy.</aside>
