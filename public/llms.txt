@@ -1,0 +1,35 @@
+# Superfloat
+
+> Superfloat is an AI hardware company that designs number formats for AI and the chips that compute in them. Its formats, SF4 to SF16, store each value as a sign bit and a scalable value field with no exponent field, so every multiply-add runs without exponent hardware. Its accelerator, Atreides, is built around those formats. Founded in 2024 by Alosh Denny. Website: https://superfloat.si
+
+Superfloat is not related to seaplane floats, fishing floats or swimming floats that share the name.
+
+Key facts:
+
+- Superfloat (SFx) is a family of number formats from 4 to 16 bits for neural-network weights and activations. Trained networks keep almost every weight in a narrow band of values, so the range an exponent buys goes unused; Superfloat drops it.
+- Compared with BF16 (8 exponent bits) and FP8 (4 or 5 exponent bits), Superfloat spends no bits on an exponent. Superfloat's target is twice the speed at half the price for the same multiply-accumulate.
+- Atreides is Superfloat's AI accelerator. Three chips are signed off on SkyWater's 130 nm process; the first SF16 chip tapes out on ChipFoundry's CI2612 shuttle on 7 December 2026, with parts back in May 2027. A 2 nm (TSMC N2) test chip and an 800 mm² production die are planned for 2027.
+- The software is free: the formats, the LLVM compiler, CUDA and C kernels and the Python package `sf` are developed in the open on GitHub as the OpenSilicon Project, kickstarted by Alosh Denny with TinkerHub Foundation.
+- Team: Alosh Denny (Founder and CEO), Poojith Devan (Director of R&D), Karthik Prakash (Director of Compiler Design).
+- Superfloat began in 2024 as a college major project on quantization (Weight-Aware Selective Quantization).
+
+## Pages
+
+- [Home](https://superfloat.si/): the number format, the compute lab (SF16 vs BF16 multiply-accumulate and systolic arrays), applications and the current raise
+- [About](https://superfloat.si/about/): story, vision, mission, team, financial model, the OpenSilicon Project and FAQ
+- [Research notes](https://superfloat.si/blogs/): technical notes
+- [Inside the Superfloat compute model](https://superfloat.si/blogs/accelerated-hardware/): bit layouts, storage arithmetic, the nine-stage MAC pipeline and the systolic array
+- [Investors](https://superfloat.si/investors/): rounds from pre-seed to production, and how diligence works
+
+## Docs and code
+
+- [Superfloat Python docs](https://docs.superfloat.si/): install, quickstart, concepts, API reference
+- [superfloat](https://github.com/aloshdenny/superfloat): the formats and the accelerator
+- [superfloat.python](https://github.com/aloshdenny/superfloat.python): Python DSL and kernels
+- [superfloat.llvm](https://github.com/aloshdenny/superfloat.llvm): compiler
+- [superfloat.cuda](https://github.com/aloshdenny/superfloat.cuda): CUDA and C kernels
+- [superfloat.arduino](https://github.com/aloshdenny/superfloat.arduino): integer-only inference on the Arduino UNO Q
+
+## Contact
+
+- alosh@superfloat.si

@@ -5,6 +5,7 @@ import poojith from "../assets/about/poojith-devan.webp";
 import karthik from "../assets/about/karthik-prakash.webp";
 import projectReport from "../assets/about/project-report.webp";
 import tinkerhubMark from "../assets/about/tinkerhub-mark.webp";
+import FAQ from "../content/faq";
 import "./Home.css";
 
 const REPOS = [
@@ -122,6 +123,18 @@ export default function About() {
           <span className="about-who__org"><img src={tinkerhubMark} width="288" height="289" alt="" /><strong>TinkerHub Foundation <span aria-hidden="true">↗</span></strong></span>
           <span className="about-who__about">A non-profit community of tinkerers, makers and students. TinkerHub has been a very valuable kickstarter of the OpenSilicon Project.</span>
         </a>
+      </section>
+
+      <section className="sf-section sf-container about-faq" aria-labelledby="about-faq-title">
+        <h2 id="about-faq-title" data-reveal="">Questions</h2>
+        <dl className="about-faq__list">
+          {FAQ.map(({ q, a }, i) => (
+            <div key={q} data-reveal={String((i % 3) + 1)}>
+              <dt><h3>{q}</h3></dt>
+              <dd>{a}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
     </div>
   );

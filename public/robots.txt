@@ -1,3 +1,22 @@
-# https://www.robotstxt.org/robotstxt.html
+# Superfloat welcomes search engines and AI assistants.
 User-agent: *
-Disallow:
+Allow: /
+
+# Named so the choice is explicit: answer engines cite pages they can fetch,
+# and Google-Extended covers Gemini.
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Google-Extended
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://superfloat.si/sitemap.xml

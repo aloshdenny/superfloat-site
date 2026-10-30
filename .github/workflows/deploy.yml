@@ -29,10 +29,8 @@ jobs:
       - run: npm run build
         env:
           CI: false
-      # BrowserRouter: serve the app for deep links like /blogs/<slug>
-      - run: cp dist/client/index.html dist/client/404.html
-      # Pages shared as links get a real 200 instead of the 404 fallback
-      - run: for page in investors about; do mkdir -p dist/client/$page && cp dist/client/index.html dist/client/$page/index.html; done
+      # The build prerenders every page to dist/client/<path>/index.html (a real 200 with its own
+      # head tags) and writes 404.html, so nothing is copied here.
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/client
