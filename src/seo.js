@@ -27,7 +27,7 @@ const PAGES = {
   },
   "/investors": {
     title: "Investors · Superfloat",
-    description: "Invest in Superfloat: the pre-seed and seed rounds, the 2 nm test chip and production tape-out they lead to, and how diligence works.",
+    description: "Superfloat for investors: the 2 nm test chip and production tape-out ahead, what we share after an intro, and how diligence works.",
   },
 };
 

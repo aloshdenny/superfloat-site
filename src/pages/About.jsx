@@ -55,7 +55,7 @@ export default function About() {
         <div className="about-story__copy">
           <h2 data-reveal="">Our story</h2>
           <p data-reveal="1">Superfloat began in 2024 as a college major project on quantization: making large language models run faster by holding each weight in fewer bits, without losing what the model had learned. Along the way we saw that trained networks keep almost every weight in a narrow band of values, while standard formats spend much of each number on range those weights never reach.</p>
-          <p data-reveal="2">That took us past compression to the numbers themselves, and to a family of numerics, from 4 to 16 bits, that keeps models accurate while making every multiply-add simpler and faster. A better number pays off only on hardware built for it, so we built the Atreides accelerator around ours. Three chips are signed off on SkyWater&apos;s 130 nm process, and the first Superfloat silicon tapes out in December 2026.</p>
+          <p data-reveal="2">That took us past compression to the numbers themselves, and to a family of numerics, from 4 to 16 bits, designed to keep models accurate while making every multiply-add simpler and faster. A better number pays off only on hardware built for it, so we built the Atreides accelerator around ours. Three chips are signed off on SkyWater&apos;s 130 nm process, and the first Superfloat silicon tapes out in December 2026.</p>
         </div>
         <figure className="about-story__figure" data-reveal="2">
           <img src={projectReport} width="950" height="760" loading="lazy" alt="Cover of the major project report: Weight-Aware Selective Quantization to Improve Performance of Deep Learning Models" />
@@ -72,7 +72,7 @@ export default function About() {
         <div data-reveal="1">
           <h2>Our mission</h2>
           <p className="about-aims__lead">Make every bit count, from the number format to the chip.</p>
-          <p>We design the numerics, the silicon and the software as one system: a family of number formats, from 4 to 16 bits, that holds a model&apos;s accuracy while making the arithmetic beneath it simpler; accelerators designed around those formats from the processing element up, proven at 130 nm and planned for 2 nm; and compilers, kernels and Python tooling that take a trained model onto Superfloat hardware without rebuilding it.</p>
+          <p>We design the numerics, the silicon and the software as one system: a family of number formats, from 4 to 16 bits, designed to hold a model&apos;s accuracy while making the arithmetic beneath it simpler; accelerators designed around those formats from the processing element up, signed off at 130 nm and planned for 2 nm; and compilers, kernels and Python tooling that take a trained model onto Superfloat hardware without rebuilding it.</p>
         </div>
       </section>
 

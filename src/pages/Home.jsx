@@ -51,7 +51,7 @@ export default function Home() {
       <section className="architecture-band" id="architecture">
         <div className="sf-container sf-section">
           <div className="section-label" data-reveal="">THE COMPUTE LAB</div>
-          <div className="section-heading" data-reveal="1"><h2>2× faster<br /><em>at ½ the price.</em></h2><p>The same multiply-accumulate, without the exponent hardware. Watch an SF16 unit and a BF16 unit run side by side, then flip to the systolic arrays they build.</p></div>
+          <div className="section-heading" data-reveal="1"><h2>Same work.<br /><em>43% less energy.</em></h2><p>The same multiply-accumulate, without the exponent hardware. Watch an SF16 unit and a BF16 unit run side by side, then flip to the systolic arrays they build.</p></div>
           <div className="lab-array" data-reveal="2"><Suspense fallback={null}><ComputeArray /></Suspense></div>
           <div data-reveal="2"><Suspense fallback={null}><FormatRace /></Suspense></div>
         </div>
@@ -67,7 +67,7 @@ export default function Home() {
       </section>
       <section className="research-section sf-container">
         <div data-reveal="1"><div className="section-label">FIELD NOTES</div><h2>Under the hood.</h2><p>Ideas, architecture, and the details behind the datapath.</p></div>
-        <Link to="/blogs/accelerated-hardware" className="research-link" data-reveal="2"><span className="section-label">ARCHITECTURE / IMPLEMENTATION NOTES</span><h3>Inside the Superfloat compute model <span>↗</span></h3><span>Read the model, math, and limitations</span></Link>
+        <Link to="/blogs/atreides-accelerator" className="research-link" data-reveal="2"><span className="section-label">ARCHITECTURE / IMPLEMENTATION NOTES</span><h3>Atreides: an AI accelerator with no exponent hardware <span>↗</span></h3><span>Read the sign-off tables and caveats</span></Link>
       </section>
       <section id="raise" className="sf-section sf-container raise-section">
         <div className="section-label" data-reveal="">THE RAISE</div>

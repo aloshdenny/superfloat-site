@@ -7,18 +7,18 @@ const CONTACT = "alosh@superfloat.si";
 const SHARED = [
   { title: "Readiness and budget plan", detail: "The N2 test chip, the 800 mm² production die, year-1 unit costs and the volume plan to 2032." },
   { title: "Sign-off evidence", detail: "The three 130 nm chips: DRC, LVS and antenna reports, timing across nine corners, post-layout power." },
-  { title: "Measured 2 nm results", detail: "Processing elements on the GT2N predictive PDK: compute per watt, per mm², energy per MAC, top clock." },
+  { title: "Predictive 2 nm results", detail: "Processing elements on the GT2N predictive PDK: compute per watt, per mm², energy per MAC, top clock." },
   { title: "Partner plan", detail: "Foundry access, N2 sign-off, HBM3E and I/O IP, packaging and test, and who we are talking to." },
 ];
 
 const ROUNDS = [
-  { when: "2027", title: "2 nm test chip", amount: "$1.2M to $4.4M", detail: "10 mm² N2 shuttle chip, one 128 × 128 matrix unit in each format." },
-  { when: "Q4 2027", title: "Production tape-out", amount: "$23M to $59M", detail: "800 mm² die on its own N2 mask set, with IP, design-service and test." },
-  { when: "2028", title: "Year-1 production", amount: "$106M to $176M", detail: "1,000 N2 wafers, about 40,000 chips." },
+  { when: "2027", title: "2 nm test chip", label: "ESTIMATE", amount: "$1.2M to $4.4M", detail: "10 mm² N2 shuttle chip, one 128 × 128 matrix unit in each format." },
+  { when: "Q4 2027", title: "Production tape-out", label: "ESTIMATE", amount: "$23M to $59M", detail: "800 mm² die on its own N2 mask set, with IP, design-service and test." },
+  { when: "2028", title: "Year-1 production", label: "PLAN", amount: "$106M to $176M", detail: "1,000 N2 wafers, about 40,000 chips." },
 ];
 
 const STEPS = [
-  { title: "Intro call", detail: "Thirty minutes on what we have built, what we measured and what the rounds pay for." },
+  { title: "Intro call", detail: "Thirty minutes on what we have built, what we have simulated and what the rounds pay for." },
   { title: "NDA and data room", detail: "The budget model, sign-off reports and 2 nm results, under NDA." },
   { title: "Technical diligence", detail: "RTL, verification and physical design walk-throughs with your engineers, if you want them." },
   { title: "Terms", detail: "Round terms and documents agreed through counsel, for each investor individually." },
@@ -30,10 +30,10 @@ const INTERESTS = ["2 nm test chip round", "Production tape-out round", "Strateg
 
 export default function Investors() {
   const [sent, setSent] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const submit = (event) => {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
+  const draft = (element) => {
+    const form = new FormData(element);
     const lines = [
       `Name: ${form.get("name")}`,
       `Email: ${form.get("email")}`,
@@ -47,8 +47,26 @@ export default function Investors() {
       form.get("message") || "",
     ];
     const subject = `Investor enquiry: ${form.get("name")}${form.get("organisation") ? `, ${form.get("organisation")}` : ""}`;
-    window.location.href = `mailto:${CONTACT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+    return { subject, body: lines.join("\n") };
+  };
+
+  const submit = (event) => {
+    event.preventDefault();
+    const { subject, body } = draft(event.currentTarget);
+    window.location.href = `mailto:${CONTACT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSent(true);
+  };
+
+  const copy = async (event) => {
+    const element = event.currentTarget.form;
+    if (!element.reportValidity()) return;
+    const { subject, body } = draft(element);
+    try {
+      await navigator.clipboard.writeText(`To: ${CONTACT}\nSubject: ${subject}\n\n${body}`);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
   };
 
   return (
@@ -74,7 +92,7 @@ export default function Investors() {
             <article key={round.title} className="raise-stage is-later">
               <div className="raise-stage__top"><span className="raise-stage__when">{round.when}</span></div>
               <h3>{round.title}</h3>
-              <span className="raise-stage__label">BUDGET</span>
+              <span className="raise-stage__label">{round.label}</span>
               <strong className="raise-stage__amount">{round.amount}</strong>
               <p>{round.detail}</p>
             </article>
@@ -103,7 +121,8 @@ export default function Investors() {
           <label className="investors-form__wide">Anything else<textarea name="message" rows="4" /></label>
           <label className="investors-check investors-form__wide"><input type="checkbox" name="declaration" required />I am an accredited, qualified or professional investor under the rules where I live, or I am writing as a strategic partner.</label>
           <div className="investors-form__wide investors-form__submit">
-            <button className="sf-button primary" type="submit">Send <span>↗</span></button>
+            <button className="sf-button primary" type="submit">Open email draft <span>↗</span></button>
+            <button className="sf-button" type="button" onClick={copy}>{copied ? "Copied" : "Copy message"}</button>
             <p>{sent ? `Your email app should now be open with your details filled in. If it isn't, write to ${CONTACT}.` : `This opens your email app with your answers, addressed to ${CONTACT}.`}</p>
           </div>
         </form>

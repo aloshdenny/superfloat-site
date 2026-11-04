@@ -1,5 +1,5 @@
 const acceleratedHardware = {
-  title: "Inside the Superfloat compute model",
+  title: "Earlier educational pipeline model",
   description: "How Superfloat's compute lab works: SF4 to SF16 bit layouts, storage math, a nine-stage multiply-accumulate pipeline, a systolic array and the model's limits.",
   datePublished: "2025-09-17",
   dateModified: "2026-10-20",
@@ -7,7 +7,7 @@ const acceleratedHardware = {
   byline: "Implementation notes · Interactive lab",
   body: `
 <p class="article-lead">A guide to the interactive lab: what it visualizes, how its numbers are calculated, and where the model stops.</p>
-<aside class="article-note">Implementation notes, not benchmark results. This page describes the website’s educational model. It does not establish measured latency, energy use, silicon area, or neural-network accuracy.</aside>
+<aside class="article-note">Implementation notes, not benchmark results. This page describes an earlier nine-stage teaching model, not the current compute lab (three-stage SF16, five-stage BF16). It does not establish measured latency, energy use, silicon area, or neural-network accuracy.</aside>
 <h2>Representation comes first</h2>
 <p>The format explorer places two layouts side by side conceptually. BF16 allocates one sign bit, eight exponent bits, and seven fraction bits. The Superfloat view uses one sign bit and a scalable value field, with a total width from 4 to 16 bits.</p>
 <p>The displayed bit pattern is a field-layout illustration. Switching formats does not numerically convert the same value between them. A complete numerical specification would also need to define scaling, rounding, saturation, and representable values.</p>
