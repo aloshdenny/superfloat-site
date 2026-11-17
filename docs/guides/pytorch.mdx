@@ -17,3 +17,53 @@ sft.last_status(model)                                 # per-layer saturation re
 Weights and activations are scaled so the chip's -1..1 range is used well,
 and by default the scale leaves enough headroom that nothing can saturate
 inside a layer. Training still works (straight-through gradients).
+
+## Wide mode
+
+**For LLMs, run the layers on the MX engine: `accumulate="wide"`.** The default chain clips every partial sum at ±1, so wide layers (K in the thousands) lose their inputs to headroom. Wide mode adds in a wide accumulator and rounds once.
+
+```python
+model = sft.convert(model, dtype="sf16", accumulate="wide")
+out = model(x)
+```
+
+You choose no shifts and give no calibration data. For every call, `sft`:
+
+1. Scales each token by a power of two (`ea`) and each weight channel by a power of two (`ew`), because the chip can only shift.
+2. Picks each output's exponent with a fixed rule: `eo = l2 - h`. Here `l2` is the exponent at which the output can never clip (from the two vectors' L2 norms), and `h = max(0, floor(log2 K) // 2 - 2)`.
+3. Sets each POP shift to `ea + ew - eo`, from -32 to 31.
+4. Pops again at `l2` any output that came back at ±max. That redo always fits.
+
+The rule has no state, so an output depends only on its inputs. Its numbers live in `sf._heuristic` and are pinned by golden vectors.
+
+| Also works | How |
+| --- | --- |
+| One layer | `sft.SFLinear(..., accumulate="wide")`, `sft.linear(x, w, b, accumulate="wide")` |
+| Two activations | `sft.matmul(a, b, accumulate="wide")`: one exponent per row of `a` and per column of `b` |
+| An unmodified model | `with sft.autocast(accumulate="wide"):` |
+| The chip | `torch.compile(model, backend="superfloat")`: wide layers run on the target's MX engine, with the same bits as on the host |
+| A fixed shift | `accumulate="wide", shift=-4` uses that shift for every output, with no redo |
+
+**Read the status, because a wrong shift raises no error.** `sft.last_status(model)` gives each layer's `shift_min`, `shift_max`, `h`, `redone` (outputs popped again), `flushed` (nonzero totals that rounded to 0, unknown on the chip) and `acc_clipped` (always 0: before launch, `sft` raises a token's exponent if its total could reach the accumulator's ±512, and counts it in `guard_raised`).
+
+**sf8 layers, sf16 head.** `sft.convert(model, dtype="sf8", accumulate="wide")` runs the layers at sf8 but keeps the LM head at sf16 by itself, because an sf8 head costs accuracy for little speed. The head is found from the model, not from names:
+
+1. The model's own `get_output_embeddings()` (Hugging Face models).
+2. Otherwise a linear layer whose weight is tied to an `nn.Embedding`.
+3. Otherwise the last linear layer whose output size is an embedding's vocabulary.
+
+A model with no embedding (a classifier) has no LM head, so nothing is kept. `sft.conversion_report(model).kept_sf16` lists what was kept and why. `keep_sf16=False` turns this off; `keep_sf16=["fc"]` keeps exactly the layers you name.
+
+**Attention runs on MX too.** With `accumulate="wide"`, `sft.convert` and `sft.autocast` catch the model's `F.scaled_dot_product_attention` calls; most Hugging Face LLMs use it. Both matmuls run on the MX engine at sf16, whatever the layers' dtype:
+
+1. Scores `Q Kᵀ`: one exponent per query row and per key, output exponents from the rule above.
+2. Mask and softmax: in float on the host, like LayerNorm.
+3. `P V`: one exponent per query row and per channel of V. Each row of P sums to 1, so no output can exceed its channel's largest |V|; that is the output exponent, and nothing can saturate.
+
+Each call is reported as `attention.0.scores` and `attention.0.pv`, then `attention.1...`, in the order the forward makes them. `attention=False` keeps attention in float. Called directly: `sft.attention(q, k, v, attn_mask=None, dropout_p=0.0, is_causal=False, scale=None, enable_gqa=False, name="attention")`. `nn.MultiheadAttention` is not converted yet.
+
+**Speed on the host.** Wide mode emulates the chip bit for bit, which costs time on a CPU. sf compiles a small C accumulator the first time it is used (with `cc`, `gcc` or `clang`), keeps it in a private per-user cache folder (`~/.cache/sf`, or `$SF_CACHE_DIR`), and splits rows across cores; GPT-2 small runs about 30 times faster than the plain NumPy model, with the same bits. With no C compiler sf uses the NumPy model; `SF_FAST_MX=0` forces it.
+
+- In wide mode `scale=` and `headroom=` are not used: weights are always per channel, and partial sums cannot clip at ±1.
+- The bias is added in float after POP, on the host.
+- A target without an MX engine keeps wide layers on the host, and `sft.compile_report()` says so.
