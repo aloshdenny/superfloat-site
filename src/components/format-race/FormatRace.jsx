@@ -146,6 +146,8 @@ function Stat({ value, label, detail }) {
 export default function FormatRace() {
   const card = useRef(null);
   const [flipped, setFlipped] = useState(false);
+  const flipButtons = useRef({});
+  const moveFocus = useRef(false);
   const [inView, setInView] = useState(false);
   const [reduced, setReduced] = useState(false);
   const face = flipped ? "array" : "fma";
@@ -164,6 +166,13 @@ export default function FormatRace() {
     return () => { media.removeEventListener("change", syncMotion); observer.disconnect(); document.removeEventListener("visibilitychange", onVisibility); };
   }, []);
 
+  // The face being left turns inert, which would drop keyboard focus to the page.
+  useEffect(() => {
+    if (!moveFocus.current) return;
+    moveFocus.current = false;
+    flipButtons.current[flipped ? "back" : "front"]?.focus();
+  }, [flipped]);
+
   const fmaT = face === "fma" ? t : FACES.fma.endNs;
   const arrayT = face === "array" ? t : FACES.array.endNs;
 
@@ -173,20 +182,20 @@ export default function FormatRace() {
         <section className="race__face race__front" aria-hidden={flipped} inert={flipped}>
           <header className="race__head">
             <div><span className="race__label">ONE MULTIPLY-ACCUMULATE · SF16 VS BF16</span><h3>Same operation. No exponent hardware.</h3></div>
-            <button type="button" className="flip-button" onClick={() => setFlipped(true)} aria-label="Flip to the systolic arrays"><ArrayIcon />SYSTOLIC ARRAYS</button>
+            <button type="button" ref={(el) => { flipButtons.current.front = el; }} className="flip-button" onClick={() => { moveFocus.current = true; setFlipped(true); }} aria-label="Flip to the systolic arrays"><ArrayIcon />SYSTOLIC ARRAYS</button>
           </header>
           <div className="race__lanes">{LANES.map((u) => <FmaLane key={u.name} unit={u} t={fmaT} axisNs={FACES.fma.endNs} />)}</div>
           <div className="race__stats">
-            <Stat value={`${ratio(macLatencyNs(sf), macLatencyNs(bf))}×`} label="faster per MAC" detail={`${macLatencyNs(sf).toFixed(1)} vs ${macLatencyNs(bf).toFixed(1)} ns`} />
+            <Stat value={`${ratio(macLatencyNs(sf), macLatencyNs(bf))}×`} label="lower MAC latency" detail={`${macLatencyNs(sf).toFixed(1)} vs ${macLatencyNs(bf).toFixed(1)} ns`} />
             <Stat value="−34%" label="PE power" detail="0.78 vs 1.18 mW" />
             <Stat value="−43%" label="energy per token" detail="GPT-2 small, 5.55 vs 9.74 J" />
           </div>
-          <p className="race__note">Pipelines from the Atreides RTL. Each PE was hardened in the same SKY130 flow at a 20 ns target, worst corner; the clock shown is what its slack leaves. Energy per token is the signed-off chips running GPT-2 small. Animation slowed about 50 million times.</p>
+          <p className="race__note">Pipelines from the Atreides RTL. Each PE was hardened in the same SKY130 flow at a 20 ns target, worst corner; the clock shown is what its slack leaves. Energy per token is post-layout simulation of the signed-off designs running GPT-2 small at 50 MHz, with the same cycle count in both formats; nothing has been fabricated yet. Animation slowed about 50 million times.</p>
         </section>
         <section className="race__face race__back" aria-hidden={!flipped} inert={!flipped}>
           <header className="race__head">
             <div><span className="race__label">{ARRAY_N} × {ARRAY_N} SYSTOLIC ARRAY · {ARRAY_N} × {ARRAY_N} × {ARRAY_K} MATMUL</span><h3>SF16 closes each sum in one cycle.</h3></div>
-            <button type="button" className="flip-button" onClick={() => setFlipped(false)} aria-label="Flip back to the FMA units"><FmaIcon />FMA UNITS</button>
+            <button type="button" ref={(el) => { flipButtons.current.back = el; }} className="flip-button" onClick={() => { moveFocus.current = true; setFlipped(false); }} aria-label="Flip back to the FMA units"><FmaIcon />FMA UNITS</button>
           </header>
           <div className="race__lanes">{LANES.map((u) => <ArrayLane key={u.name} unit={u} t={arrayT} axisNs={FACES.array.endNs} />)}</div>
           <div className="race__stats">

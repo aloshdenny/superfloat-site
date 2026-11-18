@@ -23,6 +23,7 @@ export function scrollToTop() {
 export function scrollToSection(id) {
   const target = document.getElementById(id);
   if (!target) return;
+  window.history.replaceState(window.history.state, "", `#${id}`); // keeps the section shareable
   if (lenis) lenis.scrollTo(target, { offset: -HEADER_OFFSET, duration: 1.6 });
   else window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET, behavior: "smooth" });
 }
